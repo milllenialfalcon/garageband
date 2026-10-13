@@ -11,7 +11,7 @@
   <!-- wordmark and tagline -->
   <text x="432" y="206" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="700" letter-spacing="-1.5" fill="#EDE8DC">Garageband</text>
   <text x="434" y="258" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="25" fill="#9FB0A6">The skill stack for a one-person AI software factory</text>
-  <!-- the line: 19 stages, last one (Learn) in accent, closing the loop -->
+  <!-- the line: 19 stages (0 to 18), last one (Learn) in accent, closing the loop -->
   <line x1="300" y1="318" x2="980" y2="318" stroke="#34443D" stroke-width="2"/>
   <circle cx="300.0" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
   <circle cx="337.8" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>

@@ -83,7 +83,7 @@ Open any session and say **"use the garageband skill"** (Codex: `$garageband`). 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/lifecycle-dark.svg">
-    <img src="assets/lifecycle-light.svg" alt="The Garageband lifecycle: stages 0 to 19 in a loop, with founder gates marked" width="880">
+    <img src="assets/lifecycle-light.svg" alt="The Garageband lifecycle: stages 0 to 18 in a loop, with founder gates marked" width="880">
   </picture>
 </p>
 
@@ -94,20 +94,20 @@ Open any session and say **"use the garageband skill"** (Codex: `$garageband`). 
 | 2 | What exactly? | `grill-founder` → `write-spec` | Founder approves spec |
 | 3 | Look and feel | `design-system` → `design-variants` | Founder picks a variant |
 | 4 | Structure | `architecture-plan` → `decision-log` | Second-model review passes |
-| 6 | Break down | `slice-tickets` | Every ticket has a verify step |
-| 7 | Hand off | `dispatch-brief`, `factory-ledger`, `model-router` | Reader test finds no ambiguity |
-| 8 | Build | `tdd-slice`, `ui-build-rules`, `safe-migration`, `root-cause-debug` | Tests green, evidence pasted |
-| 9 | Review | `doubt-review`, `design-critique` | A different model approves |
-| 10 | Test | `browser-qa`, `break-ui`, `slop-gate` | CI green |
-| 11 | Secure | `security-pass`, `launch-compliance` | No critical findings |
-| 12 | Explain | `owner-pr-summary` | Founder understands and merges |
-| 13 | Release | `ship-gate` | GO with a tested rollback |
-| 14 | Watch | `watch-after-ship` | Metrics within thresholds |
-| 15 | Listen | `intake-triage` | Weekly queue approved |
-| 16 | Measure | `measure-outcome` | Keep / iterate / kill |
-| 17 | Maintain | `maintenance-sweep`, `cost-watch` | Monthly report approved |
-| 18 | Choose next | `portfolio-priority` | Next bet picked |
-| 19 | Learn | `retro-instincts`, `skill-lab` | Rules updated, skills proven |
+| 5 | Break down | `slice-tickets` | Every ticket has a verify step |
+| 6 | Hand off | `dispatch-brief`, `factory-ledger`, `model-router` | Reader test finds no ambiguity |
+| 7 | Build | `tdd-slice`, `ui-build-rules`, `safe-migration`, `root-cause-debug` | Tests green, evidence pasted |
+| 8 | Review | `doubt-review`, `design-critique` | A different model approves |
+| 9 | Test | `browser-qa`, `break-ui`, `slop-gate` | CI green |
+| 10 | Secure | `security-pass`, `launch-compliance` | No critical findings |
+| 11 | Explain | `owner-pr-summary` | Founder understands and merges |
+| 12 | Release | `ship-gate` | GO with a tested rollback |
+| 13 | Watch | `watch-after-ship` | Metrics within thresholds |
+| 14 | Listen | `intake-triage` | Weekly queue approved |
+| 15 | Measure | `measure-outcome` | Founder: keep / iterate / kill |
+| 16 | Maintain | `maintenance-sweep`, `cost-watch` | Monthly report approved |
+| 17 | Choose next | `portfolio-priority` | Next bet picked |
+| 18 | Learn | `retro-instincts`, `skill-lab` | Rules updated, skills proven |
 
 Everywhere: `garageband` routes, `decision-brief` frames every choice, `verify-research` checks anything a research model produced.
 

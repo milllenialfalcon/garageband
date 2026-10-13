@@ -8,7 +8,7 @@ labels: enhancement
 What do you need the factory to do that it cannot do today? Describe it in plain words.
 
 **Where it fits**
-Which stage of the line does it belong to (0 to 19), or is it a cross-cutting helper?
+Which stage of the line does it belong to (0 to 18), or is it a cross-cutting helper?
 
 **What a good result looks like**
 Two or three concrete examples, and what would count as done.

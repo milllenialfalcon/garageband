@@ -39,20 +39,20 @@ When in doubt between two paths, take the bigger one.
 | 2 | What exactly? | grill-founder → write-spec | Orchestrator | Founder approves spec |
 | 3 | Look and feel | design-system → design-variants | Orchestrator, frontend model | Founder picks a variant |
 | 4 | Structure | architecture-plan → decision-log | Orchestrator, reviewed by a second model | Review passes; Founder Calls answered |
-| 6 | Break down | slice-tickets | Orchestrator | Every ticket has a verify step |
-| 7 | Hand off | dispatch-brief, factory-ledger, model-router | Orchestrator | Reader test finds no open ambiguity |
-| 8 | Build | tdd-slice, ui-build-rules, safe-migration, root-cause-debug | Implementers | Tests green with evidence |
-| 9 | Review | doubt-review, design-critique | A different model | APPROVE |
-| 10 | Test | browser-qa, break-ui, slop-gate | Implementer + CI | CI green |
-| 11 | Secure | security-pass (risky PRs), launch-compliance (before first launch) | Orchestrator | No critical findings |
-| 12 | Explain | owner-pr-summary | Author | Founder understands and merges |
-| 13 | Release | ship-gate | Orchestrator | GO, with a rollback plan |
-| 14 | Watch | watch-after-ship | Cheap model | Metrics within thresholds |
-| 15 | Listen | intake-triage | Cheap model | Queue approved weekly |
-| 16 | Measure | measure-outcome | Orchestrator | Keep / iterate / kill decided |
-| 17 | Maintain | maintenance-sweep, cost-watch | Cheap model | Monthly report approved |
-| 18 | Decide what's next | portfolio-priority | Orchestrator + founder | Next bet chosen |
-| 19 | Learn | retro-instincts, skill-lab | Orchestrator | Rules updated |
+| 5 | Break down | slice-tickets | Orchestrator | Every ticket has a verify step |
+| 6 | Hand off | dispatch-brief, factory-ledger, model-router | Orchestrator | Reader test finds no open ambiguity |
+| 7 | Build | tdd-slice, ui-build-rules, safe-migration, root-cause-debug | Implementers | Tests green with evidence |
+| 8 | Review | doubt-review, design-critique | A different model | APPROVE |
+| 9 | Test | browser-qa, break-ui, slop-gate | Implementer + CI | CI green |
+| 10 | Secure | security-pass (risky PRs), launch-compliance (before first launch) | Orchestrator | No critical findings |
+| 11 | Explain | owner-pr-summary | Author | Founder understands and merges |
+| 12 | Release | ship-gate | Orchestrator | GO, with a rollback plan |
+| 13 | Watch | watch-after-ship | Cheap model | Metrics within thresholds |
+| 14 | Listen | intake-triage | Cheap model | Queue approved weekly |
+| 15 | Measure | measure-outcome | Orchestrator | Founder decides keep / iterate / kill |
+| 16 | Maintain | maintenance-sweep, cost-watch | Cheap model | Monthly report approved |
+| 17 | Decide what's next | portfolio-priority | Orchestrator + founder | Next bet chosen |
+| 18 | Learn | retro-instincts, skill-lab | Orchestrator | Rules updated |
 
 Cross-cutting at every stage: **decision-brief** for any choice, **verify-research** for anything a research model produced, **factory-ledger** for state, **owner-pr-summary** for every PR.
 
