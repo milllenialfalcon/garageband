@@ -1,0 +1,11 @@
+{
+  "name": "garageband",
+  "displayName": "Garageband",
+  "version": "0.1.0",
+  "description": "A complete skill stack for a one-person AI software factory: 36 skills covering the whole lifecycle from idea validation to retros, multi-model handoffs, a founder-friendly approval layer, and machine-enforced quality gates.",
+  "author": {
+    "name": "Avi"
+  },
+  "license": "MIT",
+  "keywords": ["sdlc", "software-factory", "multi-model", "skills", "design", "testing", "solo-founder"]
+}
