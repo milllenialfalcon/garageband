@@ -1,0 +1,5 @@
+# Raw customer messages never enter git. intake-triage keeps only redacted summaries.
+intake/raw/
+# Scratch output from skill-lab runs and screenshots can be large; keep results, not raw runs.
+skill-lab/**/runs/
+reports/shots/

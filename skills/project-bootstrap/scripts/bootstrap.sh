@@ -39,7 +39,7 @@ g config core.hooksPath .githooks
 
 # 2. .gitignore: make sure the essentials are ignored even if the repo already has its own file
 if [ ! -e "$target/.gitignore" ]; then
-  cp "$kit/.gitignore" "$target/.gitignore"
+  cp "$kit/_gitignore" "$target/.gitignore"
   added+=(".gitignore")
 fi
 for line in ".factory/" ".env" ".env.*" "!.env.example" "node_modules/"; do
@@ -70,7 +70,7 @@ fi
 # 4. Copy the kit, never overwriting
 while IFS= read -r -d '' src; do
   rel="${src#"$kit"/}"
-  [ "$rel" = ".gitignore" ] && continue   # handled in step 2
+  [ "$rel" = "_gitignore" ] && continue   # top-level ignore file is handled in step 2
   # Kit files named _gitignore are stored that way so the Garageband repo itself never ignores them;
   # they are installed as .gitignore.
   case "$rel" in */_gitignore|_gitignore) rel="${rel%_gitignore}.gitignore" ;; esac
