@@ -28,7 +28,7 @@ The founder approves outcomes, not code. The PR description is how they decide. 
 Flag clearly at the top with ⚠️ if the PR touches money, auth, personal data, database schema, environment config or deletes anything. Those need the founder's explicit "approved", not just a merge.
 
 ## Keep it honest
-- List anything not done, any skipped acceptance criterion and any `DONE_WITH_CONCERNS` items.
+- List anything not done, any skipped acceptance criterion and any concerns, in plain words (not status codes).
 - If CI is red, say so first and don't request review.
 
 ## Example

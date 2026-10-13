@@ -15,7 +15,7 @@ cmd="$(printf '%s' "$input" | tr -s '[:space:]' ' ')"
 # Git: pushing to protected branches, force pushes, history and work destruction
 printf '%s' "$cmd" | grep -Eq 'git( -C [^ ]+)? push[^"]*(--force|-f( |")|--force-with-lease|\+[a-zA-Z/]*:?)' \
   && block "Force push rewrites shared history."
-printf '%s' "$cmd" | grep -Eq 'git( -C [^ ]+)? push[^"]* (origin|upstream) (HEAD:)?(main|master|production)( |"|$)' \
+printf '%s' "$cmd" | grep -Eq 'git( -C [^ ]+)? push[^"]* (origin|upstream) (HEAD:|[a-zA-Z0-9_./-]+:)?(refs/heads/)?(main|master|production)( |"|$)' \
   && block "Direct push to main. Open a pull request instead."
 printf '%s' "$cmd" | grep -Eq 'git( -C [^ ]+)? reset --hard' \
   && block "git reset --hard throws away uncommitted work."

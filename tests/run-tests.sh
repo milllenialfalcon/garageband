@@ -19,6 +19,8 @@ echo "1. Skill validation"
 expect "all skills valid" 0 node "$repo/scripts/validate-skills.mjs"
 cp -r "$repo" "$work/badrepo"; sed -i 's/^name: tdd-slice/name: tdd_slice/' "$work/badrepo/skills/tdd-slice/SKILL.md"
 expect "validator catches a bad skill name" 1 node "$work/badrepo/scripts/validate-skills.mjs"
+cp -r "$repo" "$work/badrepo2"; sed -i 's/^description: "\(.*\)"$/description: Use when: \1/' "$work/badrepo2/skills/cost-watch/SKILL.md"
+expect "validator catches an unquoted colon (strict YAML)" 1 node "$work/badrepo2/scripts/validate-skills.mjs"
 
 echo "2. Claude Code guard hook"
 g="$repo/hooks/guard.sh"
@@ -28,6 +30,8 @@ expect "allows push to a feature branch" 0 hook "git push origin t-014-photos"
 expect "allows rm of a build folder"     0 hook "rm -rf ./dist"
 expect "blocks force push"               2 hook "git push --force origin t-014"
 expect "blocks push to main"             2 hook "git push origin main"
+expect "blocks push to refs/heads/main"  2 hook "git push origin HEAD:refs/heads/main"
+expect "allows pushing factory state"    0 hook "git -C .factory push origin factory-state"
 expect "blocks reset --hard"             2 hook "git reset --hard HEAD~3"
 expect "blocks rm -rf of home"           2 hook "rm -rf ~"
 expect "blocks drop table"               2 hook "psql -c 'DROP TABLE users'"
@@ -36,10 +40,16 @@ expect "blocks agent merging a PR"       2 hook "gh pr merge 12 --squash"
 echo "3. Project bootstrap"
 proj="$work/proj"
 expect "bootstrap into new folder" 0 bash "$repo/skills/project-bootstrap/scripts/bootstrap.sh" "$proj"
-for f in AGENTS.md CLAUDE.md PRODUCT.md DESIGN.md .factory/ledger.md .github/workflows/garageband-ci.yml .githooks/pre-push scripts/slop-lint.mjs docs/specs/_TEMPLATE.md; do
+for f in AGENTS.md CLAUDE.md PRODUCT.md DESIGN.md CHANGELOG.md .env.example .gitignore docs/accounts.md docs/costs.md docs/compliance.md .factory/ledger.md .factory/TICKET_TEMPLATE.md .github/workflows/garageband-ci.yml .githooks/pre-push scripts/slop-lint.mjs docs/specs/_TEMPLATE.md; do
   [ -e "$proj/$f" ] && ok "has $f" || bad "missing $f"
 done
 [ "$(git -C "$proj" config core.hooksPath)" = ".githooks" ] && ok "git hooks switched on" || bad "hooksPath not set"
+[ "$(git -C "$proj/.factory" branch --show-current)" = "factory-state" ] && ok ".factory is a checkout of factory-state" || bad ".factory not on factory-state"
+git -C "$proj/.factory" log --oneline | grep -q "initialise ledger" && ok "factory-state has the initial ledger commit" || bad "no initial factory commit"
+[ -z "$(git -C "$proj" status --porcelain .factory)" ] && ok "main never sees .factory files" || bad ".factory leaks into main"
+echo "secret customer message" > "$proj/.factory/intake/raw/today.md"
+[ -z "$(git -C "$proj/.factory" status --porcelain intake/raw)" ] && ok "raw customer messages are never committed" || bad "intake/raw is tracked"
+rm "$proj/.factory/intake/raw/today.md"
 echo "custom" > "$proj/PRODUCT.md"
 bash "$repo/skills/project-bootstrap/scripts/bootstrap.sh" "$proj" >/dev/null 2>&1
 [ "$(cat "$proj/PRODUCT.md")" = "custom" ] && ok "re-run never overwrites existing files" || bad "PRODUCT.md overwritten"
@@ -54,6 +64,7 @@ echo b > b.txt && git_q add b.txt && git_q commit -m b
 expect "blocks pushing to main"          1 git push -q origin feature:main
 git_q reset --hard HEAD~2 && echo c > c.txt && git_q add c.txt && git_q commit -m c
 expect "blocks force push"               1 git push -q --force origin feature
+expect "allows pushing factory-state"    0 git -C "$proj/.factory" push -q origin factory-state
 git_q checkout -b leak && printf 'KEY=AKIAABCDEFGHIJKLMNOP\n' > leak.txt && git_q add leak.txt && git_q commit -m leak
 expect "blocks a pushed secret key"      1 git push -q origin leak
 cd "$repo"
@@ -61,16 +72,19 @@ cd "$repo"
 echo "5. slop-lint"
 lint="$proj/scripts/slop-lint.mjs"
 mkdir -p "$proj/src" && cp "$repo/tests/fixtures/bad.tsx" "$proj/src/" && cp "$repo/tests/fixtures/good.tsx" "$proj/src/"
+cp -r "$repo/tests/fixtures/app" "$proj/src/"
 (cd "$proj" && node scripts/slop-lint.mjs src --json) > "$work/lint.json" 2>/dev/null
 node -e '
 const r = JSON.parse(require("fs").readFileSync(process.argv[1]));
 const hit = (file, rule) => r.findings.some(f => f.file.endsWith(file) && f.rule === rule);
 const must = ["zoom-disabled","focus-removed","img-no-alt","gradient-text","ai-gradient","eyebrow-label","numbered-sections","arrow-cta","middot-meta","transition-all","emoji-icon","buzzword-copy","off-token-colour"];
 const missing = must.filter(m => !hit("bad.tsx", m));
-const falsePos = r.findings.filter(f => f.file.endsWith("good.tsx"));
+const falsePos = r.findings.filter(f => f.file.endsWith("good.tsx") || f.file.endsWith("about/page.tsx"));
+if (!hit("app/layout.tsx", "zoom-disabled")) { console.log("missed userScalable:false in app/layout.tsx"); process.exit(3); }
+if (!hit("app/layout.tsx", "img-no-alt")) { console.log("missed multi-line img in app/layout.tsx"); process.exit(4); }
 if (missing.length) { console.log("missed: " + missing.join(", ")); process.exit(1); }
 if (falsePos.length) { console.log("false positives on good.tsx: " + falsePos.map(f=>f.rule).join(", ")); process.exit(2); }
-' "$work/lint.json" && ok "catches all 13 bad patterns, zero false positives on clean code" || bad "slop-lint detection"
+' "$work/lint.json" && ok "catches all 13 bad patterns + app/layout.tsx cases, zero false positives on clean code" || bad "slop-lint detection"
 expect "exits 1 when errors present"  1 bash -c "cd '$proj' && node scripts/slop-lint.mjs src"
 expect "--warn-only exits 0"          0 bash -c "cd '$proj' && node scripts/slop-lint.mjs src --warn-only"
 expect "clean file passes"            0 bash -c "cd '$proj' && node scripts/slop-lint.mjs src/good.tsx"

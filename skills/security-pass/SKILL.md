@@ -1,6 +1,6 @@
 ---
 name: security-pass
-description: "Use for any pull request touching authentication, authorisation, payments, personal data, file uploads, external APIs, secrets, environment config or database permission rules, and before every release. Runs a focused threat check (who could abuse this and how), an OWASP-style checklist, secrets and dependency review, and returns GO or NO-GO with any Critical finding blocking."
+description: "Use for any pull request touching authentication, authorisation, payments, personal data, file uploads, external APIs, secrets, environment config or database permission rules, and before any release that includes such changes. Runs a focused threat check (who could abuse this and how), an OWASP-style checklist, secrets and dependency review, and returns GO or NO-GO with any Critical finding blocking."
 license: MIT
 metadata:
   stack: garageband
@@ -48,6 +48,6 @@ Write tests for the authorisation rules (user B can't read or change user A's re
 ## 4. Verdict
 ```
 SECURITY: GO | NO-GO
-Critical: … (blocks)   High: … (fix before release)   Notes: …
+Critical: … (blocks)   Required: … (fix before release)   Optional: …
 ```
-Any Critical → NO-GO. A suspected leaked secret → rotate it immediately (Founder Call for the account), then fix. Never just delete it from the latest commit.
+Severity names follow AGENTS.md section 7. Any Critical → NO-GO. A suspected leaked secret → rotate it immediately (Founder Call for the account), then fix. Never just delete it from the latest commit.

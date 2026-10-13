@@ -10,8 +10,8 @@ Ticket T-<NNN> · Spec: docs/specs/<spec>.md
 <Tests added, what they check. Paste the summary line of the test run.>
 
 **What could break:**
-- Blast radius: <who or what is affected if this is wrong>
-- Door: two-way (easy to undo) | one-way (hard to undo, explain)
+- Who or what is affected if this is wrong:
+- Easy to undo? yes (switch off or revert in minutes) | no (explain why, e.g. data changed)
 
 **What to check on the preview:**
 1. Open <preview URL>/<page>

@@ -17,7 +17,7 @@ For the skill under test, write 3–5 realistic task prompts in `.factory/skill-
 Write a rubric of 4–8 pass/fail checks taken from the skill's own rules (e.g. "wrote a failing test before code", "pasted fresh test output", "diff touches only ticket files").
 
 ## 2. Run with and without
-For each model tier in use, run each task twice in fresh sessions: once with the skill available, once without. Save outputs (transcript summary, diff, files) under `.factory/skill-lab/<skill>/<model>/<with|without>/<task>/`. Use a scratch branch or copy of the repo; never run tests against shared databases.
+For each model tier in use, run each task twice in fresh sessions (a new chat or a one-shot run, e.g. `claude -p "<task>"`, `codex exec "<task>"` or `opencode run "<task>"`; check each tool's `--help` for the current form): once with the skill available, once without. Save outputs (transcript summary, diff, files) under `.factory/skill-lab/<skill>/<model>/<with|without>/<task>/`. Use a scratch branch or copy of the repo; never run tests against shared databases.
 
 ## 3. Grade blind
 A grader model that didn't run the tasks scores each output against the rubric without knowing which run had the skill. Record pass counts per check.

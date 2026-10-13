@@ -19,8 +19,9 @@ The cheapest software is the software you don't build. This takes 20–40 minute
 4. **What evidence do we have?** Conversations, their complaints, your own repeated pain, data. "I think" is not evidence.
 5. **Smallest version that would change their week?** One job, done well.
 6. **How will we know it worked?** One success metric, a target and a timeframe, plus a kill signal.
+7. **Does the money work?** Who pays (users, a business, nobody: internal tool), roughly what, and what it costs to run per month (hosting, APIs, support time). For internal tools: hours or money saved per month versus running cost.
 
-## 2. Research (delegate to research models, then verify-research)
+## 2. Research (delegate to research models, then verify-research; with no research model available, do it yourself and still cite primary sources)
 - 3–5 existing alternatives: what they do, price, what users complain about.
 - Can an existing tool (a spreadsheet, a no-code tool, a SaaS product) do 80% of this today? If yes, that's often the answer for v1.
 - Any regulatory or platform constraint (payments, data, app stores, agriculture or property rules in the region).
@@ -35,6 +36,7 @@ The cheapest software is the software you don't build. This takes 20–40 minute
 | Small v1 exists | | |
 | We can reach these users | | |
 | Fits the founder's other bets | | |
+| Money works (pays for itself or saves more than it costs) | | |
 
 ## 4. Recommend one of
 - **Build**: score mostly 4–5. Proceed to grill-founder and write-spec.
@@ -45,7 +47,7 @@ The cheapest software is the software you don't build. This takes 20–40 minute
 Present as a **decision-brief** (it's a Founder Call).
 
 ## Output
-Fill or update `PRODUCT.md` (One line, Who it's for, Problem, Smallest version, Not doing, Success metric). Log the decision in `docs/decision-log.md`.
+Draft the `PRODUCT.md` sections (One line, Who it's for, Problem, Smallest version, Not doing, Success metric, Business model) and show them with the recommendation. Write them into `PRODUCT.md` only after the founder says yes (changing PRODUCT.md is a Founder Call). Log the decision in `docs/decision-log.md`.
 
 ## Red flags
 - Skipping this because "it's just a quick app". Quick apps still need maintenance, hosting and support.

@@ -8,6 +8,12 @@ It's built for founders who don't come from software. You decide *what* and *whe
 
 ---
 
+## Before you start
+
+**You need:** a GitHub account, `git` (2.20 or newer), Node.js 22 or newer, and for branch protection the GitHub CLI (`gh`, logged in with `gh auth login`). Plus at least one AI coding tool: Claude Code, Codex or OpenCode.
+
+**Publishing your copy (once):** put this folder on GitHub as a repository named `garageband`, then replace `OWNER` everywhere in this README and in `install.sh` with your GitHub username (e.g. `OWNER/garageband` → `avi/garageband`). After that, the install lines below work for anyone you share them with.
+
 ## Install
 
 ### Claude Code (one command pair)
@@ -30,7 +36,13 @@ In any tool, ask: **"use the project-bootstrap skill"**, or run directly:
 ```
 bash ~/.agents/skills/project-bootstrap/scripts/bootstrap.sh path/to/repo --protect
 ```
-It adds the project kit without overwriting your files: `AGENTS.md` constitution, `PRODUCT.md`, `DESIGN.md`, spec/ADR/ticket/brief templates, the `.factory/` ledger, PR template, the CI quality gate, a git guard hook and `slop-lint`. `--protect` turns on GitHub branch protection.
+It adds the project kit without overwriting your files: `AGENTS.md` constitution, `PRODUCT.md`, `DESIGN.md`, spec/ADR/ticket/brief templates, PR template, the CI quality gate, a git guard hook and `slop-lint`. `--protect` turns on GitHub branch protection (run it after the repo is on GitHub).
+
+For a brand-new app, create the app in an empty folder first (the skill gives the exact command), then run bootstrap on it.
+
+**Shared factory state.** Bootstrap creates `.factory/` as a separate checkout of a `factory-state` branch. The ledger, tickets, briefs and handoffs live there and never merge into `main`, so every model in every tool sees who's doing what as soon as it's pushed.
+
+**Git guard per clone.** The pre-push guard is switched on for the folder you bootstrap. On any other clone of the project, run `git config core.hooksPath .githooks` once.
 
 ---
 
@@ -44,11 +56,11 @@ Open any session and say **"use the garageband skill"** (Codex: `$garageband`). 
 
 | # | Stage | Skills | Gate |
 |---|---|---|---|
+| 0 | Setup (first, once per project) | `project-bootstrap` | Green CI on a test PR |
 | 1 | Should this exist? | `validate-idea` | Founder: build / shrink / don't build |
 | 2 | What exactly? | `grill-founder` → `write-spec` | Founder approves spec |
 | 3 | Look and feel | `design-system` → `design-variants` | Founder picks a variant |
 | 4 | Structure | `architecture-plan` → `decision-log` | Second-model review passes |
-| 5 | Setup | `project-bootstrap` | Green CI on a test PR |
 | 6 | Break down | `slice-tickets` | Every ticket has a verify step |
 | 7 | Hand off | `dispatch-brief`, `factory-ledger`, `model-router` | Reader test finds no ambiguity |
 | 8 | Build | `tdd-slice`, `ui-build-rules`, `safe-migration`, `root-cause-debug` | Tests green, evidence pasted |
@@ -120,9 +132,9 @@ Everywhere: `garageband` routes, `decision-brief` frames every choice, `verify-r
 
 | Guard | Where | Stops |
 |---|---|---|
-| Branch protection | GitHub | Merging without green checks, force pushes, deleting `main` |
-| `garageband-ci` | GitHub Actions | Failing typecheck, lint, tests, e2e, slop-lint errors, high/critical vulnerabilities, leaked secrets, GPL/AGPL dependencies |
-| `.githooks/pre-push` | Every clone | Pushing to `main`, force pushes, obvious secret keys |
+| Branch protection | GitHub | Merging without green `quality`, `e2e` and `secrets` checks, force pushes, deleting `main` |
+| `garageband-ci` | GitHub Actions | Failing typecheck, lint, tests, e2e (incl. speed budget), slop-lint errors, high/critical vulnerabilities, leaked secrets; advisory checks for new GPL/AGPL dependencies |
+| `.githooks/pre-push` | Every bootstrapped clone (others: `git config core.hooksPath .githooks`) | Pushing to `main`, force pushes, obvious secret keys |
 | `slop-lint` | Local and CI | Disabled zoom, removed focus outlines, missing alt text; warns on AI-template looks and off-token colours and fonts |
 | Plugin guard hook | Claude Code | Destructive shell commands, `reset --hard`, dropping tables, agent-merged PRs |
 
@@ -130,7 +142,7 @@ Prose skills guide; these gates guarantee.
 
 ## Multi-model setup
 
-Write your roles in `AGENTS.md` section 8. An example that works well on small budgets:
+Write your roles in `AGENTS.md` section 10. An example that works well on small budgets:
 
 | Role | Example |
 |---|---|

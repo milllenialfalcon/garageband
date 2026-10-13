@@ -13,7 +13,7 @@ metadata:
 Load before any UI edit. These are the floor; DESIGN.md sets the style above it.
 
 ## Tokens and components
-- Colours, fonts, spacing, radius and motion values come only from `DESIGN.md`. No new hex values or fonts in code. slop-gate checks this.
+- Colours, fonts, spacing, radius and motion values come only from `DESIGN.md`. No new hex values or fonts in code. slop-gate flags any that appear, and reviewers treat them as Required findings.
 - Use the component libraries listed in `DESIGN.md`. Never hand-roll a dialog, dropdown, select, toast, tooltip, date picker or command menu.
 - Respect the screen's mode from `PRODUCT.md` (Operate screens: calm, dense, almost no motion).
 

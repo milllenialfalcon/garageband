@@ -40,7 +40,13 @@ At each step use watch-after-ship's thresholds. Breach → flag off first, inves
 
 Small products with very few users may go internal → 100%, but never skip the internal step.
 
-## 4. Founder sign-off
+## 4. Tell users (for anything users will notice)
+- Help text, onboarding or a short guide updated for the change (translated if multilingual).
+- An announcement drafted for the founder to send (in-app message, email or WhatsApp): what's new, why it helps, where to find it. Nothing is sent without the founder's approval.
+- Support is ready: the founder knows what changed and the likely questions; intake-triage watches for feedback in the first week.
+- First public launch: a simple launch plan (who hears first, which channels, what we'll measure) as a decision brief.
+
+## 5. Founder sign-off
 Send: what's shipping (from release notes), the checklist result, the rollback plan, rollout steps and timing. Production deploy only after an explicit "go".
 
 Then: watch-after-ship.

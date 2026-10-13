@@ -1,6 +1,6 @@
 # Spec: <feature name>
 
-- Status: draft | approved | building | shipped | killed
+- Status: draft | approved | building | shipped | kept | iterating | killed
 - Owner: founder · Author: <model>
 - Related: PRODUCT.md · ADRs: · Tickets:
 
@@ -37,4 +37,15 @@ Each one is testable. Written as Given / When / Then.
 
 ## Rollout
 - Behind feature flag: yes/no · flag name:
-- Rollback: <how to turn it off in under five minutes>
+- Rollback: <how to turn the feature off in under five minutes; database restore is a separate last resort>
+
+## Founder answers
+<Written by grill-founder: each answer, each "decided for you" item, each assumption.>
+
+## Reader test
+- Reviewer model: · Date:
+- Ambiguities found → how resolved:
+
+## Coverage (filled by slice-tickets)
+| Acceptance criterion | Ticket(s) | Test(s) |
+|---|---|---|

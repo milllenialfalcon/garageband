@@ -16,8 +16,12 @@ const roots = args.filter((a) => !a.startsWith("--"));
 const cwd = process.cwd();
 
 const config = readJson(path.join(cwd, ".slop-lint.json")) ?? {};
-const ignoreFragments = ["node_modules", ".git", "dist", "build", ".next", "out", "coverage",
-  "playwright-report", ".factory", "vendor", ...(config.ignore ?? [])];
+// Whole folder names to skip (matched against path segments, never substrings,
+// so app/layout.tsx is scanned even though it contains "out").
+const ignoreDirs = new Set(["node_modules", ".git", "dist", "build", ".next", "out", "coverage",
+  "playwright-report", ".factory", "vendor", ".vercel", ".turbo"]);
+// Extra paths from .slop-lint.json (project-wide ignores are a Founder Call, see slop-gate).
+const ignorePaths = config.ignore ?? [];
 const disabled = new Set(config.disable ?? []);
 
 const EXT = new Set([".tsx", ".jsx", ".ts", ".js", ".html", ".vue", ".svelte", ".astro",
@@ -32,19 +36,14 @@ const tokens = loadTokens(path.join(cwd, "DESIGN.md"));
 // level: "error" blocks the merge, "warn" is reported for review.
 const rules = [
   {
-    id: "zoom-disabled", level: "error", files: MARKUP,
-    test: (l) => /user-scalable\s*=\s*["']?(no|0)|maximum-scale\s*=\s*["']?1(\.0)?["'\s,]/i.test(l),
+    id: "zoom-disabled", level: "error", files: EXT,
+    test: (l) => /user-scalable\s*=\s*["']?(no|0)|maximum-scale\s*=\s*["']?1(\.0)?["'\s,]|userScalable\s*:\s*false|maximumScale\s*:\s*1\b/i.test(l),
     msg: "Disables pinch-zoom. Users with low vision can't read the page. Remove it.",
   },
   {
     id: "focus-removed", level: "error", files: EXT,
     test: (l) => /outline\s*:\s*(none|0)\b|\boutline-none\b/.test(l) && !/focus-visible|ring/.test(l),
     msg: "Removes the keyboard focus outline without a replacement. Add a visible focus style.",
-  },
-  {
-    id: "img-no-alt", level: "error", files: MARKUP,
-    test: (l) => /<img\b(?![^>]*\balt\s*=)[^>]*>/i.test(l),
-    msg: "Image without alt text. Add alt=\"…\" (or alt=\"\" if purely decorative).",
   },
   {
     id: "gradient-text", level: "warn", files: EXT,
@@ -125,10 +124,23 @@ const rules = [
 const files = [];
 for (const root of roots.length ? roots : ["."]) walk(path.resolve(cwd, root), files);
 
+const IMG_MSG = "Image without alt text. Add alt=\"…\" (or alt=\"\" if purely decorative).";
 const findings = [];
 for (const file of files) {
   const ext = path.extname(file);
-  const lines = fs.readFileSync(file, "utf8").split(/\r?\n/);
+  const text = fs.readFileSync(file, "utf8");
+  const lines = text.split(/\r?\n/);
+  // File-level check so <img> tags split across several lines are caught too.
+  if (MARKUP.has(ext) && !disabled.has("img-no-alt")) {
+    for (const m of text.matchAll(/<(img|Image)\b[^>]*?\/?>/gs)) {
+      if (/\balt\s*=/.test(m[0])) continue;
+      const line = text.slice(0, m.index).split(/\r?\n/).length;
+      const tagLines = lines.slice(line - 1, line - 1 + m[0].split(/\r?\n/).length).join(" ");
+      if (/slop-ok/.test(tagLines)) continue;
+      findings.push({ rule: "img-no-alt", level: "error", file: path.relative(cwd, file), line,
+        msg: IMG_MSG, text: m[0].replace(/\s+/g, " ").slice(0, 160) });
+    }
+  }
   lines.forEach((line, i) => {
     if (/slop-ok/.test(line) || line.length > 2000) return;
     for (const rule of rules) {
@@ -160,7 +172,9 @@ process.exit(errors.length && !warnOnly ? 1 : 0);
 function walk(p, out) {
   if (!fs.existsSync(p)) return;
   const rel = path.relative(cwd, p);
-  if (rel && ignoreFragments.some((frag) => rel.split(path.sep).includes(frag) || rel.includes(frag))) return;
+  const segs = rel.split(path.sep);
+  if (rel && (segs.some((s) => ignoreDirs.has(s)) ||
+      ignorePaths.some((ig) => rel === ig || rel.startsWith(ig.replace(/\/$/, "") + "/")))) return;
   const st = fs.statSync(p);
   if (st.isDirectory()) for (const e of fs.readdirSync(p)) walk(path.join(p, e), out);
   else if (EXT.has(path.extname(p)) && !p.endsWith("slop-lint.mjs")) out.push(p);

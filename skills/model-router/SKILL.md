@@ -13,7 +13,7 @@ metadata:
 Spend the strongest model's quota on thinking and judgement, the cheap models' quota on typing, and never let anyone grade their own work.
 
 ## Tiers
-Define these in `AGENTS.md` section 8. Example (edit to your own setup):
+Define these in `AGENTS.md` section 10. Example (edit to your own setup):
 
 | Tier | Does | Example |
 |---|---|---|
@@ -34,9 +34,9 @@ Define these in `AGENTS.md` section 8. Example (edit to your own setup):
 | Reader test, verify-research, intake-triage, cost-watch | Checker | — |
 | Research | Researcher | Checker via verify-research |
 
-**Hard rule:** the reviewer is never the same model as the author, and never sees the author's reasoning, only the artifact and the contract.
+**Hard rule:** the reviewer is a different model from the author whenever one is available, and in every case a fresh session that sees only the artifact and the contract, never the author's reasoning.
 
-## Escalation ladder (from the ledger's Attempts column)
+## Escalation ladder (AGENTS.md section 8, from the ledger's Attempts column)
 1. Attempts 1–3: the same implementer fixes, with the reviewer's findings added to the brief.
 2. Attempts 4–5: a stronger model takes over with a **fresh** brief (the original brief, plus a short summary of what failed and why; not the whole history).
 3. After 5, or if two models fail the same way: stop. The orchestrator diagnoses (root-cause-debug) and either rewrites the ticket, splits it, or raises a decision-brief. Repeated failure usually means the ticket or spec is wrong, not the model.

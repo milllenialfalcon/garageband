@@ -25,7 +25,7 @@ Say in one line which path you chose and why. A path can be upgraded later, neve
 | Path | Signs | Route |
 |---|---|---|
 | **Spike** | Question, experiment, throwaway prototype, "can we…?" | Prototype on a `spike/` branch. Never merged. Ends with a written finding. |
-| **Bounded** | Bug fix or small change inside one existing feature, no schema/auth/money change, under a day | spec-lite (acceptance criteria in the ticket) → slice-tickets → dispatch-brief → build → review → ship |
+| **Bounded** | Bug fix or small change inside one existing feature, no schema/auth/money change, under a day | write-spec in short form (acceptance criteria written straight into the ticket) → slice-tickets → dispatch-brief → build → review → ship |
 | **Architectural** | New product or feature, new data, new integration, auth, payments, anything one-way | The full line below |
 
 When in doubt between two paths, take the bigger one.
@@ -34,11 +34,11 @@ When in doubt between two paths, take the bigger one.
 
 | # | Stage | Skill(s) | Usual model | Gate to pass |
 |---|---|---|---|---|
+| 0 | Setup (once per project, before anything else) | project-bootstrap | Orchestrator | Kit installed; CI green on a test PR once the app exists |
 | 1 | Should this exist? | validate-idea | Orchestrator + founder | Founder says build / don't build |
 | 2 | What exactly? | grill-founder → write-spec | Orchestrator | Founder approves spec |
 | 3 | Look and feel | design-system → design-variants | Orchestrator, frontend model | Founder picks a variant |
 | 4 | Structure | architecture-plan → decision-log | Orchestrator, reviewed by a second model | Review passes; Founder Calls answered |
-| 5 | Setup (once per project) | project-bootstrap | Orchestrator | CI green on an empty PR |
 | 6 | Break down | slice-tickets | Orchestrator | Every ticket has a verify step |
 | 7 | Hand off | dispatch-brief, factory-ledger, model-router | Orchestrator | Reader test finds no open ambiguity |
 | 8 | Build | tdd-slice, ui-build-rules, safe-migration, root-cause-debug | Implementers | Tests green with evidence |
@@ -58,7 +58,7 @@ Cross-cutting at every stage: **decision-brief** for any choice, **verify-resear
 
 ## Step 4: Pick models
 
-Use **model-router**. Default roles (edit in `AGENTS.md` section 8):
+Use **model-router**. Default roles (edit in `AGENTS.md` section 10):
 - Orchestrator (strongest model): validate, spec, architecture, briefs, risky reviews, final calls.
 - Frontend implementer: UI tickets, design variants.
 - Backend implementer (cheapest capable model): most build tickets.

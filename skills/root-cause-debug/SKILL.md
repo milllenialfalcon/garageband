@@ -27,7 +27,7 @@ Get a reliable way to make it happen: a failing test, a script, or exact steps. 
 - Remove temporary logging.
 
 ## 4. The three-strikes rule
-If three fix attempts have failed, stop. The diagnosis is wrong, or the design is. Write up: symptom, reproduction, what you tried and what each attempt showed. Escalate via model-router. Don't try a fourth patch.
+If three fix attempts have failed, stop. The diagnosis is wrong, or the design is. Write up: symptom, reproduction, what you tried and what each attempt showed. Report `BLOCKED` and escalate via model-router (AGENTS.md section 8). Don't try a fourth patch.
 
 ## 5. Report
 ```

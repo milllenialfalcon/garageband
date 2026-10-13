@@ -17,7 +17,7 @@ Prose rules depend on each model choosing to follow them. A gate in CI doesn't. 
 - **Errors (block merge)**: pinch-zoom disabled, focus outline removed without replacement, images without alt text.
 - **Warnings (reviewed in design-critique)**: gradient text, purple/indigo/cyan gradients, uppercase tracked "eyebrow" labels, 01/02/03 section markers, arrows glued to button labels, middle-dot joined meta strings, bouncy easing, `transition: all`, emoji as icons, marketing buzzwords in UI copy, colours not in DESIGN.md, fonts not in DESIGN.md.
 
-Options: `node scripts/slop-lint.mjs src app --json` (machine-readable), `--warn-only` (local exploration). Config in `.slop-lint.json`: `{"ignore": ["path/fragment"], "disable": ["rule-id"]}`. Disabling a rule project-wide is a Taste decision; log it.
+Options: `node scripts/slop-lint.mjs src app --json` (machine-readable), `--warn-only` (local exploration). Config in `.slop-lint.json`: `{"ignore": ["path/to/folder"], "disable": ["rule-id"]}`. Ignoring a path or disabling a rule project-wide is a **Founder Call** (AGENTS.md "Ask first"): write a decision brief and log it. Agents never add these to make a check pass.
 
 ## When it flags something
 1. Read the message; most fixes are mechanical (use a token, add alt text, restore focus style).

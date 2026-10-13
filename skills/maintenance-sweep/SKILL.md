@@ -28,7 +28,7 @@ Software rots when nobody's looking. One sweep a month keeps upgrades small and 
 
 **Feature flags and dead code**
 - [ ] Flags fully rolled out for more than a month → remove flag and old code path (ticket).
-- [ ] Unused files, routes, components and exports (use a tool like `knip` for TypeScript) → tickets, not drive-by deletion.
+- [ ] Unused files, routes, components and exports (use a tool such as `knip`, which lists unused code in TypeScript projects) → tickets, not drive-by deletion.
 
 **Tech debt**
 - [ ] Hotspots: files changed most often in the last month that also have the most bugs or the largest size.
@@ -36,7 +36,7 @@ Software rots when nobody's looking. One sweep a month keeps upgrades small and 
 - [ ] Rank by (pain × frequency) ÷ effort; propose the top three as tickets.
 
 **Factory health**
-- [ ] Skills, AGENTS.md and docs with a `verified` date older than 90 days → re-check against current tool and library behaviour.
+- [ ] Skills with a `verified` date older than 90 days, and AGENTS.md (its "Last reviewed" line) or docs not reviewed in 90 days, → re-check against current tool and library behaviour.
 - [ ] CI time; flaky tests (any test that failed then passed without changes) → ticket.
 
 ## Output

@@ -31,7 +31,7 @@ motion:
   slow: 300ms
   ease_out: "cubic-bezier(0.23, 1, 0.32, 1)"
   ease_in_out: "cubic-bezier(0.77, 0, 0.175, 1)"
-component_libraries: []   # chosen in ui-build-rules, e.g. [shadcn/ui, sonner, cmdk]
+component_libraries: []   # chosen in design-system, e.g. [shadcn/ui, sonner, cmdk]
 ---
 
 # DESIGN.md

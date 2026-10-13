@@ -26,7 +26,7 @@ If Playwright isn't installed: `npm i -D @playwright/test && npx playwright inst
 3. **Widths**: run the main flow at 375 and 1440 px (Playwright projects); take shots at all four widths for design-critique.
 4. **Accessibility**: add `@axe-core/playwright` and fail on serious or critical violations on each main page. Check keyboard-only completion of the main flow.
 5. **Console and network**: fail the test on uncaught console errors or failed requests during the flow.
-6. **Speed**: on the main page, record Largest Contentful Paint and total JS size; compare to the architecture plan's budget. Over budget is a Required finding.
+6. **Speed**: on the main page, measure Largest Contentful Paint (how long until the main content shows) with the browser's Performance API inside the Playwright test, and assert it is under the architecture plan's budget, so CI fails when a change makes the page slow. Record total JavaScript size in the report.
 
 ## Fixing what QA finds
 - Each bug: first a test that fails because of it (show the failure), then the fix, then the pass.

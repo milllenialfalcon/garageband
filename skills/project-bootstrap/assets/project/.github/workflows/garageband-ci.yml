@@ -1,7 +1,8 @@
 # Garageband quality gate. Every pull request must pass this before the founder can merge.
-# Set it as a *required* check in GitHub: Settings → Branches → Branch protection for `main`.
-# Assumes a Node/TypeScript project. Each step skips itself if the matching npm script is missing,
-# so add the scripts (typecheck, lint, test, e2e) to package.json to switch them on.
+# Required checks (set by `bootstrap.sh --protect`): quality, e2e, secrets.
+# Assumes a Node/TypeScript project. Steps that need package.json skip themselves until the app exists,
+# and each npm script step skips itself if the script is missing, so add typecheck, lint, test and e2e
+# scripts to package.json to switch them on.
 name: garageband-ci
 
 on:
@@ -29,24 +30,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Install
-        run: npm ci
+        if: hashFiles('package.json') != ''
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
 
       - name: Typecheck
+        if: hashFiles('package.json') != ''
         run: npm run --if-present typecheck
 
       - name: Lint
+        if: hashFiles('package.json') != ''
         run: npm run --if-present lint
 
       - name: Unit and integration tests
+        if: hashFiles('package.json') != ''
         run: npm run --if-present test
 
       - name: Slop gate (design and accessibility checks)
         run: node scripts/slop-lint.mjs
 
       - name: Dependency audit (high and critical only)
+        if: hashFiles('package-lock.json') != ''
         run: npm audit --audit-level=high --omit=dev
 
   e2e:
@@ -58,11 +64,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
       - name: Browser tests (Playwright)
         run: |
-          if npm run | grep -q " e2e"; then
+          if [ -f package.json ] && npm run | grep -qE '^  e2e$'; then
+            if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
             npx playwright install --with-deps chromium
             npm run e2e
           else
@@ -85,10 +90,16 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Free for personal accounts. Repos owned by a GitHub *organisation* need a free licence key
+          # from gitleaks.io saved as the GITLEAKS_LICENSE repository secret.
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   dependency-review:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    # Needs the dependency graph, which private repos only have on some GitHub plans.
+    # Advisory until you confirm it runs on your repo; then remove continue-on-error and make it required.
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - name: Block vulnerable or badly licensed new dependencies
@@ -98,7 +109,7 @@ jobs:
           deny-licenses: AGPL-3.0, GPL-3.0, SSPL-1.0
 
   # Optional deeper design check using the open-source Impeccable detector.
-  # Not required until you pin a version you have tested (see skills/slop-gate).
+  # Advisory until you pin a version you have tested (see the slop-gate skill).
   impeccable:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

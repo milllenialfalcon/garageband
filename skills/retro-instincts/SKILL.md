@@ -26,14 +26,13 @@ Add or update rows in `.factory/instincts.md`. Each instinct:
 - **Trigger** from the closed list in that file only (e.g. `on-schema-change`, `on-frontend-ticket`). If none fits, it's too vague to be a rule yet.
 - **Action**: one sentence, checkable ("Every list endpoint has a limit and a test for page 2").
 - **Evidence**: links to the incidents.
-- **Confidence**: 0.3 first sighting · 0.5 seen again · 0.7 seen again and the proposed action prevented it · 0.9 promoted.
-- Lower confidence when the founder or a reviewer says the rule was wrong.
+- **Confidence**: use the scale defined in `.factory/instincts.md` (0.3 one incident · 0.5 two incidents · 0.7 two or more and the action proved to prevent a repeat · 0.9 promoted).
 
 ## 4. Promote (with founder approval)
-An instinct at ≥ 0.7, seen in at least two separate incidents:
+An instinct at 0.7:
 - If it can be checked by a machine → add a CI check or slop-lint rule (best).
 - Else → add one line to AGENTS.md section 3, 4 or 5, or to the relevant skill.
-Show the founder: the rule, the evidence and where it'll live. Promotion is a Taste decision unless it changes boundaries (then Founder Call). Retire instincts that haven't triggered in three months.
+Show the founder: the rule, the evidence and where it'll live. On approval set it to 0.9, `promoted`. Promotion is a Taste decision unless it changes boundaries (then Founder Call). Retire instincts that haven't triggered in three months.
 
 ## 5. Improve skills
 If a skill was followed and still failed, propose an edit to the skill and test it with skill-lab before adopting it.

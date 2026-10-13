@@ -10,7 +10,7 @@ metadata:
 
 # Launch compliance
 
-Not legal advice. This makes sure nothing obvious is missing and drafts the documents a lawyer can then review quickly and cheaply. Laws change; verify current rules with verify-research before relying on any item.
+Not legal advice. This makes sure nothing obvious is missing and drafts the documents a lawyer can then review quickly and cheaply. Laws change; verify current rules with verify-research before relying on any item, using primary sources only: the law's official text and the regulator's website (in India, e.g. the Ministry of Electronics and IT for the DPDP Act, and the GST portal), and the payment provider's own documentation.
 
 ## 1. Inventory (from PRODUCT.md and the architecture plan)
 - What personal data is collected, why, where it's stored (region), who processes it (hosting, analytics, email, payments), how long it's kept.
@@ -40,7 +40,11 @@ Not legal advice. This makes sure nothing obvious is missing and drafts the docu
 - [ ] Required attributions included (a licences page or file).
 - [ ] Fonts, icons and images licensed for commercial use.
 
-## 6. Accessibility and platforms
+## 6. Accounts and continuity
+- [ ] `docs/accounts.md` complete: every service, owning login, 2FA on, recovery codes in the founder's password manager, billing owner.
+- [ ] Someone trusted could take over in an emergency (where the instructions are, outside the repo).
+
+## 7. Accessibility and platforms
 - [ ] Main flows pass browser-qa's accessibility checks (aim for WCAG 2.2 AA).
 - [ ] App stores (if mobile): privacy labels, account deletion in-app, payment rules for digital goods.
 

@@ -1,0 +1,23 @@
+# Garageband factory state lives on its own branch (factory-state), checked out here as a worktree
+.factory/
+
+# Secrets: only .env.example (names, no values) is committed
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+.vercel/
+.turbo/
+
+# OS and editor
+.DS_Store
+*.log

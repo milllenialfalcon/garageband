@@ -31,7 +31,7 @@ Small tickets are what make cheap models reliable. A model can hold half a day o
 - Mark each ticket **AFK** (agent can finish alone) or **HITL** (needs the founder at a step, e.g. an API key, a choice).
 
 ## Output
-- One file per ticket: `.factory/tickets/T-NNN-<slug>.md` from `.factory/TICKET_TEMPLATE.md`.
+- One file per ticket: `.factory/tickets/T-NNN-<slug>.md` from `.factory/TICKET_TEMPLATE.md`. Save factory state (factory-ledger).
 - One row per ticket in `.factory/ledger.md` with status `ready`, plus blocked-by links.
 - A coverage table at the bottom of the spec: acceptance criterion → ticket(s).
 - A short note for the founder: number of tickets, rough total time, what's HITL and when they'll be needed.

@@ -22,7 +22,7 @@ Most decisions should never reach the founder. The ones that do must be easy to 
 
 **Door:** two-way = undo in under an hour with no lasting damage. One-way = data loss, money spent, users affected, public commitments, schema changes, vendor lock-in. **Every one-way door is a Founder Call.**
 
-When unattended (scheduled run, founder away): Taste decisions take your recommended option and are logged; Founder Calls stop that branch of work, everything else continues, and the brief waits for the founder.
+When unattended (AGENTS.md section 9): Taste decisions take your recommended option and are logged; Founder Calls stop that branch of work, everything else continues, and the brief waits for the founder.
 
 ## 2. Brief format (Founder Calls)
 

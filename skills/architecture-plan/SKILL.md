@@ -32,7 +32,7 @@ Approved spec, `PRODUCT.md`, existing ADRs, `AGENTS.md` stack, the current code 
 - Name things with `docs/glossary.md` terms.
 
 ## Independent review (required)
-A different model reviews the plan with only the spec and the plan. Prompt: "Find problems: missing failure cases, security holes, data that can't support the acceptance criteria, over-engineering, anything that will be hard to change later. Don't redesign; list issues with severity." Resolve Critical and High findings; record disagreements.
+A different model reviews the plan with only the spec and the plan. Prompt: "Find problems: missing failure cases, security holes, data that can't support the acceptance criteria, over-engineering, anything that will be hard to change later. Don't redesign; list issues with severity." Resolve Critical and Required findings (severity scale in AGENTS.md section 7); record disagreements.
 
 ## Record
 - Each structural choice becomes an ADR (decision-log). One-way doors go to the founder via decision-brief.

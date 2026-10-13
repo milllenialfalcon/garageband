@@ -19,7 +19,7 @@ Record for the last 7 days: error rate (Sentry events per 1,000 sessions or requ
 | Signal | Proceed | Pause and investigate | Roll back (flag off) |
 |---|---|---|---|
 | Error rate | within +10% of baseline | +10% to 2× | over 2× or any new error affecting a main flow |
-| P95 speed | within +20% | +20% to +50% | over +50% |
+| Speed (slowest 5% of loads, "P95") | within +20% | +20% to +50% | over +50% |
 | Uptime / health | all green | one blip | down |
 | Key business number | flat or up | down 5–10% | down over 10% or zero |
 | User reports | none | one | two or more about the same thing |

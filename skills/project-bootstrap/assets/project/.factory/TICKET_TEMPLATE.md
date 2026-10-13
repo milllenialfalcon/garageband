@@ -5,7 +5,7 @@
 - Assigned model: <implementer> · Reviewer: <different model>
 - Blocked by: T-<NNN> · Blocks: T-<NNN>
 - Risk: low | touches money/auth/data/schema (Founder Call before merge)
-- Type: AFK (agent can finish alone) | HITL (needs the founder at some step)
+- Type: AFK (an agent can finish it alone) | HITL (needs the founder at some step: say which)
 
 ## What and why
 <One paragraph. The user-visible result of this ticket.>
@@ -18,3 +18,17 @@
 - [ ] The criteria above pass, shown with pasted test output
 - [ ] typecheck, lint and tests are green in CI
 - [ ] PR has an owner summary
+
+## Bug details (bug tickets only)
+- Severity: S1 main flow broken or data at risk · S2 important flow broken, workaround exists · S3 minor · S4 cosmetic
+- Users affected (count or who):
+- Steps to reproduce:
+- Expected / actual:
+- Intake link: .factory/intake/<file>.md
+
+## Blockers
+<What's missing, what was tried, who or what can unblock it. Empty unless status is blocked.>
+
+## Attempt log
+| # | Model | What failed | Link |
+|---|---|---|---|

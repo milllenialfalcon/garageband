@@ -34,6 +34,7 @@ Don't add: <packages or patterns to avoid>.
 
 ## Limits
 - Branch: `t-<nnn>-<slug>` · touch only: `<paths>`
+- Factory state (ledger, this brief): `<main checkout path>/.factory/` on branch `factory-state`
 - Stop and report `NEEDS_CONTEXT` instead of guessing about: <list>
 - Stop and report `BLOCKED` after 3 failed attempts at the same problem.
 

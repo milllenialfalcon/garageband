@@ -26,7 +26,7 @@ Copy `.factory/BRIEF_TEMPLATE.md` to `.factory/briefs/T-NNN.md`. Fill every sect
 - **Context pointers**: file paths in reading order, with one line on why each matters. Pass paths, not pasted content, except the contract.
 - **Steps** with `→ verify:` commands.
 - **Commands** for test, typecheck, lint, run.
-- **Limits**: branch name, files it may touch, when to stop and report `NEEDS_CONTEXT` or `BLOCKED`.
+- **Limits**: branch name, files it may touch, the path to the main checkout's `.factory/` folder, when to stop and report `NEEDS_CONTEXT` or `BLOCKED`.
 - **Report format**: the fixed STATUS block.
 Frontend tickets also point to `DESIGN.md` and tell the model to load ui-build-rules.
 
@@ -36,7 +36,7 @@ Never include secrets, customer data or production URLs with credentials in a br
 Give only the brief (and the files it points to) to a fresh, cheap model: "You are about to implement this. Before starting, list every ambiguity, missing piece of information or contradiction. Do not implement." Fix the brief for each real finding and note it in the brief's Reader test section. Skip only for S-sized tickets that touch one file.
 
 ## 4. Dispatch
-- Update the ledger: status `claimed`, owner model, branch.
+- Update and save the ledger on `factory-state` (factory-ledger): status `claimed`, owner model, branch.
 - Hand over with one line: "Read `.factory/briefs/T-NNN.md` and follow it exactly. Load the tdd-slice skill."
 - When the report comes back, check it has evidence. A `DONE` without pasted output is treated as `NEEDS_CONTEXT`.
 
