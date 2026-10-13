@@ -2,7 +2,7 @@
 # Garageband installer for Codex, OpenCode and any tool that reads ~/.agents/skills.
 # (Claude Code users: install the plugin instead, see README. Doing both makes OpenCode see duplicates.)
 #
-#   curl -fsSL https://raw.githubusercontent.com/OWNER/garageband/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/milllenialfalcon/Garageband/main/install.sh | bash
 #
 # Options:
 #   --agents            install to ~/.agents/skills (default; read by Codex and OpenCode)
@@ -12,7 +12,7 @@
 #   --dry-run           show what would happen
 set -euo pipefail
 
-REPO="${GB_REPO:-OWNER/garageband}"
+REPO="${GB_REPO:-milllenialfalcon/Garageband}"
 REF="${GB_REF:-main}"
 
 targets=() project="" uninstall=0 dry=0 want_agents=0 want_claude=0
@@ -45,8 +45,8 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || true
 if [ -n "$script_dir" ] && [ -d "$script_dir/skills/garageband" ]; then
   src="$script_dir"
 else
-  if [ "$REPO" = "OWNER/garageband" ]; then
-    say "Set GB_REPO=<github-user>/garageband (or run install.sh from a clone)." >&2
+  if [ -z "$REPO" ]; then
+    say "GB_REPO is empty. Unset it, set GB_REPO=<owner>/Garageband, or run install.sh from a clone." >&2
     exit 1
   fi
   tmp="$(mktemp -d)"
@@ -56,7 +56,7 @@ else
     git clone -q --depth 1 --branch "$REF" "https://github.com/$REPO.git" "$tmp/gb"
   else
     curl -fsSL "https://codeload.github.com/$REPO/tar.gz/refs/heads/$REF" | tar -xz -C "$tmp"
-    mv "$tmp"/garageband-* "$tmp/gb"
+    mv "$tmp"/*-"$REF" "$tmp/gb"
   fi
   src="$tmp/gb"
 fi

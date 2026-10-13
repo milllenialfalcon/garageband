@@ -7,5 +7,15 @@
     "name": "Avi"
   },
   "license": "MIT",
-  "keywords": ["sdlc", "software-factory", "multi-model", "skills", "design", "testing", "solo-founder"]
+  "keywords": [
+    "sdlc",
+    "software-factory",
+    "multi-model",
+    "skills",
+    "design",
+    "testing",
+    "solo-founder"
+  ],
+  "homepage": "https://github.com/milllenialfalcon/Garageband",
+  "repository": "https://github.com/milllenialfalcon/Garageband"
 }

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-labelledby="t d">
+  <title id="t">Garageband</title>
+  <desc id="d">Garageband: the skill stack for a one-person AI software factory</desc>
+  <rect width="1280" height="400" fill="#0E1613"/>
+  <!-- garage-door mark: solid door with slats cut out in the background colour -->
+  <rect x="296" y="112" width="104" height="104" rx="8" fill="#EDE8DC"/>
+  <rect x="312" y="136" width="72" height="6" fill="#0E1613"/>
+  <rect x="312" y="156" width="72" height="6" fill="#0E1613"/>
+  <rect x="312" y="176" width="72" height="6" fill="#0E1613"/>
+  <rect x="312" y="196" width="72" height="6" fill="#0E1613"/>
+  <!-- wordmark and tagline -->
+  <text x="432" y="206" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="700" letter-spacing="-1.5" fill="#EDE8DC">Garageband</text>
+  <text x="434" y="258" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="25" fill="#9FB0A6">The skill stack for a one-person AI software factory</text>
+  <!-- the line: 19 stages, last one (Learn) in accent, closing the loop -->
+  <line x1="300" y1="318" x2="980" y2="318" stroke="#34443D" stroke-width="2"/>
+  <circle cx="300.0" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="337.8" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="375.6" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="413.3" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="451.1" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="488.9" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="526.7" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="564.4" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="602.2" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="640.0" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="677.8" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="715.6" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="753.3" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="791.1" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="828.9" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="866.7" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="904.4" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="942.2" cy="318" r="6" fill="#0E1613" stroke="#EDE8DC" stroke-width="2"/>
+  <circle cx="980.0" cy="318" r="7" fill="#E9A552"/>
+  <text x="300" y="352" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" letter-spacing="2" fill="#9FB0A6">IDEA  →  SPEC  →  DESIGN  →  BUILD  →  RELEASE  →  LEARN</text>
+</svg>
