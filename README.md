@@ -101,7 +101,7 @@ Open any session and say **"use the garageband skill"** (Codex: `$garageband`). 
 | 9 | Test | `browser-qa`, `break-ui`, `slop-gate` | CI green |
 | 10 | Secure | `security-pass`, `launch-compliance` | No critical findings |
 | 11 | Explain | `owner-pr-summary` | Founder understands and merges |
-| 12 | Release | `ship-gate` | GO with a tested rollback |
+| 12 | Release | `ship-gate` | Founder says GO; tested rollback ready |
 | 13 | Watch | `watch-after-ship` | Metrics within thresholds |
 | 14 | Listen | `intake-triage` | Weekly queue approved |
 | 15 | Measure | `measure-outcome` | Founder: keep / iterate / kill |

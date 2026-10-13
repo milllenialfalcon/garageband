@@ -46,7 +46,7 @@ When in doubt between two paths, take the bigger one.
 | 9 | Test | browser-qa, break-ui, slop-gate | Implementer + CI | CI green |
 | 10 | Secure | security-pass (risky PRs), launch-compliance (before first launch) | Orchestrator | No critical findings |
 | 11 | Explain | owner-pr-summary | Author | Founder understands and merges |
-| 12 | Release | ship-gate | Orchestrator | GO, with a rollback plan |
+| 12 | Release | ship-gate | Orchestrator | Founder says GO; tested rollback ready |
 | 13 | Watch | watch-after-ship | Cheap model | Metrics within thresholds |
 | 14 | Listen | intake-triage | Cheap model | Queue approved weekly |
 | 15 | Measure | measure-outcome | Orchestrator | Founder decides keep / iterate / kill |

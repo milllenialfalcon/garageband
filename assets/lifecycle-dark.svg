@@ -63,9 +63,10 @@
   <text x="636.7" y="254" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#E9A552">11</text>
   <text x="636.7" y="276" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#EDE8DC">Explain</text>
   <circle cx="684.7" cy="238.0" r="6" fill="#E9A552"/>
-  <rect x="719.3" y="232.0" width="108" height="60" rx="10" fill="#17231E" stroke="#EDE8DC" stroke-width="1.5"/>
+  <rect x="719.3" y="232.0" width="108" height="60" rx="10" fill="#17231E" stroke="#E9A552" stroke-width="2.5"/>
   <text x="773.3" y="254" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#E9A552">12</text>
   <text x="773.3" y="276" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#EDE8DC">Release</text>
+  <circle cx="821.3" cy="238.0" r="6" fill="#E9A552"/>
   <rect x="856.0" y="232.0" width="108" height="60" rx="10" fill="#17231E" stroke="#EDE8DC" stroke-width="1.5"/>
   <text x="910.0" y="254" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#E9A552">13</text>
   <text x="910.0" y="276" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#EDE8DC">Watch</text>
