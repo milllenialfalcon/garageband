@@ -71,6 +71,9 @@ fi
 while IFS= read -r -d '' src; do
   rel="${src#"$kit"/}"
   [ "$rel" = ".gitignore" ] && continue   # handled in step 2
+  # Kit files named _gitignore are stored that way so the Garageband repo itself never ignores them;
+  # they are installed as .gitignore.
+  case "$rel" in */_gitignore|_gitignore) rel="${rel%_gitignore}.gitignore" ;; esac
   dst="$target/$rel"
   if [ -e "$dst" ]; then
     skipped+=("$rel")

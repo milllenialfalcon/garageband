@@ -23,11 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -60,8 +60,8 @@ jobs:
     timeout-minutes: 30
     needs: quality
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Browser tests (Playwright)
@@ -73,7 +73,7 @@ jobs:
           else
             echo "No e2e script yet. browser-qa adds one with the first user flow."
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: playwright-report
@@ -83,7 +83,7 @@ jobs:
   secrets:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Scan for leaked secrets
@@ -101,7 +101,7 @@ jobs:
     # Advisory until you confirm it runs on your repo; then remove continue-on-error and make it required.
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Block vulnerable or badly licensed new dependencies
         uses: actions/dependency-review-action@v4
         with:
@@ -117,8 +117,8 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Impeccable detector (advisory)

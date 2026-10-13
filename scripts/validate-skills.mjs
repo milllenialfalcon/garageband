@@ -68,6 +68,16 @@ for (const f of [path.join(skillsDir, "garageband", "SKILL.md"), path.join(root,
 const router = fs.readFileSync(path.join(skillsDir, "garageband", "SKILL.md"), "utf8");
 for (const n of names) if (n !== "garageband" && !router.includes(n)) errors.push(`router does not route to ${n}`);
 
+// Every file under skills/ must be tracked or trackable by git. A file git ignores never reaches
+// GitHub, so installs from GitHub would silently miss it.
+try {
+  const { execFileSync } = await import("node:child_process");
+  execFileSync("git", ["-C", root, "rev-parse", "--git-dir"], { stdio: "ignore" });
+  const ignored = execFileSync("git", ["-C", root, "ls-files", "--others", "--ignored", "--exclude-standard", "skills"],
+    { encoding: "utf8" }).split("\n").filter(Boolean);
+  for (const f of ignored) errors.push(`${f}: ignored by git, so it would never be published (rename it, e.g. .gitignore → _gitignore)`);
+} catch { /* not a git checkout: skip this check */ }
+
 for (const w of warns) console.log("warn  " + w);
 for (const e of errors) console.log("ERROR " + e);
 console.log(`\n${names.length} skills checked, ${errors.length} errors, ${warns.length} warnings`);
