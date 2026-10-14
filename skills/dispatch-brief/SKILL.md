@@ -21,6 +21,7 @@ Put findings in the brief's "Reuse before you write" section.
 
 ## 2. Write the brief
 Copy `.factory/BRIEF_TEMPLATE.md` to `.factory/briefs/T-NNN.md`. Fill every section:
+- **Run in**: the lane, and the exact tool and model from `TEAM.md` for that lane's builder, so the founder opens the right thread (e.g. "heavy lane → OpenCode · deepseek-v4.1-flash, new worktree").
 - **Goal**: the user-visible result in two sentences.
 - **Contract**: the acceptance criteria verbatim from the spec, the exact interfaces from the architecture plan, and what must not change.
 - **Context pointers**: file paths in reading order, with one line on why each matters. Pass paths, not pasted content, except the contract.
@@ -37,7 +38,7 @@ Give only the brief (and the files it points to) to a fresh, cheap model: "You a
 
 ## 4. Dispatch
 - Update and save the ledger on `factory-state` (factory-ledger): status `claimed`, owner model, branch.
-- Hand over with one line: "Read `.factory/briefs/T-NNN.md` and follow it exactly. Load the tdd-slice skill."
+- Tell the founder which tool and model to open (from **Run in**), then hand over with one line: "Read `.factory/briefs/T-NNN.md` and follow it exactly. Load the tdd-slice skill."
 - When the report comes back, check it has evidence. A `DONE` without pasted output is treated as `NEEDS_CONTEXT`.
 
 ## Red flags

@@ -64,6 +64,24 @@ expect "running it twice is harmless" 0 bash -c "cd '$work/wt' && bash scripts/g
 expect "does nothing in the main folder" 0 bash -c "cd '$proj' && bash scripts/gb-worktree-setup.sh"
 git_q -C "$proj" worktree remove --force "$work/wt"; git_q -C "$proj" branch -D t-001-demo
 
+echo "3c. Team setup (TEAM.md)"
+team="$proj/scripts/gb-team.mjs"
+expect "unconfigured TEAM.md passes the CI check" 0 bash -c "cd '$proj' && node scripts/gb-team.mjs --check"
+expect "but fails it in --strict mode"          1 bash -c "cd '$proj' && node scripts/gb-team.mjs --check --strict"
+cp "$proj/TEAM.md" "$work/TEAM.orig.md"
+printf '1\n' > "$work/answers"; for i in $(seq 1 30); do echo >> "$work/answers"; done
+expect "setup with the split preset (all defaults)" 0 bash -c "cd '$proj' && node scripts/gb-team.mjs --setup < '$work/answers'"
+grep -q "^status: configured" "$proj/TEAM.md" && ok "TEAM.md marked configured" || bad "status not configured"
+grep -q "Lane rules" "$proj/TEAM.md" && ok "setup keeps the lane rules text" || bad "body lost"
+expect "configured team passes --check --strict" 0 bash -c "cd '$proj' && node scripts/gb-team.mjs --check --strict"
+(cd "$proj" && node scripts/gb-team.mjs --check) | grep -q 'shares the "claude" allowance' && ok "warns that orchestrator and backend share the Claude allowance" || bad "no shared-allowance warning"
+(cd "$proj" && node scripts/gb-team.mjs) | grep -q "heavy     built by heavy (opencode" && ok "routing table shows heavy work on OpenCode" || bad "routing table wrong"
+sed -i 's/^    reviewer: checker$/    reviewer: backend/' "$proj/TEAM.md"
+expect "rejects a lane reviewed by its own builder's model" 1 bash -c "cd '$proj' && node scripts/gb-team.mjs --check"
+expect "setup with the claude-only preset" 0 bash -c "cd '$proj' && node scripts/gb-team.mjs --setup --preset claude-only < /dev/null"
+expect "claude-only team is valid" 0 bash -c "cd '$proj' && node scripts/gb-team.mjs --check --strict"
+cp "$work/TEAM.orig.md" "$proj/TEAM.md"
+
 echo "4. Pre-push guard"
 remote="$work/remote.git"; git init -q --bare "$remote"
 cd "$proj" && git_q add -A && { git_q commit -m init || true; } && git_q remote add origin "$remote"
@@ -106,7 +124,8 @@ fakehome="$work/home"; mkdir -p "$fakehome/.agents/skills/my-own-skill"
 printf -- '---\nname: my-own-skill\ndescription: Use when testing.\n---\n' > "$fakehome/.agents/skills/my-own-skill/SKILL.md"
 expect "installs to ~/.agents/skills" 0 env HOME="$fakehome" bash "$repo/install.sh"
 n=$(find "$fakehome/.agents/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)
-[ "$n" -eq 37 ] && ok "36 skills installed alongside the user's own skill" || bad "found $n SKILL.md files, wanted 37"
+want=$(( $(ls -d "$repo"/skills/*/ | wc -l) + 1 ))
+[ "$n" -eq "$want" ] && ok "all $((want-1)) skills installed alongside the user's own skill" || bad "found $n SKILL.md files, wanted $want"
 expect "re-install (update) works"    0 env HOME="$fakehome" bash "$repo/install.sh"
 mkdir -p "$fakehome/.claude/skills/tdd-slice" && echo mine > "$fakehome/.claude/skills/tdd-slice/SKILL.md"
 env HOME="$fakehome" bash "$repo/install.sh" --claude > "$work/inst" 2>&1

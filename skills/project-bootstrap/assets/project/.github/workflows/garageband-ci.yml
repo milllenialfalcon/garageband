@@ -48,6 +48,9 @@ jobs:
         if: hashFiles('package.json') != ''
         run: npm run --if-present test
 
+      - name: Team file (who builds and reviews each lane)
+        run: node scripts/gb-team.mjs --check
+
       - name: Slop gate (design and accessibility checks)
         run: node scripts/slop-lint.mjs
 

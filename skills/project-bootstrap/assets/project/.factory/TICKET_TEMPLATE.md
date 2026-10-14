@@ -2,7 +2,8 @@
 
 - Spec: docs/specs/<spec>.md · Acceptance criteria covered: AC<n>, AC<n>
 - Size: S (under 2h) | M (half a day). Anything larger gets split.
-- Assigned model: <implementer> · Reviewer: <different model>
+- Lane: frontend | backend | heavy | risky (rules in TEAM.md)
+- Built by: <role · tool · model from TEAM.md> · Reviewed by: <role · tool · model, never the same model>
 - Blocked by: T-<NNN> · Blocks: T-<NNN>
 - Risk: low | touches money/auth/data/schema (Founder Call before merge)
 - Type: AFK (an agent can finish it alone) | HITL (needs the founder at some step: say which)

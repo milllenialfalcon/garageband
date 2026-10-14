@@ -25,9 +25,9 @@ Small tickets are what make cheap models reliable. A model can hold half a day o
 3. Schema changes get their own ticket using safe-migration, before tickets that depend on them.
 4. Risky tickets (money, auth, personal data, schema) are marked and need a Founder Call before merge.
 
-## Assign models (see model-router)
-- Frontend-heavy → frontend implementer. Backend and glue → backend implementer. Schema, auth, payments, tricky concurrency → orchestrator or the strongest available.
-- Reviewer is always a different model from the implementer.
+## Assign a lane (TEAM.md decides the models)
+- Put each ticket in one lane using the lane rules in `TEAM.md`: **frontend**, **backend**, **heavy** or **risky**. Touches money, data or access → risky. Unclear → backend or frontend, never heavy. Heavy tickets must name a pattern to follow (an example file or exact steps).
+- Fill the ticket's builder and reviewer from that lane in `TEAM.md` (`node scripts/gb-team.mjs` shows them). A ticket mixing UI and server work is split into one frontend and one backend ticket.
 - Mark each ticket **AFK** (agent can finish alone) or **HITL** (needs the founder at a step, e.g. an API key, a choice).
 
 ## Output

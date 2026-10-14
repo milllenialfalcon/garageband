@@ -27,6 +27,7 @@ Every AI agent working in this repo (Claude, Codex, OpenCode/DeepSeek or any oth
 | `docs/compliance.md`, `docs/legal/` | Compliance checklist and legal drafts |
 | `docs/accounts.md` | Which account owns each service and how to recover it (never passwords) |
 | `CHANGELOG.md` | Release history |
+| `TEAM.md` | Which AI tool and model does which job, who reviews each lane, shared allowances |
 
 **On the `factory-state` branch, checked out at `.factory/`** (shared working state, never merged into `main`):
 
@@ -140,6 +141,6 @@ When no one is watching (a scheduled task, or the founder said they're away):
 - Commands: install `…` · dev `…` · test `…` · typecheck `…` · lint `…` · e2e `…`
 - Environments: preview (per PR) · staging `…` · production `…`
 - Languages / locales:
-- Model roles: orchestrator `…` · frontend `…` · implementer `…` · checker `…` · researcher `…`
+- Model roles: see `TEAM.md` (who builds and reviews each lane). Run `node scripts/gb-team.mjs` to see it.
 - Main checkout path (for agents in other worktrees): `…`
 - Last reviewed: `YYYY-MM-DD`

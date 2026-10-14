@@ -16,7 +16,9 @@ Garageband is a one-person software factory: a founder who decides *what* and *w
 
 If the repo has no `AGENTS.md`, `.factory/ledger.md` or `.github/workflows/garageband-ci.yml`, run **project-bootstrap** first. Nothing else works reliably without it.
 
-Read `AGENTS.md`, `PRODUCT.md` and `.factory/ledger.md` before routing.
+Read `AGENTS.md`, `PRODUCT.md`, `TEAM.md` and `.factory/ledger.md` before routing.
+
+If `TEAM.md` is missing or says `status: unconfigured`, run **team-setup** next: it asks the founder which AI tool and model does which job. Every later routing step depends on it.
 
 ## Step 2: Classify the request and announce it
 
@@ -34,7 +36,7 @@ When in doubt between two paths, take the bigger one.
 
 | # | Stage | Skill(s) | Usual model | Gate to pass |
 |---|---|---|---|---|
-| 0 | Setup (once per project, before anything else) | project-bootstrap | Orchestrator | Kit installed; CI green on a test PR once the app exists |
+| 0 | Setup (once per project, before anything else) | project-bootstrap → team-setup | Orchestrator | Kit installed; TEAM.md configured; CI green on a test PR once the app exists |
 | 1 | Should this exist? | validate-idea | Orchestrator + founder | Founder says build / don't build |
 | 2 | What exactly? | grill-founder → write-spec | Orchestrator | Founder approves spec |
 | 3 | Look and feel | design-system → design-variants | Orchestrator, frontend model | Founder picks a variant |
@@ -56,14 +58,15 @@ When in doubt between two paths, take the bigger one.
 
 Cross-cutting at every stage: **decision-brief** for any choice, **verify-research** for anything a research model produced, **factory-ledger** for state, **owner-pr-summary** for every PR.
 
-## Step 4: Pick models
+## Step 4: Pick models from TEAM.md
 
-Use **model-router**. Default roles (edit in `AGENTS.md` section 10):
-- Orchestrator (strongest model): validate, spec, architecture, briefs, risky reviews, final calls.
-- Frontend implementer: UI tickets, design variants.
-- Backend implementer (cheapest capable model): most build tickets.
-- Reviewer: always a different model from the author.
-- Researchers (free models): untrusted until verified.
+Run `node scripts/gb-team.mjs` to see the team. Every ticket goes in one lane, and the lane decides who builds and who reviews:
+- **frontend**: screens, components, styling, UI copy.
+- **backend**: server logic that needs judgement.
+- **heavy**: big but clear work with a pattern to follow.
+- **risky**: auth, payments, permissions, database structure, security, anything one-way.
+
+The orchestrator role does validate, spec, architecture, tickets and briefs. The checker does reader tests, research checks and routine reviews. Researchers are untrusted until verify-research. Quota and escalation rules: **model-router**.
 
 ## Step 5: Tell the founder the plan
 

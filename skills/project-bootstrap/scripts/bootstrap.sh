@@ -90,7 +90,7 @@ for d in briefs handoffs research retros reports tickets intake/raw skill-lab; d
 done
 mkdir -p "$target/docs/design/pages" "$target/docs/legal"
 [ -e "$target/docs/design/pages/.gitkeep" ] || touch "$target/docs/design/pages/.gitkeep"
-chmod +x "$target/.githooks/pre-push" "$target/scripts/slop-lint.mjs" "$target/scripts/gb-worktree-setup.sh" 2>/dev/null || true
+chmod +x "$target/.githooks/pre-push" "$target/scripts/slop-lint.mjs" "$target/scripts/gb-worktree-setup.sh" "$target/scripts/gb-team.mjs" 2>/dev/null || true
 
 # CLAUDE.md points at AGENTS.md so every tool reads the same constitution
 if [ ! -e "$target/CLAUDE.md" ]; then
@@ -144,7 +144,8 @@ fi
 cat <<'EOF'
 
 Next steps
-  1. Fill in AGENTS.md section 8 (stack, commands, model roles).
+  1. Set up your team: node scripts/gb-team.mjs --setup  (or ask an agent: "use the team-setup skill")
+     Then fill in AGENTS.md section 10 (stack, commands).
   2. Share factory state once a GitHub remote exists:  git -C .factory push -u origin factory-state
   3. Run validate-idea (new product) or write-spec (new feature).
 EOF

@@ -10,7 +10,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
   <img src="https://img.shields.io/badge/version-0.1.0-informational" alt="Version 0.1.0">
-  <img src="https://img.shields.io/badge/skills-36-success" alt="36 skills">
+  <img src="https://img.shields.io/badge/skills-37-success" alt="37 skills">
   <img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%7C%20Codex%20%7C%20OpenCode-orange" alt="Works with Claude Code, Codex and OpenCode">
   <a href="https://github.com/milllenialfalcon/Garageband/actions/workflows/validate.yml"><img src="https://github.com/milllenialfalcon/Garageband/actions/workflows/validate.yml/badge.svg" alt="validate workflow status"></a>
 </p>
@@ -21,7 +21,7 @@
 
 ---
 
-Garageband gives every AI model the same playbook: 36 skills covering the whole lifecycle, from "should this exist?" to "what did we learn?". The important rules are backed by checks that run in git and CI, so they hold even when a model ignores its instructions.
+Garageband gives every AI model the same playbook: 37 skills covering the whole lifecycle, from "should this exist?" to "what did we learn?". The important rules are backed by checks that run in git and CI, so they hold even when a model ignores its instructions.
 
 ## Why Garageband
 
@@ -76,6 +76,18 @@ For a brand-new app, create the app in an empty folder first (the skill gives th
 
 Open any session and say **"use the garageband skill"** (Codex: `$garageband`). It reads the project, classifies your request as a **spike**, **bounded** change or **architectural** work, tells you the stages it will run and where it needs you, then starts.
 
+**Choose your team first.** Garageband asks which AI does which job the first time it runs in a project (the `team-setup` skill), or set it up in a terminal with `node scripts/gb-team.mjs --setup`. Answers are saved in `TEAM.md`:
+
+| Role | Does | Example split |
+|---|---|---|
+| Orchestrator | Plans, specs, tickets, briefs, final calls | Claude · Opus |
+| Frontend | Screens, components, styling | Codex |
+| Backend | Server logic, data, integrations | Claude · Sonnet |
+| Heavy | Big but clear work: scaffolding, test backfills, bulk fixes | DeepSeek via OpenCode |
+| Checker | Reader tests, research checks, routine reviews | a small fast model on another tool |
+
+Each ticket lands in a lane (frontend, backend, heavy or risky) and is always reviewed by a different model than the one that built it.
+
 **Using T3 Code?** See [Running Garageband in T3 Code](docs/t3-code.md) for the thread layout, worktree setup and a ticket walkthrough.
 
 ---
@@ -91,7 +103,7 @@ Open any session and say **"use the garageband skill"** (Codex: `$garageband`). 
 
 | # | Stage | Skills | Gate |
 |---|---|---|---|
-| 0 | Setup (first, once per project) | `project-bootstrap` | Green CI on a test PR |
+| 0 | Setup (first, once per project) | `project-bootstrap` → `team-setup` | Team chosen; green CI on a test PR |
 | 1 | Should this exist? | `validate-idea` | Founder: build / shrink / don't build |
 | 2 | What exactly? | `grill-founder` → `write-spec` | Founder approves spec |
 | 3 | Look and feel | `design-system` → `design-variants` | Founder picks a variant |
@@ -117,7 +129,7 @@ Everywhere: `garageband` routes, `decision-brief` frames every choice, `verify-r
 
 ## Skills
 
-All 36 skills, grouped by layer.
+All 37 skills, grouped by layer.
 
 <details open>
 <summary><b>Founder layer</b> · 4 skills</summary>
@@ -125,6 +137,7 @@ All 36 skills, grouped by layer.
 | Skill | What it does |
 |---|---|
 | `garageband` | Entry point. Routes any request to the right path, skills and models |
+| `team-setup` | Asks which AI tool and model does which job (orchestrator, frontend, backend, heavy work, checker) and writes `TEAM.md` |
 | `grill-founder` | Rounds of plain-English questions with recommended answers ("yes" accepts) |
 | `decision-brief` | Mechanical / Taste / Founder Call; one-way vs two-way door; one-minute briefs |
 | `owner-pr-summary` | PR descriptions a non-engineer can approve from |

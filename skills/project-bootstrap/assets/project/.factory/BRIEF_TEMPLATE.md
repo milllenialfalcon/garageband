@@ -3,7 +3,10 @@
 > You are starting cold. Everything you need is here or in the files linked. Do not rely on any earlier conversation. Read `AGENTS.md` first.
 
 ## Your role
-<Implementer | Frontend implementer | Reviewer> for one ticket. Model: <name>.
+<Builder | Reviewer> for one ticket in the <frontend | backend | heavy | risky> lane.
+
+## Run in (for the founder)
+Open <tool> · <model> (from TEAM.md), in a new worktree. Paste: "Read .factory/briefs/T-<NNN>.md and follow it exactly."
 
 ## Goal
 <The user-visible result, in two sentences.>

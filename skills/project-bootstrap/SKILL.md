@@ -43,8 +43,8 @@ It adds `AGENTS.md` (+ `CLAUDE.md` link), `PRODUCT.md`, `DESIGN.md`, `CHANGELOG.
 
 It also creates **`.factory/` as a separate checkout of the `factory-state` branch**: the ledger, tickets, briefs, handoffs and reports live there, never merge into `main`, and are visible to every tool as soon as they're pushed (see AGENTS.md section 2).
 
-## 4. Fill AGENTS.md section 10
-Stack, exact commands (install, dev, test, typecheck, lint, e2e), environment URLs, languages, model roles and the main checkout path. Commit on a branch and open a PR.
+## 4. Set up the team, then fill AGENTS.md section 10
+Run **team-setup**: it asks the founder which tool and model does which job and writes `TEAM.md`. Then fill AGENTS.md section 10: stack, exact commands (install, dev, test, typecheck, lint, e2e), environment URLs, languages and the main checkout path. Commit on a branch and open a PR.
 
 ## 5. Environments, secrets and accounts
 - Three environments: **preview** (per PR, automatic), **staging**, **production**. Production data never used in preview.
@@ -70,7 +70,7 @@ Open a pull request with a small change (the AGENTS.md section 10 edit is ideal)
 - [ ] Prerequisites present
 - [ ] App created (new projects); npm scripts exist
 - [ ] Kit installed; `git config core.hooksPath` prints `.githooks`; `.factory/` is on branch `factory-state`
-- [ ] ADR-0001 stack decision; AGENTS.md section 10 filled
+- [ ] ADR-0001 stack decision; TEAM.md configured (`node scripts/gb-team.mjs --check` passes); AGENTS.md section 10 filled
 - [ ] Preview, staging, production; secrets in the secret manager; `.env.example` complete
 - [ ] Sentry, PostHog, uptime monitor, health endpoint
 - [ ] Daily backups on; `docs/accounts.md` filled
