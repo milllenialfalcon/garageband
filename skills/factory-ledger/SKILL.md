@@ -16,7 +16,7 @@ Different tools don't share memory. The ledger and handoff notes are the shared 
 `.factory/` is a separate checkout (a git worktree) of the `factory-state` branch. It never merges into `main`, so claims and status are visible to every tool the moment they're pushed, without waiting for a pull request.
 - Pull: `git -C .factory pull --rebase` (skip if no remote yet).
 - Save: `git -C .factory add -A && git -C .factory commit -m "factory: <what>" && git -C .factory push`.
-- Working in another checkout? Use the main checkout's `.factory/` (path in your brief and AGENTS.md section 10).
+- Working in another worktree (e.g. a T3 Code thread)? Run `bash scripts/gb-worktree-setup.sh` once to link the main folder's `.factory/` in.
 - If `.factory/` is missing, run project-bootstrap.
 
 ## Start of every session

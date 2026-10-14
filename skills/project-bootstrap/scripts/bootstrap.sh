@@ -42,7 +42,7 @@ if [ ! -e "$target/.gitignore" ]; then
   cp "$kit/_gitignore" "$target/.gitignore"
   added+=(".gitignore")
 fi
-for line in ".factory/" ".env" ".env.*" "!.env.example" "node_modules/"; do
+for line in ".factory" ".env" ".env.*" "!.env.example" "node_modules/"; do
   grep -qxF "$line" "$target/.gitignore" || { printf '%s\n' "$line" >> "$target/.gitignore"; notes+=(".gitignore += $line"); }
 done
 
@@ -90,7 +90,7 @@ for d in briefs handoffs research retros reports tickets intake/raw skill-lab; d
 done
 mkdir -p "$target/docs/design/pages" "$target/docs/legal"
 [ -e "$target/docs/design/pages/.gitkeep" ] || touch "$target/docs/design/pages/.gitkeep"
-chmod +x "$target/.githooks/pre-push" "$target/scripts/slop-lint.mjs" 2>/dev/null || true
+chmod +x "$target/.githooks/pre-push" "$target/scripts/slop-lint.mjs" "$target/scripts/gb-worktree-setup.sh" 2>/dev/null || true
 
 # CLAUDE.md points at AGENTS.md so every tool reads the same constitution
 if [ ! -e "$target/CLAUDE.md" ]; then

@@ -54,9 +54,19 @@ echo "custom" > "$proj/PRODUCT.md"
 bash "$repo/skills/project-bootstrap/scripts/bootstrap.sh" "$proj" >/dev/null 2>&1
 [ "$(cat "$proj/PRODUCT.md")" = "custom" ] && ok "re-run never overwrites existing files" || bad "PRODUCT.md overwritten"
 
+echo "3b. Worktree setup (T3 Code threads)"
+git_q -C "$proj" add -A && git_q -C "$proj" commit -m kit
+git_q -C "$proj" worktree add -b t-001-demo "$work/wt"
+expect "links shared factory state into a new worktree" 0 bash -c "cd '$work/wt' && bash scripts/gb-worktree-setup.sh"
+[ -f "$work/wt/.factory/ledger.md" ] && ok "worktree sees the shared ledger" || bad "ledger not visible in worktree"
+[ -z "$(git -C "$work/wt" status --porcelain)" ] && ok "the link never shows up as a change" || bad "worktree status not clean: $(git -C "$work/wt" status --porcelain)"
+expect "running it twice is harmless" 0 bash -c "cd '$work/wt' && bash scripts/gb-worktree-setup.sh"
+expect "does nothing in the main folder" 0 bash -c "cd '$proj' && bash scripts/gb-worktree-setup.sh"
+git_q -C "$proj" worktree remove --force "$work/wt"; git_q -C "$proj" branch -D t-001-demo
+
 echo "4. Pre-push guard"
 remote="$work/remote.git"; git init -q --bare "$remote"
-cd "$proj" && git_q add -A && git_q commit -m init && git_q remote add origin "$remote"
+cd "$proj" && git_q add -A && { git_q commit -m init || true; } && git_q remote add origin "$remote"
 git -c core.hooksPath=/dev/null push -q origin main >/dev/null 2>&1   # seed remote main, bypassing the hook
 git_q checkout -b feature && echo a > a.txt && git_q add a.txt && git_q commit -m a
 expect "allows pushing a feature branch" 0 git push -q origin feature

@@ -76,6 +76,8 @@ For a brand-new app, create the app in an empty folder first (the skill gives th
 
 Open any session and say **"use the garageband skill"** (Codex: `$garageband`). It reads the project, classifies your request as a **spike**, **bounded** change or **architectural** work, tells you the stages it will run and where it needs you, then starts.
 
+**Using T3 Code?** See [Running Garageband in T3 Code](docs/t3-code.md) for the thread layout, worktree setup and a ticket walkthrough.
+
 ---
 
 ## How it works

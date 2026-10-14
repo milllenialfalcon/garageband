@@ -46,7 +46,7 @@ Every AI agent working in this repo (Claude, Codex, OpenCode/DeepSeek or any oth
 Working with factory state:
 - Start of session: `git -C .factory pull --rebase` (skip if there's no remote yet).
 - After any change: `git -C .factory add -A && git -C .factory commit -m "factory: <what>" && git -C .factory push`.
-- If you work in a separate checkout or worktree, use the `.factory/` folder of the main checkout; its path is in your brief.
+- Working in a separate worktree (e.g. a T3 Code thread)? Run `bash scripts/gb-worktree-setup.sh` once; it links the main folder's `.factory/` into your worktree.
 
 If something matters and it isn't in one of these files, it doesn't exist for the next agent. Write it down.
 
