@@ -3,7 +3,7 @@
   "shift": 0,
   "lease": { "holder": null, "thread": null, "until": null },
   "heartbeat": null,
-  "threads": { "chief": null, "relief": null, "concierge": null },
+  "threads": { "chief": null, "reliefWatchdog": null, "reliefActive": null, "concierge": null },
   "projects": { "gb": "/workspace/garageband", "studio": null },
   "models": {},
   "paused": {},
