@@ -1,0 +1,12 @@
+{
+  "sprint": "garageband-build-2026-10",
+  "shift": 0,
+  "lease": { "holder": null, "thread": null, "until": null },
+  "heartbeat": null,
+  "threads": { "chief": null, "relief": null, "concierge": null },
+  "projects": { "gb": "/workspace/garageband", "studio": null },
+  "models": {},
+  "paused": {},
+  "tasks": [],
+  "_help": "Owned by the Chief (and Relief while it holds the lease). tasks[]: {ticket, kind: build|review|probe, taskId|threadId, owner, attempt, round, startedAt, lastPosition, finished}. paused.<pool>: {until, reason}."
+}
