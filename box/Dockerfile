@@ -64,7 +64,9 @@ RUN if [ "$WITH_RUST" = "1" ]; then \
 USER root
 COPY scripts/ /opt/factory/scripts/
 COPY githooks/ /opt/factory/githooks/
-RUN chmod +x /opt/factory/scripts/* /opt/factory/githooks/* \
+# Strip Windows line endings in case the repo was checked out with CRLF.
+RUN sed -i 's/\r$//' /opt/factory/scripts/* /opt/factory/githooks/* \
+ && chmod +x /opt/factory/scripts/* /opt/factory/githooks/* \
  && install -d /opt/factory/bin && mv /opt/factory/scripts/git /opt/factory/bin/git \
  && ln -sf /opt/factory/scripts/first-run.sh /usr/local/bin/first-run \
  && ln -sf /opt/factory/scripts/smoke.sh /usr/local/bin/box-smoke \

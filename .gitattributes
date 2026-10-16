@@ -1,0 +1,5 @@
+# Scripts run inside the Linux factory box: keep LF even when cloned on Windows
+box/** text eol=lf
+sprint/** text eol=lf
+*.sh text eol=lf
+*.mjs text eol=lf
