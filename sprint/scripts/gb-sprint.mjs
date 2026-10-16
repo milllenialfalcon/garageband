@@ -7,7 +7,7 @@
 //   node sprint/scripts/gb-sprint.mjs set <ticket> field=value … [--save]   edit a row (Chief only)
 //   node sprint/scripts/gb-sprint.mjs add <ticket> phase=… title=… lane=… size=… [after=…] [--save]
 //
-// Options: --factory <dir> (default: the main checkout's .factory), --slots claude=2,codex=2,opencode=3
+// Options: --factory <dir> (default: the main checkout's .factory), --slots claude=2,codex=2,opencode=4
 // set: value "now" for Started/Finished stamps the current IST time; "+1" for Attempts adds one.
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
@@ -21,12 +21,12 @@ const json = bool("--json");
 const save = bool("--save");
 const limit = Number(flag("--limit", "5"));
 const laneFilter = flag("--lane");
-const slots = Object.fromEntries((flag("--slots", "claude=2,codex=2,opencode=3")).split(",").map((s) => s.split("=")).map(([k, v]) => [k, Number(v)]));
+const slots = Object.fromEntries((flag("--slots", "claude=2,codex=2,opencode=4")).split(",").map((s) => s.split("=")).map(([k, v]) => [k, Number(v)]));
 const [cmd = "status", ...rest] = args;
 
-const LANE_POOL = { frontend: "codex", backend: "claude", heavy: "opencode", risky: "claude", probe: "claude" };
+const LANE_POOL = { frontend: "opencode", backend: "opencode", heavy: "opencode", risky: "opencode", chief: "claude", probe: "claude" }; // DeepSeek builds every lane
 const PRIORITY = { A0: 1, C1: 1, B0: 1, A1: 2, A2: 2, C2: 3, B1: 3, B2: 3, B4: 4, B6: 5 };
-const HOURS = { S: 1.5, M: 4, L: 10 };      // agent wall-clock incl. review, before calibration
+const HOURS = { S: 2, M: 5, L: 12 };        // agent wall-clock incl. lead brief and review, before calibration
 const WORK_HOURS_PER_DAY = 20;              // the line pauses for quota resets and reviews
 
 const led = readLedger(factory);

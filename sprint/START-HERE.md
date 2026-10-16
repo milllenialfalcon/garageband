@@ -2,7 +2,7 @@
 
 About 30 minutes of your time, once. After step 8 the sprint runs by itself until 23 October, and you only talk to the Concierge when you want news.
 
-**What you'll have:** a Linux "factory box" in Docker Desktop running the T3 server and every agent tool. Your T3 desktop app connects to it like a second computer. Three threads run there: the **Chief** (Claude Opus) runs the work, **Relief** (Codex) takes over when Claude's allowance is resting, and the **Concierge** (GLM) answers your questions. Trello board: https://trello.com/b/qjhCSnQQ/garageband-build
+**What you'll have:** a Linux "factory box" in Docker Desktop running the T3 server and every agent tool. Your T3 desktop app connects to it like a second computer. Three threads run there: the **Chief** (Claude Opus) runs the work, **Relief** (Codex) takes over when Claude's allowance is resting, and the **Concierge** (GLM) answers your questions. **DeepSeek (through Hermes) builds every ticket.** Claude leads the backend work and Codex leads the frontend work: they write DeepSeek's instructions and check its work, so their allowances go on thinking, not typing. Trello board: https://trello.com/b/qjhCSnQQ/garageband-build
 
 ## Before you start
 - Docker Desktop installed, using the WSL 2 engine (Settings → General).

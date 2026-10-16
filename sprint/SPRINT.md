@@ -17,10 +17,11 @@ Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs
 
 | Thread | Model | Job | File |
 |---|---|---|---|
-| **Chief** | Claude · Opus 5.5 | Runs the line: dispatch, reviews, merges into sprint branches, ledger | `sprint/ORCHESTRATOR.md` |
+| **Chief** | Claude · Opus 5.5 | Runs the line: dispatch, merges into sprint branches, ledger; writes specs and runs probes | `sprint/ORCHESTRATOR.md` |
 | **Relief** | Codex · GPT-6.1 Sol | Keeps the line moving while Claude's allowance is resting | `sprint/RELIEF.md` |
 | **Concierge** | OpenCode · GLM 5.3 Flash | Answers the founder's questions and ETAs; mirrors status to Trello. Read-only. | `sprint/CONCIERGE.md` |
-| Builders and reviewers | per `sprint/TEAM.md` | One ticket each, as delegated tasks | brief in the task |
+| **Worker** | Hermes · DeepSeek V4.1 Flash (plus OpenCode DeepSeek and MiMo as extra workers) | Builds every ticket from a lead's brief | brief in the task |
+| **Leads** | Claude · Sonnet 5.5 (backend), Codex · GPT-6.1 Sol (frontend) | Write briefs for their lane and review DeepSeek's work; build only after DeepSeek fails 3 times | `sprint/TEAM.md` |
 
 ## Repos and branches
 - **Garageband** (`/workspace/garageband`, github.com/milllenialfalcon/Garageband): tickets branch from `sprint/track-a` and merge back into it.
@@ -46,12 +47,14 @@ Read live numbers with `node sprint/scripts/gb-quota.mjs` once A0-06 lands; unti
 
 | Plan | Target | Hard stop | When paused |
 |---|---|---|---|
-| Claude ($20) | Keep every 5-hour window busy | Weekly use 85% → only the Chief's light coordination; at 92% hand everything to Relief until the weekly reset | Relief runs the line; risky tickets wait |
-| Codex ($20) | Keep every 5-hour window busy | Weekly use 85% → frontend and backend reviews move to Kimi K3 / Sonnet | Claude Sonnet builds frontend |
-| OpenCode Go ($10) | About 10% of the monthly allowance per day (77% left on 16 Oct over 8 days); behind pace → prefer heavy and checker lanes, add MiMo as a second heavy builder; ahead of pace → slow down | Monthly use 97% | Heavy work waits or goes to Sonnet if Claude has room |
+| Claude ($20) | Briefs, reviews and coordination only; no building unless escalated | Weekly use 85% → only the Chief's light coordination; at 92% hand everything to Relief until the weekly reset | Relief runs the line; risky tickets wait |
+| Codex ($20) | Frontend briefs and reviews, Relief; no building unless escalated | Weekly use 85% → frontend briefs and reviews move to Claude Sonnet | Claude Sonnet writes frontend briefs and reviews |
+| OpenCode Go ($10) | All building. About 10% of the monthly allowance per day (77% left on 16 Oct over 8 days); behind pace → run more DeepSeek and MiMo workers at once; ahead of pace → fewer | Monthly use 97% | Building pauses until the reset; leads write the next briefs meanwhile |
 | OpenCode free (Muse Spark) | Research only | n/a | n/a |
 
-Concurrency at most: Claude 2 child tasks (the Chief's own turns also use Claude), Codex 2, OpenCode 3. A rate-limit error pauses that plan until the reset time in the error, then the line resumes by itself.
+**Who spends what:** DeepSeek on OpenCode Go does all the building, so OpenCode Go carries most of the load. Claude and Codex spend only on short jobs: briefs, reviews, and the Chief's coordination. That keeps both subscriptions available for thinking.
+
+Concurrency at most: OpenCode 4 builders (Hermes DeepSeek, OpenCode DeepSeek, MiMo) plus the Kimi reviewer and the Concierge; Claude 2 tasks (briefs and reviews; the Chief's own turns also use Claude); Codex 2. A rate-limit error pauses that plan until the reset time in the error, then the line resumes by itself.
 
 ## Definition of done
-A ticket is done when its PR is merged into its sprint branch (probes: when the report is written). The sprint is done when every priority 1–3 ticket is done or dropped with a reason, or at 23 October 22:00 IST, whichever comes first. Then the Chief writes `.factory/reports/sprint-final.md`, opens the PR from `sprint/track-a` to `main` for the founder, adds the needs-you item to create Studio's `main`, and stops its heartbeat.
+A ticket is done when its PR is merged into its sprint branch (chief-lane tickets without a PR: when their output is written). The sprint is done when every priority 1–3 ticket is done or dropped with a reason, or at 23 October 22:00 IST, whichever comes first. Then the Chief writes `.factory/reports/sprint-final.md`, opens the PR from `sprint/track-a` to `main` for the founder, adds the needs-you item to create Studio's `main`, and stops its heartbeat.

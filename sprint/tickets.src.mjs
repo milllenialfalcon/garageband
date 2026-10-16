@@ -12,19 +12,19 @@ export const REPOS = {
 
 export const TICKETS = [
   // ---------------- A0: prove the core in the box ----------------
-  { id: "A0-01", phase: "A0", title: "Which skills each provider sees inside T3", lane: "probe", size: "S", after: [], repo: "gb",
+  { id: "A0-01", phase: "A0", title: "Which skills each provider sees inside T3", lane: "chief", size: "S", after: [], repo: "gb",
     goal: "Find out how Garageband skills reach each provider when it runs as a T3 thread, so A1 installs them in a place every tool reads.",
     ac: ["For Claude Sonnet, Codex Sol, OpenCode DeepSeek and Hermes: a child task asked to list the Garageband skills it can see, with the path it read them from",
       "Claude checked three ways: ~/.claude/skills, a project .claude/skills folder, and whether plugins load",
       "Results in .factory/reports/a0-skills.md as a table: provider, sees skills (yes/no), source path, notes"],
-    notes: ["No pull request: this is a probe the Chief runs with delegate_task (isolation shared, mode wait)."], touch: [".factory/reports/"] },
-  { id: "A0-02", phase: "A0", title: "Cross-provider delegation with worktrees", lane: "probe", size: "S", after: [], repo: "gb",
+    notes: ["No pull request: the Chief runs this probe itself with delegate_task (isolation shared, mode wait)."], touch: [".factory/reports/"] },
+  { id: "A0-02", phase: "A0", title: "Cross-provider delegation with worktrees", lane: "chief", size: "S", after: [], repo: "gb",
     goal: "Prove the Chief can hand a task to every provider in its own worktree and get a usable result back.",
     ac: ["One delegate_task per provider (Claude Sonnet, Codex Sol, OpenCode DeepSeek, OpenCode Kimi K3, Hermes) with isolation worktree: create probe/<provider>.txt on branch t/a0-02-<provider>, commit, push, report STATUS",
       "Recorded per provider: worktree created, commit and push worked, result arrived, wall time, anything odd",
       "Probe branches deleted afterwards; results in .factory/reports/a0-delegation.md"],
     notes: ["Also try t3_thread_launch with workspaceStrategy worktree once, since Track B relies on it."], touch: [".factory/reports/"] },
-  { id: "A0-03", phase: "A0", title: "Hermes over ACP in the box", lane: "probe", size: "S", after: [], repo: "gb",
+  { id: "A0-03", phase: "A0", title: "Hermes over ACP in the box", lane: "chief", size: "S", after: [], repo: "gb",
     goal: "Confirm Hermes works as a T3 provider in the box and record exactly how it is configured.",
     ac: ["orchestrator_capabilities lists the Hermes instance with its models and says whether it can run child tasks",
       "Exact command and arguments recorded, plus cancel behaviour (start a task, task_cancel it)",
@@ -123,7 +123,7 @@ export const TICKETS = [
       "Every fact has its source file:line in reference/t3code and a 'verified on' date",
       "The reviewer checks every claim against the source and lists any it could not confirm"],
     notes: ["Start from reference/t3code/docs/orchestration-v2/orchestrator-mcp-server.md and packages/contracts/src/orchestratorMcp.ts."], touch: ["docs/t3/reference.md"] },
-  { id: "A2-02", phase: "A2", title: "Spec: t3-orchestrator skill", lane: "risky", size: "S", after: ["A0-05"], repo: "gb",
+  { id: "A2-02", phase: "A2", title: "Spec: t3-orchestrator skill", lane: "chief", size: "S", after: ["A0-05"], repo: "gb",
     goal: "Write down how an orchestrator should run the Garageband line in T3, from what this sprint learned.",
     ac: ["docs/specs/t3-orchestrator.md using the spec template: shifts and heartbeats, dispatch per lane, review rounds as fresh tasks, escalation, ledger rules, quota pacing, merges into sprint branches, relief orchestrator, concierge",
       "Acceptance criteria a skill-lab run can check"],
@@ -144,14 +144,14 @@ export const TICKETS = [
     ac: ["Skill counts updated everywhere (README badge and text, .claude-plugin/plugin.json and marketplace.json, CHANGELOG)",
       "node scripts/validate-skills.mjs and bash tests/run-tests.sh pass"],
     notes: [], touch: ["README.md", ".claude-plugin/", "CHANGELOG.md", "tests/", "scripts/validate-skills.mjs"] },
-  { id: "A2-06", phase: "A2", title: "Dogfood: one ticket through the skill, hands-off", lane: "risky", size: "S", after: ["A2-05"], repo: "gb",
+  { id: "A2-06", phase: "A2", title: "Dogfood: one ticket through the skill, hands-off", lane: "chief", size: "S", after: ["A2-05"], repo: "gb",
     goal: "Prove the skill works: one real ticket goes brief → build → review → PR with no thread opened by the founder.",
     ac: ["The Chief loads skills/t3-orchestrator from the sprint branch and runs one ready heavy ticket with it",
       "Evidence in .factory/reports/a2-dogfood.md: task ids, review rounds, PR link, anything the skill got wrong (fixed in a follow-up ticket)"],
     notes: [], touch: [".factory/reports/"] },
 
   // ---------------- C1: station contracts ----------------
-  { id: "C1-01", phase: "C1", title: "Station contracts", lane: "risky", size: "M", after: [], repo: "gb",
+  { id: "C1-01", phase: "C1", title: "Station contracts", lane: "chief", size: "M", after: [], repo: "gb",
     goal: "Define what every station on the line receives, produces and must pass, so any skill can fill it.",
     ac: ["docs/stations.md: stations 0–18 (Setup to Learn), each with inputs, outputs (file and format), gate (who or what passes it, founder gate yes/no), required abilities (browser, screenshots, shell, network) and default core skills",
       "Matches AGENTS.md decision types, severities, verdicts and STATUS values exactly"],
@@ -173,7 +173,7 @@ export const TICKETS = [
     notes: [], touch: ["scripts/check-outputs.mjs", "tests/"] },
 
   // ---------------- C2: line file (next) ----------------
-  { id: "C2-01", phase: "C2", title: "Spec: the line file", lane: "risky", size: "S", after: ["C1-01"], repo: "gb",
+  { id: "C2-01", phase: "C2", title: "Spec: the line file", lane: "chief", size: "S", after: ["C1-01"], repo: "gb",
     goal: "One file says which skill and which model handle each station.",
     ac: ["docs/specs/line-file.md: format (merges TEAM.md), per-phase model defaults with per-station overrides, lane routing, fallbacks, capability needs, presets, migration from TEAM.md"],
     notes: [], touch: ["docs/specs/line-file.md"] },
@@ -193,7 +193,7 @@ export const TICKETS = [
     notes: [], touch: ["skills/garageband/references/", "tests/"] },
 
   // ---------------- B0: fork foundation ----------------
-  { id: "B0-01", phase: "B0", title: "Create the Garageband Studio repo", lane: "risky", size: "S", after: [], repo: "studio",
+  { id: "B0-01", phase: "B0", title: "Create the Garageband Studio repo", lane: "chief", size: "S", after: [], repo: "studio",
     goal: "A private copy of T3 Code that the fork work happens in, with no main branch until the founder creates one.",
     ac: ["Private repo milllenialfalcon/garageband-studio created with gh, containing upstream T3 Code at its latest stable tag (full history) on branch upstream/stable, plus sprint/track-b from the same commit; default branch sprint/track-b",
       "Not a GitHub fork, so it can stay private; upstream remote = pingdotgg/t3code",
