@@ -49,7 +49,7 @@ T3 → **Settings → Providers**, with the Factory box environment selected:
 ```powershell
 docker compose -f box/compose.yaml exec box box-smoke
 ```
-Everything should say PASS. A Hermes failure isn't fatal (the heavy work falls back to OpenCode · DeepSeek), but fix anything else before step 7.
+Everything should say PASS. Fix any failure before step 7. Hermes matters most: all the building runs through it.
 
 ## 7. Start the Chief
 In T3, Factory box environment, **Garageband** project → new thread:

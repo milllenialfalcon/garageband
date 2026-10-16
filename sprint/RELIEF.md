@@ -1,26 +1,42 @@
-# Relief orchestrator for the Garageband build sprint
+# Relief for the Garageband build sprint
 
-You are **Relief**, Codex · GPT-6.1 Sol, in a T3 thread in the Garageband project, in the factory box. The Chief (Claude Opus) runs the sprint. Claude has a 5-hour and a weekly allowance; when it is resting, you keep the line moving so the sprint never stops. When the Chief is healthy you do nothing but check in once an hour.
+The Chief (Claude Opus) runs the sprint. Claude has a 5-hour and a weekly allowance; when it is resting, Relief keeps the line moving so the sprint never stops. Relief has two parts:
 
-Read `AGENTS.md`, `sprint/SPRINT.md`, `sprint/TEAM.md` and `sprint/ORCHESTRATOR.md` (the Chief's method; you follow it with the limits below). Paths are relative to `/workspace/garageband`.
+- **Relief watchdog**: GPT-6 Luna, a cheap hourly check. It never runs the line itself.
+- **Relief orchestrator**: GPT-6.1 Sol, launched by the watchdog only while the Chief is out. It runs the line, then hands back and stops.
 
-## Thread start
-1. `list_scheduled_tasks`; if no task titled "Relief watchdog" is bound to this thread, `schedule_task` with `{type: "interval", everyMs: 3600000}`, title "Relief watchdog", bound to this thread, prompt: "Watchdog. Run sprint/RELIEF.md 'Each run'."
-2. Run "Each run" once.
+Paths are relative to `/workspace/garageband`. Never do anything in ORCHESTRATOR.md section 7.
 
-## Each run
-1. `git -C .factory pull --rebase`, read `.factory/chief-state.json`.
-2. **Decide whether to act.** Act only if one of these is true; otherwise reply "Chief healthy" and stop:
-   - `lease.holder` is `relief` and `lease.until` is in the future (the Chief handed over), or
-   - the lease has expired (the Chief missed more than 90 minutes), **and** `t3_thread_read` on the Chief thread (`lease.thread`) shows its latest run failed or it has been idle while tickets are in flight or ready.
-3. **Taking over** (lease expired, no handover): set `lease = {holder: "relief", thread: <your thread id>, until: now + 90 min}`, save factory state, and write one line in `.factory/handoffs/` saying when and why you took over.
-4. **Run the loop** of ORCHESTRATOR.md section 2, with these limits:
-   - DeepSeek still builds everything. Don't send anything to Claude models while Claude is paused (`chief-state.json.paused.claude`): backend and risky tickets wait for their Claude brief and review (dispatch builds whose brief already exists, and hold their PRs for review). Frontend tickets carry on fully: Codex Sol writes the brief and reviews. Heavy tickets carry on: you write the short brief, Kimi K3 reviews.
-   - Leave `chief`-lane tickets (probes, specs, repo setup, dogfood) for the Chief.
-   - You may collect results, dispatch briefs, builds and reviews, merge approved PRs with `gb-merge.sh`, and count attempts. Escalation to a lead building the ticket itself (attempt 4) is allowed only for frontend (Codex) and heavy (Kimi) tickets.
-   - Results of tasks the Chief started: read them with `t3_thread_read` on their thread ids from `chief-state.json.tasks`.
-   - Renew the lease (+90 min) every run while you hold it. Mark ledger builders with "(relief)" so the retro can compare.
-5. **Handing back.** At the start of each run while you hold the lease, check whether Claude is usable again (`node sprint/scripts/gb-quota.mjs` shows the Claude session window under 80%, or the pause time in `chief-state.json.paused.claude` has passed). If so: finish this run, write a handoff (what you did, what is in flight with ids), set `lease.holder = "chief"`, `lease.until = now`, save, then wake the Chief: re-enable its heartbeat with `update_scheduled_task` (enabled true) and `run_scheduled_task_now`, or if its thread is gone, `t3_thread_launch` a new Chief (Claude · Opus 5.5, project root, full access, title "Chief (after relief)", message: "You are the Chief for the Garageband build sprint. Read /workspace/garageband/sprint/ORCHESTRATOR.md and start with section 1.").
-6. If the Chief messages you to release the lease, do step 5 at the end of your current run.
+## Watchdog thread start (Luna)
+1. `list_scheduled_tasks`. If no task titled "Relief watchdog" is bound to this thread, `schedule_task` with `{type: "interval", everyMs: 3600000}`, title "Relief watchdog", bound to this thread, prompt: "Watchdog. Run sprint/RELIEF.md 'Each watchdog run'."
+2. Run "Each watchdog run" once.
 
-Keep each run short (under about 15 tool calls). Never do anything in ORCHESTRATOR.md section 7.
+## Each watchdog run (Luna)
+Keep it to a few tool calls.
+1. `git -C .factory pull --rebase`, then read `.factory/chief-state.json`.
+2. **Relief already active** (`threads.reliefActive` is set and that thread is running or idle with the lease): reply "Relief active" and stop.
+3. **Launch the relief orchestrator** if either is true:
+   - `lease.holder` is `relief` (the Chief handed over), or
+   - the lease has expired (the Chief missed more than 90 minutes) **and** `t3_thread_read` on the Chief's thread (`lease.thread`) shows its latest run failed, or it is idle while tickets are in flight or ready.
+
+   To launch: `t3_thread_launch` in this project, project root, full access, Codex · GPT-6.1 Sol, title "Relief (active)", message: "You are the relief orchestrator for the Garageband build sprint. Read /workspace/garageband/sprint/RELIEF.md and follow 'Relief orchestrator'." Record its id in `chief-state.json.threads.reliefActive` and save factory state.
+4. Otherwise reply "Chief healthy" and stop.
+5. If the Chief messages you, follow its message (it may hand over, or tell you the sprint is over: then delete your schedule and stop).
+
+## Relief orchestrator (Sol)
+1. **Lease.** If the lease has expired or is already yours, set `lease = {holder: "relief", thread: <your thread id>, until: now + 90 min}`, save, and write one line in `.factory/handoffs/` saying when and why you took over.
+2. **Wake-ups.** `schedule_task` with `{type: "interval", everyMs: 3600000}`, title "Relief loop", bound to this thread, prompt: "Relief loop. Run sprint/RELIEF.md 'Relief orchestrator' step 3."
+3. **Each loop**: run ORCHESTRATOR.md section 2 with these limits:
+   - Use `sprint/TEAM.md` exactly as the Chief would, except that nothing goes to a Claude model while Claude is paused: no Opus, Sonnet or Haiku.
+   - Backend and risky tickets wait for Sonnet's brief and review. You may still dispatch builds whose brief already exists, and gate their PRs with Luna; hold them for Sonnet's review.
+   - Frontend tickets carry on fully: Sol briefs and reviews.
+   - Heavy tickets carry on: you write the short brief (instead of Haiku), and GLM 5.3 Flash reviews.
+   - Leave `chief`-lane tickets for the Chief. Escalation is allowed up to attempt 4 (Gemini 4 Argon) only.
+   - Read results of tasks the Chief started with `t3_thread_read` on their thread ids from `chief-state.json.tasks`.
+   - Renew the lease (+90 min) every loop. Mark ledger builders with "(relief)" so the retro can compare.
+   - Keep each loop under about 15 tool calls.
+4. **Hand back.** At the start of each loop, check whether Claude is usable again: `node sprint/scripts/gb-quota.mjs` shows the Claude session window under 80%, or the time in `chief-state.json.paused.claude` has passed. If it is, or if the Chief messages you to release the lease:
+   - finish this loop and write a handoff saying what you did and what's in flight, with ids;
+   - set `lease.holder = "chief"`, `lease.until = now`, and `threads.reliefActive = null`, then save;
+   - wake the Chief: re-enable its heartbeat with `update_scheduled_task` (enabled true) and then `run_scheduled_task_now`. If its thread is gone, `t3_thread_launch` a new Chief (Claude · Opus 5.5, project root, full access, title "Chief (after relief)", message: "You are the Chief for the Garageband build sprint. Read /workspace/garageband/sprint/ORCHESTRATOR.md and start with section 1.");
+   - delete your "Relief loop" schedule and stop.

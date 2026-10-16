@@ -18,10 +18,11 @@ Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs
 | Thread | Model | Job | File |
 |---|---|---|---|
 | **Chief** | Claude · Opus 5.5 | Runs the line: dispatch, merges into sprint branches, ledger; writes specs and runs probes | `sprint/ORCHESTRATOR.md` |
-| **Relief** | Codex · GPT-6.1 Sol | Keeps the line moving while Claude's allowance is resting | `sprint/RELIEF.md` |
-| **Concierge** | OpenCode · GLM 5.3 Flash | Answers the founder's questions and ETAs; mirrors status to Trello. Read-only. | `sprint/CONCIERGE.md` |
-| **Worker** | Hermes · DeepSeek V4.1 Flash (plus OpenCode DeepSeek and MiMo as extra workers) | Builds every ticket from a lead's brief | brief in the task |
-| **Leads** | Claude · Sonnet 5.5 (backend), Codex · GPT-6.1 Sol (frontend) | Write briefs for their lane and review DeepSeek's work; build only after DeepSeek fails 3 times | `sprint/TEAM.md` |
+| **Relief** | Codex · GPT-6 Luna (hourly watchdog) and GPT-6.1 Sol (only when needed) | Keeps the line moving while Claude's allowance is resting | `sprint/RELIEF.md` |
+| **Concierge** | OpenCode (free) · GLM 5.3 Flash | Answers the founder's questions and ETAs; mirrors status to Trello. Read-only. | `sprint/CONCIERGE.md` |
+| **Workers** | Hermes (OpenCode Go): DeepSeek V4.1 Flash, MiMo V2.6 Flash, Gemini 4 Argon for big-context and rescue builds | Build every ticket from a brief | brief in the task |
+| **Leads** | Claude · Sonnet 5.5 (backend), Codex · GPT-6.1 Sol (frontend) | Write briefs for their lane and review the work; build only as a last resort | `sprint/TEAM.md` |
+| **Support** | Claude Haiku (clerk), GPT-6 Luna (gatekeeper), GLM 5.3 Flash (heavy reviews), GPT-6 Astra (risky and final reviews), Muse Spark 1.3 (research checks), free DeepSeek and GLM (research) | See TEAM.md "Who does what" | `sprint/TEAM.md` |
 
 ## Repos and branches
 - **Garageband** (`/workspace/garageband`, github.com/milllenialfalcon/Garageband): tickets branch from `sprint/track-a` and merge back into it.
@@ -48,13 +49,13 @@ Read live numbers with `node sprint/scripts/gb-quota.mjs` once A0-06 lands; unti
 | Plan | Target | Hard stop | When paused |
 |---|---|---|---|
 | Claude ($20) | Briefs, reviews and coordination only; no building unless escalated | Weekly use 85% → only the Chief's light coordination; at 92% hand everything to Relief until the weekly reset | Relief runs the line; risky tickets wait |
-| Codex ($20) | Frontend briefs and reviews, Relief; no building unless escalated | Weekly use 85% → frontend briefs and reviews move to Claude Sonnet | Claude Sonnet writes frontend briefs and reviews |
-| OpenCode Go ($10) | All building. About 10% of the monthly allowance per day (77% left on 16 Oct over 8 days); behind pace → run more DeepSeek and MiMo workers at once; ahead of pace → fewer | Monthly use 97% | Building pauses until the reset; leads write the next briefs meanwhile |
-| OpenCode free (Muse Spark) | Research only | n/a | n/a |
+| Codex ($20) | Sol: frontend briefs and reviews, relief orchestrator. Luna: gates and the watchdog, cheap. Astra: 2 risky reviews and the final review only. No building unless escalated | Weekly use 85% → frontend briefs and reviews move to Claude Sonnet, and gates to Haiku | Claude Sonnet writes frontend briefs and reviews |
+| OpenCode Go ($10) | All building, through Hermes. DeepSeek, MiMo and GLM are very cheap; Gemini 4 Argon costs much more, so it's used only for big-context and rescue builds. About 10% of the monthly allowance per day (77% left on 16 Oct over 8 days); behind pace → run more DeepSeek and MiMo workers at once; ahead of pace → fewer | Monthly use 97% | Building pauses until the reset; leads write the next briefs meanwhile |
+| OpenCode free (DeepSeek, GLM; 200k context) | Research, reader tests, the Concierge. No secrets in prompts | Rate limits | Research waits; the Concierge falls back to GLM on Go |
 
 **Who spends what:** DeepSeek on OpenCode Go does all the building, so OpenCode Go carries most of the load. Claude and Codex spend only on short jobs: briefs, reviews, and the Chief's coordination. That keeps both subscriptions available for thinking.
 
-Concurrency at most: OpenCode 4 builders (Hermes DeepSeek, OpenCode DeepSeek, MiMo) plus the Kimi reviewer and the Concierge; Claude 2 tasks (briefs and reviews; the Chief's own turns also use Claude); Codex 2. A rate-limit error pauses that plan until the reset time in the error, then the line resumes by itself.
+Concurrency at most: Go 4 builders (DeepSeek, MiMo, Gemini 4 Argon) plus the GLM reviewer and the Muse Spark checker; Claude 2 tasks (briefs, reviews, clerk work; the Chief's own turns also use Claude); Codex 2 (Sol briefs and reviews, Luna gates, Astra reviews); free models 2 research tasks plus the Concierge. A rate-limit error pauses that plan until the reset time in the error, then the line resumes by itself.
 
 ## Definition of done
 A ticket is done when its PR is merged into its sprint branch (chief-lane tickets without a PR: when their output is written). The sprint is done when every priority 1–3 ticket is done or dropped with a reason, or at 23 October 22:00 IST, whichever comes first. Then the Chief writes `.factory/reports/sprint-final.md`, opens the PR from `sprint/track-a` to `main` for the founder, adds the needs-you item to create Studio's `main`, and stops its heartbeat.

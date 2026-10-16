@@ -1,34 +1,33 @@
 ---
-# Garageband build sprint team. Same format as the project kit's TEAM.md.
-# Check:  node skills/project-bootstrap/assets/project/scripts/gb-team.mjs --check --file sprint/TEAM.md
-# DeepSeek builds every lane; Claude and Codex lead and review their areas, so their
-# allowances go on thinking and reviewing, not typing.
+# Garageband build sprint team. Same format as the project kit's TEAM.md (six roles, four lanes);
+# the full roster below adds the extra models. Check:
+#   node skills/project-bootstrap/assets/project/scripts/gb-team.mjs --check --file sprint/TEAM.md
 version: 1
 status: configured
 roles:
-  orchestrator:   # Chief: plans, writes specs, runs probes, merges, keeps the ledger
+  orchestrator:   # the Chief: decisions, specs, merges
     tool: claude
     model: claude-opus-5-5
     pool: claude
-  frontend:       # frontend lead: writes frontend briefs, reviews frontend work
+  frontend:       # frontend lead: frontend briefs and reviews
     tool: codex
     model: gpt-6.1-sol
     pool: codex
-  backend:        # backend lead: writes backend and risky briefs, reviews that work
+  backend:        # backend lead: backend and risky briefs and reviews
     tool: claude
     model: claude-sonnet-5-5
     pool: claude
-  heavy:          # the worker: builds every ticket from a lead's brief
+  heavy:          # the worker: builds every ticket
     tool: hermes
     model: deepseek-v4.1-flash
-    pool: opencode
-  checker:        # reviews heavy-lane work, reader tests, research checks
+    pool: go
+  checker:        # reviews heavy-lane work
+    tool: hermes
+    model: glm-5.3-flash
+    pool: go
+  researcher:     # research on the free OpenCode models (200k context); untrusted until verified
     tool: opencode
-    model: kimi-k3
-    pool: opencode
-  researcher:     # scouting only; never trusted until a checker verifies it
-    tool: opencode
-    model: muse-spark-1.3
+    model: deepseek-v4.1-flash
     pool: free
 lanes:
   frontend:
@@ -40,50 +39,70 @@ lanes:
   heavy:
     author: heavy
     reviewer: checker
-  risky:          # DeepSeek builds; backend lead reviews, and the frontend lead gives a second review
+  risky:          # DeepSeek builds; backend lead reviews, then GPT-6 Astra gives a second review
     author: heavy
     reviewer: backend
 ---
 
 # Sprint team
 
-**DeepSeek is the worker for both Claude and Codex.** Every ticket is built by DeepSeek (through Hermes). Claude leads backend work and Codex leads frontend work: each writes the brief for its tickets, then reviews what DeepSeek built. Claude and Codex build code themselves only when DeepSeek has failed a ticket three times.
+The rule: **use the cheapest model that can do the job well, and spend the expensive ones on judgement, not typing.** DeepSeek builds everything; Claude and Codex lead, check and decide.
 
-| Lane | Brief written by | Built by | Reviewed by |
+## Plans
+
+| Plan | How it's paid | Models |
+|---|---|---|
+| **Claude** ($20) | Shared 5-hour and weekly limits | Opus 5.5 (most capable, most expensive), Sonnet 5.5, Haiku 5.5 (cheapest) |
+| **Codex** ($20) | Shared 5-hour and weekly limits | GPT-6 Astra (most capable, about 5× Sol), GPT-6.1 Sol (everyday), GPT-6 Luna (about 1/20 of Sol) |
+| **OpenCode Go** ($10, through Hermes) | Monthly allowance, about 10% a day | DeepSeek V4.1 Flash, MiMo V2.6 Flash, GLM 5.3 Flash (all very cheap), Muse Spark 1.3, Gemini 4 Argon (top-tier reasoning, about Sol's price, 1M-token context) |
+| **OpenCode free** (T3's OpenCode provider) | Free; 200k-token context | DeepSeek V4.1 Flash, GLM 5.3 Flash |
+
+## Who does what
+
+| Job | Model | Plan | Why this model |
 |---|---|---|---|
-| frontend | Codex · GPT-6.1 Sol (frontend lead) | Hermes · DeepSeek V4.1 Flash | Codex · GPT-6.1 Sol |
-| backend | Claude · Sonnet 5.5 (backend lead) | Hermes · DeepSeek V4.1 Flash | Claude · Sonnet 5.5 |
-| heavy | the Chief, short, from the ticket | Hermes · DeepSeek V4.1 Flash | OpenCode · Kimi K3 |
-| risky | Claude · Sonnet 5.5 | Hermes · DeepSeek V4.1 Flash | Claude · Sonnet 5.5, then Codex · GPT-6.1 Sol (both must approve) |
-| chief | — | the Chief (Claude · Opus 5.5): probes, specs, repo setup, dogfood run | Codex · GPT-6.1 Sol, when there is a pull request |
+| **Chief**: priorities, specs, `chief`-lane tickets, merge decisions | Claude Opus 5.5 | Claude | Best judgement; kept to short turns |
+| **Clerk**: reads finished threads and summarises them for the Chief, writes heavy-lane briefs | Claude Haiku 5.5 | Claude | Keeps Opus's context small and cheap |
+| **Backend lead**: backend and risky briefs, backend reviews | Claude Sonnet 5.5 | Claude | Strong design and review at a mid price |
+| **Frontend lead**: frontend briefs and reviews | GPT-6.1 Sol | Codex | Strong UI judgement; Codex's everyday tier |
+| **Gatekeeper**: checks every PR before a lead sees it (CI green, only allowed files touched, tests added, evidence pasted, STATUS present) and bounces obvious failures straight back to DeepSeek | GPT-6 Luna | Codex | Very cheap; saves Sonnet and Sol for real reviews |
+| **Main worker**: builds every ticket | DeepSeek V4.1 Flash (Hermes) | Go | Cheap, good at code from a precise brief |
+| **Second worker**: tests, docs, test backfills, and builds when DeepSeek is busy | MiMo V2.6 Flash (Hermes) | Go | Cheapest output tokens |
+| **Heavy-lane reviewer**, and reader tests on M-size briefs | GLM 5.3 Flash (Hermes) | Go | Cheap and a different model from DeepSeek |
+| **Big-context worker**: tickets that must read a whole codebase (T3 source: A2-01, B0-02, B2-02) | Gemini 4 Argon (Hermes) | Go | 1M-token context and strong reasoning |
+| **Rescue builder**: attempt 4 when DeepSeek fails three times | Gemini 4 Argon (Hermes) | Go | Stronger model, still off the Claude and Codex plans |
+| **Second reviewer on risky tickets** (B1-02, B6-03), and the final sprint review | GPT-6 Astra | Codex | The most careful reviewer; used only where a mistake costs most |
+| **Last-resort builder**: attempt 5 | The lane lead (Sonnet for backend and risky, Sol for frontend) | Claude / Codex | Only after DeepSeek and Gemini have both failed |
+| **Researcher**: web and doc research, first drafts of research notes | DeepSeek V4.1 Flash and GLM 5.3 Flash (free) | Free | Free; 200k context is enough for research |
+| **Research checker**: verifies research before anyone uses it | Muse Spark 1.3 (Hermes) | Go | A different model from the researchers; cheap |
+| **Concierge**: answers your questions, Trello mirror | GLM 5.3 Flash (free) | Free | Reads small files; fallback GLM 5.3 Flash on Go |
+| **Relief watchdog**: hourly check that the Chief is alive | GPT-6 Luna | Codex | Cheap hourly check |
+| **Relief orchestrator**: runs the line while Claude rests | GPT-6.1 Sol | Codex | Launched by the watchdog only when needed |
 
-The lead writes the brief and reviews the result. That is not self-review, because the lead did not write the code.
+## Lanes
 
-## Escalation (when DeepSeek can't finish a ticket)
+| Lane | Brief by | Built by | Gatekeeper | Reviewed by |
+|---|---|---|---|---|
+| frontend | Sol | DeepSeek (or MiMo) | Luna | Sol |
+| backend | Sonnet | DeepSeek (or MiMo) | Luna | Sonnet |
+| heavy | Haiku | DeepSeek or MiMo (Gemini Argon for big-context tickets) | Luna | GLM 5.3 Flash |
+| risky | Sonnet | DeepSeek | Luna | Sonnet, then Astra (both must approve) |
+| chief | — | Opus (probes, specs, repo setup, dogfood) | — | Sol, when there is a PR |
 
-| Attempts | Who builds |
+## Escalation
+
+| Attempts | Builder |
 |---|---|
-| 1–3 | DeepSeek, with the reviewer's findings added to the brief each time |
-| 4–5 | The lane lead builds it: Claude Sonnet for backend and risky, Codex Sol for frontend, Kimi K3 for heavy. A different model reviews (Codex for Claude's work, Claude for Codex's work, Claude for Kimi's work). |
+| 1–3 | DeepSeek, with the findings added to the brief (if the brief was the problem, its author fixes the brief first) |
+| 4 | Gemini 4 Argon |
+| 5 | The lane lead: Sonnet (backend, risky, heavy) or Sol (frontend), reviewed by the other plan's lead |
 | after 5 | The Chief rewrites or splits the ticket |
 
-## Bench (extra OpenCode Go models, used on purpose to spread load)
-
-| Model | Used for |
-|---|---|
-| OpenCode · DeepSeek V4.1 Flash | Second DeepSeek worker when Hermes is busy, and the fallback when Hermes is down |
-| OpenCode · MiMo 2.6 | Third worker for test backfills and docs when both DeepSeek workers are busy |
-| OpenCode · GLM 5.3 Flash | The Concierge thread; reader tests on briefs before dispatch |
-| OpenCode · Gemini 4 Argon | Design second opinion on Track B screens |
-| Codex · GPT-6 Luna (low) | Cheap checks for the relief orchestrator |
-
-## When a plan is paused (see SPRINT.md)
-
-| Paused plan | What happens |
-|---|---|
-| OpenCode Go | Building stops (nothing is moved to Claude or Codex, to save them). Leads use the time to write the next briefs; the Chief writes specs. |
-| Claude | Backend and risky reviews wait. Relief (Codex) keeps dispatching and merging frontend and heavy work. |
-| Codex | Frontend briefs and reviews move to Claude Sonnet. |
+## Rules
+- **Context limits.** The free models have 200k tokens: research only, never a job that must read a large codebase. Big-context jobs go to Gemini 4 Argon.
+- **No secrets to free models.** Free tiers may keep what you send. Research prompts contain no keys, tokens or private data.
+- **A reviewer is never the model that built the work.** A lead reviewing work built from its own brief is fine: it wrote no code.
+- **When a plan pauses:** Go paused → building stops, and leads and the Chief write the next briefs and specs. Claude paused → the Luna watchdog launches the Sol relief orchestrator; backend reviews wait, and frontend and heavy work carries on. Codex paused → frontend briefs and reviews go to Sonnet; Haiku does the gatekeeper checks.
 
 ## Resolved model ids (the Chief fills this in on shift 1)
 
