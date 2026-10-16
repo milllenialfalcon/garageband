@@ -17,7 +17,7 @@ const file = path.resolve(opt("--file", "TEAM.md"));
 
 const ROLES = ["orchestrator", "frontend", "backend", "heavy", "checker", "researcher"];
 const LANES = ["frontend", "backend", "heavy", "risky"];
-const TOOLS = ["claude", "codex", "opencode", "cursor", "grok", "gemini", "other"];
+const TOOLS = ["claude", "codex", "opencode", "hermes", "cursor", "grok", "gemini", "other"];
 const ROLE_HELP = {
   orchestrator: "thinks: validate, spec, architecture, tickets, briefs, final calls",
   frontend: "builds user interface tickets",

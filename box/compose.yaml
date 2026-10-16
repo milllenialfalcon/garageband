@@ -1,0 +1,38 @@
+# Garageband factory box for Docker Desktop on Windows.
+# Start:   docker compose -f box/compose.yaml up -d --build
+# Set up:  docker compose -f box/compose.yaml exec box first-run
+# Shell:   docker compose -f box/compose.yaml exec box bash
+# Stop:    docker compose -f box/compose.yaml stop      (agents stop too)
+name: garageband
+services:
+  box:
+    build:
+      context: .
+    image: garageband-box:latest
+    container_name: garageband-box
+    hostname: factory-box
+    restart: unless-stopped
+    init: false            # tini is already PID 1
+    ports:
+      # T3 server, reachable only from this Windows machine.
+      - "127.0.0.1:3773:3773"
+    env_file:
+      - path: ./box.env    # optional: Trello and OpenCode keys (copy box.env.example)
+        required: false
+    volumes:
+      - home:/home/factory         # logins, T3 state, Hermes, caches
+      - workspace:/workspace       # repositories the agents work in
+    shm_size: "2gb"                # headless Chrome needs more than the 64 MB default
+    deploy:
+      resources:
+        limits:
+          memory: 12g
+    healthcheck:
+      test: ["CMD", "bash", "-c", "[ \"$$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3773/)\" != 000 ]"]
+      interval: 60s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+volumes:
+  home:
+  workspace:

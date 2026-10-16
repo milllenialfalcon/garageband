@@ -2,6 +2,8 @@
 
 [T3 Code](https://github.com/pingdotgg/t3code) is a control panel for the coding tools already installed on your computer (Claude Code, Codex, OpenCode and others). It doesn't have its own skill system yet; each thread is run by one of those tools, so **Garageband is installed into the tools, and T3 Code is where you run and watch the work.**
 
+> **Running a whole sprint unattended?** Use the Docker factory box instead: [`sprint/START-HERE.md`](../sprint/START-HERE.md).
+
 ## One-time setup
 
 1. **Install the tools T3 Code will drive** and log in: `claude auth login`, `codex login`, `opencode auth login`.

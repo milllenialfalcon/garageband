@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# git wrapper for the factory box (first on PATH). For `git push` it forces the
+# box push guard to run (repos can't switch it off with their own hooksPath, and
+# --no-verify is refused). Every other git command passes straight through.
+real=/usr/bin/git
+sub=""; skip=0; global=()
+for a in "$@"; do
+  if [ $skip = 1 ]; then global+=("$a"); skip=0; continue; fi
+  case "$a" in
+    -C|-c|--git-dir|--work-tree|--namespace|--exec-path) global+=("$a"); skip=1 ;;
+    -*) global+=("$a") ;;
+    *) sub="$a"; break ;;
+  esac
+done
+if [ "$sub" = "push" ]; then
+  for a in "$@"; do
+    if [ "$a" = "--no-verify" ]; then
+      echo "box guard: 'git push --no-verify' is blocked; the push guard always runs in the factory box." >&2
+      exit 1
+    fi
+  done
+  FACTORY_REPO_HOOKS="$("$real" "${global[@]}" config --get core.hooksPath 2>/dev/null || true)"
+  export FACTORY_REPO_HOOKS
+  exec "$real" -c core.hooksPath=/opt/factory/githooks "$@"
+fi
+exec "$real" "$@"

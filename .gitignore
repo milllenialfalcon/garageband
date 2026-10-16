@@ -1,3 +1,9 @@
 node_modules/
 .DS_Store
 *.log
+
+# Factory box secrets
+box/box.env
+
+# Factory state worktree (factory-state branch) lives here in the factory box
+.factory

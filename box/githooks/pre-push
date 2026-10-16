@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Box-wide push guard. The git wrapper in /opt/factory/bin runs this hook for every
+# `git push` in the box, in every repo, whatever hooks the repo configures itself,
+# and then chains to the repo's own pre-push hook.
+#
+# Blocks: pushes to main/master/production/release/*, deleting non-ticket branches,
+# and force pushes except on the agent's own ticket branches (t/...).
+set -euo pipefail
+remote="${1:-origin}"
+z40=0000000000000000000000000000000000000000
+refs="$(cat)"
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ -z "${remote_ref:-}" ] && continue
+  branch="${remote_ref#refs/heads/}"
+  case "$branch" in
+    main|master|production|release/*)
+      echo "box guard: pushing to '$branch' is the founder's job. Push a branch and open a pull request." >&2
+      exit 1 ;;
+  esac
+  if [ "$local_sha" = "$z40" ]; then
+    case "$branch" in
+      t/*) ;;  # deleting a merged ticket branch is fine
+      *) echo "box guard: deleting '$branch' on $remote is blocked." >&2; exit 1 ;;
+    esac
+    continue
+  fi
+  if [ "$remote_sha" != "$z40" ] && ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+    case "$branch" in
+      t/*) ;;  # force-pushing your own ticket branch after a rebase is allowed
+      *) echo "box guard: force push to '$branch' would rewrite shared history." >&2; exit 1 ;;
+    esac
+  fi
+done <<<"$refs"
+
+# Chain to the repo's own pre-push hook, if it has one.
+top="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+own="${FACTORY_REPO_HOOKS:-}"
+if [ -n "$own" ] && [ "${own#/}" = "$own" ] && [ -n "$top" ]; then own="$top/$own"; fi
+if [ -z "$own" ]; then own="$(git rev-parse --git-common-dir 2>/dev/null)/hooks"; fi
+if [ "$own" != "/opt/factory/githooks" ] && [ -x "$own/pre-push" ]; then
+  printf '%s\n' "$refs" | "$own/pre-push" "$@"
+fi
+exit 0

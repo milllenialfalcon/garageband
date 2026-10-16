@@ -149,6 +149,38 @@ node -e "fetch('http://127.0.0.1:45678').then(()=>process.exit(1)).catch(()=>pro
 expect "passes through a failing command's exit code" 3 node "$repo/skills/browser-qa/scripts/with-server.mjs" \
   --cmd "node $work/server.mjs" --url http://127.0.0.1:45678 --timeout 20 -- node -e "process.exit(3)"
 
+echo "8. Sprint tools (ledger, status, team)"
+fac="$work/factory"
+expect "seeds the sprint ledger" 0 node "$repo/sprint/scripts/gb-seed.mjs" "$fac"
+[ "$(ls "$fac/tickets" | wc -l)" -ge 50 ] && ok "ticket files written" || bad "ticket files missing"
+expect "status runs" 0 node "$repo/sprint/scripts/gb-sprint.mjs" status --factory "$fac"
+expect "status --json is valid JSON" 0 bash -c "node '$repo/sprint/scripts/gb-sprint.mjs' status --json --factory '$fac' | node -e 'JSON.parse(require(\"fs\").readFileSync(0,\"utf8\"))'"
+node "$repo/sprint/scripts/gb-sprint.mjs" next --factory "$fac" --limit 50 | grep -q '^A0-05' && bad "next lists a ticket whose dependencies aren't done" || ok "next skips tickets with unfinished dependencies"
+expect "set updates a row" 0 node "$repo/sprint/scripts/gb-sprint.mjs" set A0-01 status=done finished=now --factory "$fac"
+node "$repo/sprint/scripts/gb-sprint.mjs" show A0-01 --factory "$fac" | grep -q "Status: done" && ok "row reads back" || bad "row did not update"
+expect "set rejects an unknown status" 1 node "$repo/sprint/scripts/gb-sprint.mjs" set A0-01 status=finished --factory "$fac"
+expect "add creates a ticket" 0 node "$repo/sprint/scripts/gb-sprint.mjs" add A1-02a phase=A1 lane=heavy size=S after=A1-01 title="Split piece | with pipe" --factory "$fac"
+node "$repo/sprint/scripts/gb-sprint.mjs" show A1-02a --factory "$fac" | grep -q "Title: Split piece | with pipe" && ok "pipes in titles survive the table" || bad "pipe in title broke the table"
+expect "add rejects unknown dependency" 1 node "$repo/sprint/scripts/gb-sprint.mjs" add A9-01 phase=A9 lane=heavy size=S after=Z9-99 title=x --factory "$fac"
+expect "sprint TEAM.md passes the team check" 0 node "$repo/skills/project-bootstrap/assets/project/scripts/gb-team.mjs" --check --strict --file "$repo/sprint/TEAM.md"
+expect "trello mirror skips cleanly without a key" 0 env -u TRELLO_KEY GB_FACTORY="$fac" node "$repo/sprint/scripts/gb-trello.mjs" sync
+
+echo "9. Factory box push guard"
+gw="$work/gw"; mkdir -p "$gw/bin" "$gw/hooks"
+sed "s#/opt/factory/githooks#$gw/hooks#g" "$repo/box/scripts/git" > "$gw/bin/git"
+sed "s#/opt/factory/githooks#$gw/hooks#g" "$repo/box/githooks/pre-push" > "$gw/hooks/pre-push"
+chmod +x "$gw/bin/git" "$gw/hooks/pre-push"
+git_q init --bare "$gw/r.git"; git_q init "$gw/w"; (cd "$gw/w" && git_q commit --allow-empty -m x && git remote add origin "$gw/r.git")
+gpush() { (cd "$gw/w" && PATH="$gw/bin:$PATH" git push -q "$@" >/dev/null 2>&1); }
+gpush origin HEAD:main && bad "push to main allowed" || ok "push to main blocked"
+gpush --no-verify origin HEAD:main && bad "--no-verify allowed" || ok "--no-verify refused"
+gpush origin HEAD:refs/heads/t/a0-01-x && ok "ticket branch push works" || bad "ticket branch push blocked"
+gpush origin HEAD:sprint/track-a && ok "sprint branch push works" || bad "sprint branch push blocked"
+(cd "$gw/w" && git_q commit --amend --allow-empty -m y)
+gpush -f origin HEAD:sprint/track-a && bad "force push to sprint branch allowed" || ok "force push to sprint branch blocked"
+gpush -f origin HEAD:t/a0-01-x && ok "force push to own ticket branch works" || bad "force push to ticket branch blocked"
+gpush origin :sprint/track-a && bad "deleting sprint branch allowed" || ok "deleting sprint branch blocked"
+
 echo
 echo "Passed: $pass   Failed: $fail"
 [ "$fail" -eq 0 ]
