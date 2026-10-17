@@ -66,6 +66,14 @@ In T3, Factory box environment, **Garageband** project → new thread:
 ## 8. Check it started (10 minutes later)
 Two more threads appear: **Relief** and **Concierge**. Say hello to the Concierge. That's it.
 
+## 9. Optional: follow it from your phone
+T3's phone app can show every thread, let you chat with the Concierge or the Chief, and send you a notification when an agent finishes, fails, needs approval or asks a question.
+1. In PowerShell: `docker compose -f box/compose.yaml exec -it box t3 connect`. It prints a link and a short code; open the link on any device, check the code matches, and sign in. Say yes if it offers the background service.
+2. Install the T3 Code app on your phone, sign in to the same T3 Connect account, and choose the Factory box environment.
+3. In the app: **Settings → Notifications → Device Notifications** on (and Live Activity / Ongoing Agent Activity if you like).
+
+T3 Connect reaches the box through T3's own tunnel service. T3 says its relay never receives your session token, but you are trusting T3's servers to broker the connection; skip this step if you'd rather not. Without it, the box stays reachable only from this PC.
+
 ## While it runs
 - **Want news?** Ask the Concierge anything: "how far along are we?", "when will the Enigma installer build?", "what's Hermes doing?", "how much Claude is left this week?". It only reads; asking never slows the work.
 - **Want to change something?** Tell the Concierge ("do B2 before B1", "the app name is …"). It passes your request to the Chief, who acts on it within the hour. Urgent: write in the Chief's thread directly.

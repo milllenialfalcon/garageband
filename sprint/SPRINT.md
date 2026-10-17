@@ -2,7 +2,7 @@
 
 **Dates:** Saturday 17 October to Friday 23 October 2026 (IST). **Goal:** build **Enigma**, the Garageband harness app forked from T3 Code, unattended, using the Claude, Codex, OpenCode Go and Gemini plans as fully as is safe. The stock-T3 track (setup tool and orchestrator skill for plain T3) was dropped on 17 October: all build effort goes into Enigma. The factory itself still runs in stock T3 inside the Docker box until Enigma can take over.
 
-## Scope (44 tickets, seeded in `.factory/ledger.md`)
+## Scope (45 tickets, seeded in `.factory/ledger.md`)
 
 | Priority | Phases | Repo |
 |---|---|---|
@@ -39,6 +39,7 @@ C1 and C2 improve the Garageband skill stack that Enigma ships with; Enigma's bo
 ## Needs-you list (`.factory/needs-you.md`)
 Never wait on the founder. When something needs him, add `- [ ] <date> <what> · default if no answer: <what we do meanwhile>` and keep working on everything else. The concierge shows the list and mirrors it to Trello. Items already known:
 - Make Enigma public, which gives unlimited free CI minutes (default: stays private, Windows builds manual only).
+- Later: an Enigma-branded phone app needs Apple and Google developer accounts and an Expo account (default: use T3's phone app with Enigma, checked by B0-09).
 - Merge `sprint/track-a` into Garageband's `main`, and create Enigma's `main` from `sprint/enigma` (at sprint end).
 
 ## Quota pacing (all plans)
