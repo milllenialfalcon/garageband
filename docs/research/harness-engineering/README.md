@@ -38,6 +38,9 @@ A single "where truth lives" table; Mechanical / Taste / Founder Call labels; "o
 - **C1-06** Sharper briefs, reports and handoffs; `[NEEDS CLARIFICATION]` markers and a lite spec path.
 - **B6-04** Retry classes and a breaker per provider (Track B).
 
+## Added 18 October: Harness² (Google Research)
+Automatic harness tuning without changing the model; claims biggest gains on cheap models, which is exactly our builders. Notes and proposed use (Enigma B10 learning loop): `10-harness2.md`.
+
 ## For later (Track B and after the sprint)
 Lease claims with expiry and an "unknown" state; generation fencing so an old orchestrator can't merge after handover; a needs-you queue that records who decided each item; an audit log of guard blocks; protect-files and circuit-breaker hooks for every provider; a governed project memory (decisions with status and "supersedes"); a small in-house eval suite from our own past tickets, scored pass^3 with cost per accepted task; capability scans on generated apps before release.
 
