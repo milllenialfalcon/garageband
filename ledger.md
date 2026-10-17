@@ -6,7 +6,7 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 - DeepSeek builds every lane; the lane lead (Claude for backend and risky, Codex for frontend) writes the brief and reviews. Lane `chief`: the Chief does it itself (probes, specs, repo setup).
 - Times are IST (UTC+05:30). Size: S under 2 hours of agent time, M about half a day.
 - Repos: `gb` = Garageband (sprint/track-a), `enigma` = Enigma (the T3 fork) (sprint/enigma). Enigma tickets (B*) live in `enigma`.
-- Priority order: A0=1, B0=1, C1=2, B1=2, B2=2, B4=3, B6=3, C2=4 (lower first).
+- Priority order: A0=1, B0=1, C1=2, B1=2, B2=2, M0=2, B4=3, B6=3, M1=3, C2=4 (lower first).
 
 <!-- ledger:start -->
 | Ticket | Phase | Title | Lane | Size | After | Status | Builder | Reviewer | PR | Attempts | Started | Finished |
@@ -56,6 +56,11 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 | B6-02 | B6 | Circuit breaker | backend | M | B6-01 | ready |  |  |  | 0 |  |  |
 | B6-03 | B6 | Guard layer and audit log for every provider | risky | M | B6-01 | ready |  |  |  | 0 |  |  |
 | B6-04 | B6 | Retry classes and a breaker per provider | backend | M | B6-01 | ready |  |  |  | 0 |  |  |
+| M0-01 | M0 | Mobile plan and accounts brief | chief | S | B0-02 | ready |  |  |  | 0 |  |  |
+| M1-01 | M1 | Rebrand the phone app to Enigma | heavy | M | B0-03, M0-01 | ready |  |  |  | 0 |  |  |
+| M1-02 | M1 | Android app built on GitHub | backend | M | M1-01, B0-04 | ready |  |  |  | 0 |  |  |
+| M1-03 | M1 | Phone app works with an Enigma server | backend | S | M1-02 | ready |  |  |  | 0 |  |  |
+| M1-04 | M1 | Factory board and needs-you queue on the phone | frontend | M | M1-01, B4-01 | ready |  |  |  | 0 |  |  |
 <!-- ledger:end -->
 
 ## Notes
