@@ -38,6 +38,7 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 | B0-05 | B0 | Windows installer built in CI | backend | M | B0-03, B0-04 | ready |  |  |  | 0 |  |  |
 | B0-06 | B0 | Stable-release sync job | backend | M | B0-04 | ready |  |  |  | 0 |  |  |
 | B0-07 | B0 | Patch list, notices and fork map | heavy | S | B0-03 | ready |  |  |  | 0 |  |  |
+| B0-09 | B0 | Enigma works with the T3 phone app | chief | S | B0-03 | ready |  |  |  | 0 |  |  |
 | B1-01 | B1 | Skills service in T3's toolset | backend | M | B0-04 | ready |  |  |  | 0 |  |  |
 | B1-02 | B1 | Constitution injected for every provider | risky | M | B1-01 | ready |  |  |  | 0 |  |  |
 | B1-03 | B1 | Shared skills library linked into every tool | heavy | S | B1-01 | ready |  |  |  | 0 |  |  |
