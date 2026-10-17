@@ -20,7 +20,7 @@ Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs
 | **Chief** | Claude · Opus 5.5 | Runs the line: dispatch, merges into sprint branches, ledger; writes specs and runs probes | `sprint/ORCHESTRATOR.md` |
 | **Relief** | Codex · GPT-6 Luna (hourly watchdog) and GPT-6.1 Sol (only when needed) | Keeps the line moving while Claude's allowance is resting | `sprint/RELIEF.md` |
 | **Concierge** | OpenCode (free) · GLM 5.3 Flash | Answers the founder's questions and ETAs; mirrors status to Trello. Read-only. | `sprint/CONCIERGE.md` |
-| **Workers** | Through Hermes: DeepSeek V4.1 Flash and MiMo V2.6 Flash (Go); Kimi K3 (Go) and Gemini 4 Argon (Gemini AI Pro) for big-context and rescue builds | Build every ticket from a brief | brief in the task |
+| **Workers** | Hermes, the chief builder (OpenCode Go): DeepSeek V4.1 Flash, MiMo V2.6 Flash, Kimi K3 for rescues. Antigravity (Gemini AI Pro): Gemini 4 Argon for big-context and last-rescue builds | Build every ticket from a brief | brief in the task |
 | **Leads** | Claude · Sonnet 5.5 (backend), Codex · GPT-6.1 Sol (frontend) | Write briefs for their lane and review the work; build only as a last resort | `sprint/TEAM.md` |
 | **Support** | Claude Haiku (clerk), GPT-6 Luna (gatekeeper), GLM 5.3 Flash (heavy reviews), GPT-6 Astra (risky and final reviews), Gemini 4 Argon (screenshot checks), Muse Spark 1.3 (research checks), free DeepSeek and GLM (research) | See TEAM.md "Who does what" | `sprint/TEAM.md` |
 

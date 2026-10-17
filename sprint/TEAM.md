@@ -58,7 +58,17 @@ The rule: **use the cheapest model that can do the job well, and spend the expen
 | **Gemini AI Pro** | Google's daily limits, separate from everything else | Gemini 4 Argon (top-tier reasoning, 1M-token context, reads images and PDFs) |
 | **OpenCode free** | Free; 200k-token context | DeepSeek V4.1 Flash, GLM 5.3 Flash |
 
-**How T3 reaches them:** Claude and Codex models through T3's own Claude and Codex providers. Everything else (Go, Gemini and the free models) through **Hermes**, by picking the model on the Hermes provider. The same models are also connected in **OpenCode**, which is the backup route if Hermes is down. T3 doesn't need any other provider.
+**How T3 reaches them (one provider per plan):**
+
+| T3 provider | Models | Used for |
+|---|---|---|
+| Claude (built in) | Opus, Sonnet, Haiku | Chief, backend lead, clerk |
+| Codex (built in) | Astra, Sol, Luna | Frontend lead, gatekeeper, relief, risky reviews |
+| **Antigravity** (built in, Google sign-in on your AI Pro account) | Gemini 4 Argon | Big-context builds, screenshot checks, rescue |
+| **Hermes** (ACP) | OpenCode Go: DeepSeek, MiMo, GLM, Kimi K3, Muse Spark | The chief builder: all building, heavy reviews, research checks |
+| **OpenCode** (built in) | Free DeepSeek and GLM | Research and the Concierge only |
+
+Backups: if Antigravity can't serve Gemini 4 Argon, use it through Hermes; if Hermes is down, use the same Go models on the OpenCode provider.
 
 ## Who does what
 
@@ -72,16 +82,16 @@ The rule: **use the cheapest model that can do the job well, and spend the expen
 | **Main worker**: builds every ticket | DeepSeek V4.1 Flash (Hermes) | Go | Cheap, good at code from a precise brief |
 | **Second worker**: tests, docs, test backfills, and builds when DeepSeek is busy | MiMo V2.6 Flash (Hermes) | Go | Cheapest output tokens |
 | **Heavy-lane reviewer**, and reader tests on M-size briefs | GLM 5.3 Flash (Hermes) | Go | Cheap and a different model from DeepSeek |
-| **Big-context worker**: tickets that must read a whole codebase (T3 source: A2-01, B0-02, B2-02) | Gemini 4 Argon (Hermes) | Gemini | 1M-token context, strong reasoning, its own plan |
-| **Screenshot checker**: looks at the screenshots in every frontend PR against DESIGN rules and the brief before Sol reviews | Gemini 4 Argon (Hermes) | Gemini | Reads images well; saves Sol's limits for the code review |
+| **Big-context worker**: tickets that must read a whole codebase (T3 source: A2-01, B0-02, B2-02) | Gemini 4 Argon (Antigravity) | Gemini | 1M-token context, strong reasoning, its own plan |
+| **Screenshot checker**: looks at the screenshots in every frontend PR against DESIGN rules and the brief before Sol reviews | Gemini 4 Argon (Antigravity) | Gemini | Reads images well; saves Sol's limits for the code review |
 | **Rescue builder 1**: attempt 4 when DeepSeek fails three times | Kimi K3 (Hermes) | Go | Strong at long agentic coding; a different family from DeepSeek |
-| **Rescue builder 2**: attempt 5 | Gemini 4 Argon (Hermes) | Gemini | The strongest model off the Claude and Codex plans |
-| **Second opinion on hard designs**: the Chief asks it before deciding risky or architecture questions | Kimi K3 or Gemini 4 Argon (Hermes) | Go / Gemini | Cheaper than asking Astra |
+| **Rescue builder 2**: attempt 5 | Gemini 4 Argon (Antigravity) | Gemini | The strongest model off the Claude and Codex plans |
+| **Second opinion on hard designs**: the Chief asks it before deciding risky or architecture questions | Kimi K3 (Hermes) or Gemini 4 Argon (Antigravity) | Go / Gemini | Cheaper than asking Astra |
 | **Second reviewer on risky tickets** (B1-02, B6-03), and the final sprint review | GPT-6 Astra | Codex | The most careful reviewer; used only where a mistake costs most |
 | **Last-resort builder**: only if the Chief decides after attempt 5 | The lane lead (Sonnet for backend and risky, Sol for frontend) | Claude / Codex | Only after DeepSeek, Kimi and Gemini have all failed |
-| **Researcher**: web and doc research, first drafts of research notes | DeepSeek V4.1 Flash and GLM 5.3 Flash (free) | Free | Free; 200k context is enough for research |
+| **Researcher**: web and doc research, first drafts of research notes | DeepSeek V4.1 Flash and GLM 5.3 Flash (OpenCode provider, free) | Free | Free; 200k context is enough for research |
 | **Research checker**: verifies research before anyone uses it | Muse Spark 1.3 (Hermes) | Go | A different model from the researchers; cheap |
-| **Concierge**: answers your questions, Trello mirror | GLM 5.3 Flash (free) | Free | Reads small files; fallback GLM 5.3 Flash on Go |
+| **Concierge**: answers your questions, Trello mirror | GLM 5.3 Flash (OpenCode provider, free) | Free | Reads small files; fallback GLM 5.3 Flash on Go |
 | **Relief watchdog**: hourly check that the Chief is alive | GPT-6 Luna | Codex | Cheap hourly check |
 | **Relief orchestrator**: runs the line while Claude rests | GPT-6.1 Sol | Codex | Launched by the watchdog only when needed |
 
@@ -106,7 +116,7 @@ The rule: **use the cheapest model that can do the job well, and spend the expen
 
 ## Rules
 - **Context limits.** The free models have 200k tokens: research only, never a job that must read a large codebase. Big-context jobs go to Gemini 4 Argon.
-- **Route.** Go, Gemini and free models run through the Hermes provider; if Hermes is down, use the same model on the OpenCode provider.
+- **Route.** Each plan through its own provider (table above). Antigravity follows T3's permission mode, but a question with fixed choices still needs an answer even in full access: Gemini tasks must say "never ask questions; decide and note your assumptions".
 - **No secrets to free models.** Free tiers may keep what you send. Research prompts contain no keys, tokens or private data.
 - **A reviewer is never the model that built the work.** A lead reviewing work built from its own brief is fine: it wrote no code.
 - **When a plan pauses:** Go paused → building moves to Gemini 4 Argon while Gemini AI Pro has room, otherwise stops while leads and the Chief write the next briefs and specs. Gemini paused → big-context tickets go to DeepSeek on Go (it also has a 1M-token context there), screenshot checks are skipped, and rescue stops at Kimi. Claude paused → the Luna watchdog launches the Sol relief orchestrator; backend reviews wait, and frontend and heavy work carries on. Codex paused → frontend briefs and reviews go to Sonnet; Haiku does the gatekeeper checks.

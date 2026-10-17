@@ -43,7 +43,9 @@ If the desktop app won't accept it, open the same link (with `127.0.0.1:3773`) i
 T3 → **Settings → Providers**, with the Factory box environment selected:
 - Claude, Codex and OpenCode should show as signed in. If one doesn't, press its **Sign in** button.
 - OpenCode → **Environment variables** → add `OPENCODE_API_KEY` = your OpenCode Go key → **Refresh provider status**.
-- **Add provider → Local ACP command**: executable `hermes`, one argument `acp`, display name `Hermes`. Refresh, and check its model list includes DeepSeek V4.1 Flash, MiMo V2.6 Flash, GLM 5.3 Flash, Kimi K3, Muse Spark 1.3 and Gemini 4 Argon. Hermes in the box needs the same connections as on your PC (the docker cp commands from first-run copy them). Do the same check on the OpenCode provider, which is the backup route.
+- **Add provider → Local ACP command**: executable `hermes`, one argument `acp`, display name `Hermes`. Refresh, and check its model list includes DeepSeek V4.1 Flash, MiMo V2.6 Flash, GLM 5.3 Flash, Kimi K3 and Muse Spark 1.3 (your OpenCode Go models; the docker cp commands from first-run copy your PC's Hermes setup).
+- **Antigravity** (for Gemini 4 Argon on your AI Pro plan): enable it, let T3 install its runtime, then **Sign in** with your Google account. Because the box is a separate machine, the last Google page won't load: copy that page's full address (including everything after `?`) into T3's return-URL field and press **Continue**. Check Gemini 4 Argon is in its model list.
+- **OpenCode**: check the free DeepSeek V4.1 Flash and GLM 5.3 Flash appear (used for research and the Concierge).
 
 ## 6. Smoke test
 ```powershell
