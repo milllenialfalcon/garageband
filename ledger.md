@@ -5,8 +5,8 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 - Status: `ready` (waiting for its "After" tickets or a free slot) · `claimed` · `in-review` · `changes-requested` · `blocked` · `done` (merged into the sprint branch, or chief-lane work finished) · `dropped`
 - DeepSeek builds every lane; the lane lead (Claude for backend and risky, Codex for frontend) writes the brief and reviews. Lane `chief`: the Chief does it itself (probes, specs, repo setup).
 - Times are IST (UTC+05:30). Size: S under 2 hours of agent time, M about half a day.
-- Repos: `gb` = Garageband (sprint/track-a), `studio` = Garageband Studio (fork) (sprint/track-b). Track B tickets (B*) live in `studio`.
-- Priority order: A0=1, C1=1, B0=1, A1=2, A2=2, C2=3, B1=3, B2=3, B4=4, B6=5 (lower first).
+- Repos: `gb` = Garageband (sprint/track-a), `enigma` = Enigma (the T3 fork) (sprint/enigma). Enigma tickets (B*) live in `enigma`.
+- Priority order: A0=1, B0=1, C1=2, B1=2, B2=2, B4=3, B6=3, C2=4 (lower first).
 
 <!-- ledger:start -->
 | Ticket | Phase | Title | Lane | Size | After | Status | Builder | Reviewer | PR | Attempts | Started | Finished |
@@ -14,30 +14,13 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 | A0-01 | A0 | Which skills each provider sees inside T3 | chief | S | — | ready |  |  |  | 0 |  |  |
 | A0-02 | A0 | Cross-provider delegation with worktrees | chief | S | — | ready |  |  |  | 0 |  |  |
 | A0-03 | A0 | Hermes over ACP in the box | chief | S | — | ready |  |  |  | 0 |  |  |
-| A0-04 | A0 | How T3 picks up project actions | heavy | S | — | ready |  |  |  | 0 |  |  |
-| A0-05 | A0 | A0 test report | heavy | S | A0-01, A0-02, A0-03, A0-04 | ready |  |  |  | 0 |  |  |
+| A0-05 | A0 | A0 test report | heavy | S | A0-01, A0-02, A0-03 | ready |  |  |  | 0 |  |  |
 | A0-06 | A0 | Quota meter for every plan | backend | M | — | ready |  |  |  | 0 |  |  |
 | A0-07 | A0 | Research runs without shell or write access | chief | S | — | ready |  |  |  | 0 |  |  |
-| A1-01 | A1 | garageband-t3 package and doctor command | backend | M | — | ready |  |  |  | 0 |  |  |
-| A1-02 | A1 | Installers that ask before each install | heavy | M | A1-01 | ready |  |  |  | 0 |  |  |
-| A1-03 | A1 | Logins for every tool | backend | S | A1-01 | ready |  |  |  | 0 |  |  |
-| A1-04 | A1 | Register Hermes as an ACP agent in T3 | backend | M | A0-03, A1-01 | ready |  |  |  | 0 |  |  |
-| A1-05 | A1 | Put skills where every tool sees them | heavy | S | A0-05, A1-01 | ready |  |  |  | 0 |  |  |
-| A1-06 | A1 | Team setup from the models T3 offers | backend | M | A1-01 | ready |  |  |  | 0 |  |  |
-| A1-07 | A1 | Add the project to T3 with its actions | heavy | S | A0-04, A1-01 | ready |  |  |  | 0 |  |  |
-| A1-08 | A1 | Smoke test: every tool lists the skills | backend | S | A1-05 | ready |  |  |  | 0 |  |  |
-| A1-09 | A1 | Windows and Linux CI for garageband-t3 | heavy | S | A1-02 | ready |  |  |  | 0 |  |  |
-| A1-10 | A1 | Founder docs: setup and troubleshooting | heavy | S | A1-08 | ready |  |  |  | 0 |  |  |
-| A1-11 | A1 | garageband-t3 ready to publish | heavy | S | A1-09 | ready |  |  |  | 0 |  |  |
-| A1-12 | A1 | Box hardening plan | chief | S | A0-07 | ready |  |  |  | 0 |  |  |
-| A2-01 | A2 | T3 reference for agents | heavy | S | A0-05 | ready |  |  |  | 0 |  |  |
-| A2-02 | A2 | Spec: t3-orchestrator skill | chief | S | A0-05 | ready |  |  |  | 0 |  |  |
-| A2-03 | A2 | Build the t3-orchestrator skill | backend | M | A2-01, A2-02 | ready |  |  |  | 0 |  |  |
-| A2-04 | A2 | Build the t3-concierge skill | backend | S | A2-02 | ready |  |  |  | 0 |  |  |
-| A2-05 | A2 | Counts, validator and tests for the new skills | heavy | S | A2-03, A2-04 | ready |  |  |  | 0 |  |  |
-| A2-06 | A2 | Dogfood: one ticket through the skill, hands-off | chief | S | A2-05 | ready |  |  |  | 0 |  |  |
-| A2-07 | A2 | skill-lab measures properly | backend | M | A2-05 | ready |  |  |  | 0 |  |  |
-| A2-08 | A2 | Reviewer calibration set | heavy | M | A0-05 | ready |  |  |  | 0 |  |  |
+| A0-08 | A0 | Box hardening plan | chief | S | A0-07 | ready |  |  |  | 0 |  |  |
+| B0-08 | B0 | T3 reference for agents | heavy | S | B0-01 | ready |  |  |  | 0 |  |  |
+| C1-07 | C1 | skill-lab measures properly | backend | M | — | ready |  |  |  | 0 |  |  |
+| C1-08 | C1 | Reviewer calibration set | heavy | M | A0-05 | ready |  |  |  | 0 |  |  |
 | C1-01 | C1 | Station contracts | chief | M | — | ready |  |  |  | 0 |  |  |
 | C1-02 | C1 | Machine-readable station contracts | heavy | S | C1-01 | ready |  |  |  | 0 |  |  |
 | C1-03 | C1 | Station metadata on every skill | heavy | S | C1-02 | ready |  |  |  | 0 |  |  |
@@ -48,7 +31,7 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 | C2-02 | C2 | gb-line tool | backend | M | C2-01 | ready |  |  |  | 0 |  |  |
 | C2-03 | C2 | Router and team setup read the line file | backend | S | C2-02 | ready |  |  |  | 0 |  |  |
 | C2-04 | C2 | Bring-your-own skill wrapper | heavy | M | C2-02, C1-04 | ready |  |  |  | 0 |  |  |
-| B0-01 | B0 | Create the Garageband Studio repo | chief | S | — | ready |  |  |  | 0 |  |  |
+| B0-01 | B0 | Create the Enigma repo | chief | S | — | ready |  |  |  | 0 |  |  |
 | B0-02 | B0 | Brand survey | heavy | S | B0-01 | ready |  |  |  | 0 |  |  |
 | B0-03 | B0 | One brand config, applied | backend | M | B0-02 | ready |  |  |  | 0 |  |  |
 | B0-04 | B0 | Pull request CI | backend | S | B0-01 | ready |  |  |  | 0 |  |  |

@@ -1,10 +1,10 @@
 {
-  "sprint": "garageband-build-2026-10",
+  "sprint": "enigma-build-2026-10",
   "shift": 0,
   "lease": { "holder": null, "thread": null, "until": null },
   "heartbeat": null,
   "threads": { "chief": null, "reliefWatchdog": null, "reliefActive": null, "concierge": null },
-  "projects": { "gb": "/workspace/garageband", "studio": null },
+  "projects": { "gb": "/workspace/garageband", "enigma": null },
   "models": {},
   "paused": {},
   "tasks": [],

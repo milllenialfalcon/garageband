@@ -1,6 +1,6 @@
 # factory-state
 
-Shared working state for the Garageband build sprint (see `sprint/SPRINT.md` on `sprint/track-a`). Checked out at `/workspace/garageband/.factory` in the factory box. Never merged into `main`.
+Shared working state for the Enigma build sprint (see `sprint/SPRINT.md` on `sprint/track-a`). Checked out at `/workspace/garageband/.factory` in the factory box. Never merged into `main`.
 
 | File | Who writes it |
 |---|---|
