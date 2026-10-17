@@ -17,6 +17,7 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 | A0-04 | A0 | How T3 picks up project actions | heavy | S | — | ready |  |  |  | 0 |  |  |
 | A0-05 | A0 | A0 test report | heavy | S | A0-01, A0-02, A0-03, A0-04 | ready |  |  |  | 0 |  |  |
 | A0-06 | A0 | Quota meter for every plan | backend | M | — | ready |  |  |  | 0 |  |  |
+| A0-07 | A0 | Research runs without shell or write access | chief | S | — | ready |  |  |  | 0 |  |  |
 | A1-01 | A1 | garageband-t3 package and doctor command | backend | M | — | ready |  |  |  | 0 |  |  |
 | A1-02 | A1 | Installers that ask before each install | heavy | M | A1-01 | ready |  |  |  | 0 |  |  |
 | A1-03 | A1 | Logins for every tool | backend | S | A1-01 | ready |  |  |  | 0 |  |  |
@@ -28,16 +29,21 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 | A1-09 | A1 | Windows and Linux CI for garageband-t3 | heavy | S | A1-02 | ready |  |  |  | 0 |  |  |
 | A1-10 | A1 | Founder docs: setup and troubleshooting | heavy | S | A1-08 | ready |  |  |  | 0 |  |  |
 | A1-11 | A1 | garageband-t3 ready to publish | heavy | S | A1-09 | ready |  |  |  | 0 |  |  |
+| A1-12 | A1 | Box hardening plan | chief | S | A0-07 | ready |  |  |  | 0 |  |  |
 | A2-01 | A2 | T3 reference for agents | heavy | S | A0-05 | ready |  |  |  | 0 |  |  |
 | A2-02 | A2 | Spec: t3-orchestrator skill | chief | S | A0-05 | ready |  |  |  | 0 |  |  |
 | A2-03 | A2 | Build the t3-orchestrator skill | backend | M | A2-01, A2-02 | ready |  |  |  | 0 |  |  |
 | A2-04 | A2 | Build the t3-concierge skill | backend | S | A2-02 | ready |  |  |  | 0 |  |  |
 | A2-05 | A2 | Counts, validator and tests for the new skills | heavy | S | A2-03, A2-04 | ready |  |  |  | 0 |  |  |
 | A2-06 | A2 | Dogfood: one ticket through the skill, hands-off | chief | S | A2-05 | ready |  |  |  | 0 |  |  |
+| A2-07 | A2 | skill-lab measures properly | backend | M | A2-05 | ready |  |  |  | 0 |  |  |
+| A2-08 | A2 | Reviewer calibration set | heavy | M | A0-05 | ready |  |  |  | 0 |  |  |
 | C1-01 | C1 | Station contracts | chief | M | — | ready |  |  |  | 0 |  |  |
 | C1-02 | C1 | Machine-readable station contracts | heavy | S | C1-01 | ready |  |  |  | 0 |  |  |
 | C1-03 | C1 | Station metadata on every skill | heavy | S | C1-02 | ready |  |  |  | 0 |  |  |
 | C1-04 | C1 | Checkers for station outputs | backend | M | C1-02 | ready |  |  |  | 0 |  |  |
+| C1-05 | C1 | Acceptance criteria IDs and coverage check | backend | S | C1-04 | ready |  |  |  | 0 |  |  |
+| C1-06 | C1 | Sharper briefs, reports and handoffs | heavy | S | C1-01 | ready |  |  |  | 0 |  |  |
 | C2-01 | C2 | Spec: the line file | chief | S | C1-01 | ready |  |  |  | 0 |  |  |
 | C2-02 | C2 | gb-line tool | backend | M | C2-01 | ready |  |  |  | 0 |  |  |
 | C2-03 | C2 | Router and team setup read the line file | backend | S | C2-02 | ready |  |  |  | 0 |  |  |
@@ -65,6 +71,7 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 | B6-01 | B6 | Spend caps | backend | M | B4-01 | ready |  |  |  | 0 |  |  |
 | B6-02 | B6 | Circuit breaker | backend | M | B6-01 | ready |  |  |  | 0 |  |  |
 | B6-03 | B6 | Guard layer and audit log for every provider | risky | M | B6-01 | ready |  |  |  | 0 |  |  |
+| B6-04 | B6 | Retry classes and a breaker per provider | backend | M | B6-01 | ready |  |  |  | 0 |  |  |
 <!-- ledger:end -->
 
 ## Notes
