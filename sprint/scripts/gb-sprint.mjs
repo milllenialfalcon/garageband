@@ -25,7 +25,7 @@ const slots = Object.fromEntries((flag("--slots", "claude=2,codex=2,go=4,gemini=
 const [cmd = "status", ...rest] = args;
 
 const LANE_POOL = { frontend: "go", backend: "go", heavy: "go", risky: "go", chief: "claude", probe: "claude" }; // DeepSeek builds every lane
-const PRIORITY = { A0: 1, B0: 1, C1: 2, B1: 2, B2: 2, B4: 3, B6: 3, C2: 4 };
+const PRIORITY = { A0: 1, B0: 1, C1: 2, B1: 2, B2: 2, M0: 2, B4: 3, B6: 3, M1: 3, C2: 4 };
 const HOURS = { S: 2, M: 5, L: 12 };        // agent wall-clock incl. lead brief and review, before calibration
 const WORK_HOURS_PER_DAY = 20;              // the line pauses for quota resets and reviews
 

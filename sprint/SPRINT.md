@@ -2,16 +2,17 @@
 
 **Dates:** Saturday 17 October to Friday 23 October 2026 (IST). **Goal:** build **Enigma**, the Garageband harness app forked from T3 Code, unattended, using the Claude, Codex, OpenCode Go and Gemini plans as fully as is safe. The stock-T3 track (setup tool and orchestrator skill for plain T3) was dropped on 17 October: all build effort goes into Enigma. The factory itself still runs in stock T3 inside the Docker box until Enigma can take over.
 
-## Scope (45 tickets, seeded in `.factory/ledger.md`)
+## Scope (50 tickets, seeded in `.factory/ledger.md`)
 
 | Priority | Phases | Repo |
 |---|---|---|
 | 1 | A0 Factory readiness (the box and its safety) · B0 Enigma foundation | Garageband · Enigma |
 | 2 | C1 Station contracts and quality tools · B1 Skills installed once · B2 Hermes as a native provider | Garageband · Enigma · Enigma |
-| 3 | B4 Live factory board · B6 Safety and cost controls | Enigma |
+| 2 | M0 Mobile plan and accounts brief | Enigma |
+| 3 | B4 Live factory board · B6 Safety and cost controls · M1 Enigma phone app, Android first | Enigma |
 | 4 | C2 Line file and bring-your-own skills | Garageband |
 
-C1 and C2 improve the Garageband skill stack that Enigma ships with; Enigma's board uses the station contracts (C1) and its later Line screen uses the line file (C2). Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs`. Later Enigma phases (B3 Line and Team screens, B5 shared memory, B7 automation, B8 remote control, B9 code map, B10 learning) are out of scope; if everything above finishes early, the Chief writes their specs only.
+C1 and C2 improve the Garageband skill stack that Enigma ships with; Enigma's board uses the station contracts (C1) and its later Line screen uses the line file (C2). Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs`. Later Enigma phases (iPhone app, Enigma's own relay and push notifications, store listings, B3 Line and Team screens, B5 shared memory, B7 automation, B8 remote control, B9 code map, B10 learning) are out of scope; if everything above finishes early, the Chief writes their specs only.
 
 ## Who runs what
 
@@ -39,7 +40,7 @@ C1 and C2 improve the Garageband skill stack that Enigma ships with; Enigma's bo
 ## Needs-you list (`.factory/needs-you.md`)
 Never wait on the founder. When something needs him, add `- [ ] <date> <what> · default if no answer: <what we do meanwhile>` and keep working on everything else. The concierge shows the list and mirrors it to Trello. Items already known:
 - Make Enigma public, which gives unlimited free CI minutes (default: stays private, Windows builds manual only).
-- Later: an Enigma-branded phone app needs Apple and Google developer accounts and an Expo account (default: use T3's phone app with Enigma, checked by B0-09).
+- Phone apps (from M0-01): an Expo account; Apple Developer Program for any iPhone install; optional Google Play account; Cloudflare and Clerk for Enigma's own relay and push notifications (defaults: Android APK installed directly, connected over Wi-Fi or Tailscale, no background notifications; T3's own phone app keeps working with Enigma meanwhile).
 - Merge `sprint/track-a` into Garageband's `main`, and create Enigma's `main` from `sprint/enigma` (at sprint end).
 
 ## Quota pacing (all plans)

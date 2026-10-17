@@ -27,6 +27,7 @@ const PHASE_NAMES = {
   A0: "Factory readiness", C1: "Station contracts and quality tools",
   C2: "Line file and bring-your-own skills", B0: "Enigma foundation", B1: "Install skills once",
   B2: "Hermes as a native provider", B4: "Live factory board", B6: "Safety and cost controls",
+  M0: "Mobile plan", M1: "Enigma phone app (Android first)",
 };
 const LISTS = ["Sprint", "Needs you", "Ready", "In progress", "Review", "Blocked", "Done"];
 
