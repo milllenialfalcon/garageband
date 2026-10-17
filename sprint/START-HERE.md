@@ -43,7 +43,7 @@ If the desktop app won't accept it, open the same link (with `127.0.0.1:3773`) i
 T3 → **Settings → Providers**, with the Factory box environment selected:
 - Claude, Codex and OpenCode should show as signed in. If one doesn't, press its **Sign in** button.
 - OpenCode → **Environment variables** → add `OPENCODE_API_KEY` = your OpenCode Go key → **Refresh provider status**.
-- **Add provider → Local ACP command**: executable `hermes`, one argument `acp`, display name `Hermes`. Refresh, and check its models appear.
+- **Add provider → Local ACP command**: executable `hermes`, one argument `acp`, display name `Hermes`. Refresh, and check its model list includes DeepSeek V4.1 Flash, MiMo V2.6 Flash, GLM 5.3 Flash, Kimi K3, Muse Spark 1.3 and Gemini 4 Argon. Hermes in the box needs the same connections as on your PC (the docker cp commands from first-run copy them). Do the same check on the OpenCode provider, which is the backup route.
 
 ## 6. Smoke test
 ```powershell

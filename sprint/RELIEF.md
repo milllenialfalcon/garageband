@@ -31,7 +31,7 @@ Keep it to a few tool calls.
    - Backend and risky tickets wait for Sonnet's brief and review. You may still dispatch builds whose brief already exists, and gate their PRs with Luna; hold them for Sonnet's review.
    - Frontend tickets carry on fully: Sol briefs and reviews.
    - Heavy tickets carry on: you write the short brief (instead of Haiku), and GLM 5.3 Flash reviews.
-   - Leave `chief`-lane tickets for the Chief. Escalation is allowed up to attempt 4 (Gemini 4 Argon) only.
+   - Leave `chief`-lane tickets for the Chief. Escalation is allowed through attempts 4 (Kimi K3) and 5 (Gemini 4 Argon).
    - Read results of tasks the Chief started with `t3_thread_read` on their thread ids from `chief-state.json.tasks`.
    - Renew the lease (+90 min) every loop. Mark ledger builders with "(relief)" so the retro can compare.
    - Keep each loop under about 15 tool calls.
