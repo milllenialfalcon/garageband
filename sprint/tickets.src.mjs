@@ -48,6 +48,13 @@ export const TICKETS = [
       "Unavailable sources return {available:false, reason} instead of failing; unit tests with recorded fixtures",
       "Never prints tokens or keys"],
     notes: ["Codex: codex app-server JSON-RPC account/rateLimits/read. Claude: the Agent SDK usage call T3 makes. OpenCode Go: needs OPENCODE_API_KEY."], touch: ["sprint/scripts/gb-quota.mjs", "sprint/scripts/gb-quota.test.mjs", "tests/"] },
+  { id: "A0-07", phase: "A0", title: "Research runs without shell or write access", lane: "chief", size: "S", after: [], repo: "gb",
+    goal: "Research models read web pages that may carry hidden instructions, so they must not be able to run commands, edit files or read the box's logins.",
+    ac: ["The free OpenCode research models run with shell, edit and write denied (an OpenCode agent or permission config; find the mechanism in OpenCode's docs or source)",
+      "Proof: a test research task told to run `ls ~` and to write a file is refused both times",
+      "If it can't be enforced: research tasks get only a URL list and return text, and the Chief records the gap as a needs-you item",
+      "Result in .factory/reports/a0-research-sandbox.md"],
+    notes: ["Prompt injection through fetched pages is the main way an unattended factory gets attacked."], touch: [".factory/reports/", "box/"] },
 
   // ---------------- A1: one-command setup ----------------
   { id: "A1-01", phase: "A1", title: "garageband-t3 package and doctor command", lane: "backend", size: "M", after: [], repo: "gb",
@@ -115,6 +122,11 @@ export const TICKETS = [
     ac: ["package.json bin/files/engines correct, README in t3/, version 0.1.0, `npm pack --dry-run` in CI lists only intended files",
       "needs-you item added: publish to npm (with the exact command)"],
     notes: [], touch: ["t3/", ".github/workflows/garageband-t3.yml"] },
+  { id: "A1-12", phase: "A1", title: "Box hardening plan", lane: "chief", size: "S", after: ["A0-07"], repo: "gb",
+    goal: "Decide how to stop one compromised agent in the box from reaching every login and the whole internet.",
+    ac: ["docs/t3/box-hardening.md: options for an outbound allowlist proxy, keeping each tool's login readable only by that tool (separate users), and per-ticket containers; cost and effort of each",
+      "Recommended next step as a ticket for after the sprint; anything that changes how the founder sets up the box is a needs-you item"],
+    notes: ["Sources: docs/research/harness-engineering.md (guardrails and runtimes sections)."], touch: ["docs/t3/box-hardening.md"] },
 
   // ---------------- A2: orchestrator skill ----------------
   { id: "A2-01", phase: "A2", title: "T3 reference for agents", lane: "heavy", size: "S", after: ["A0-05"], repo: "gb",
@@ -149,6 +161,18 @@ export const TICKETS = [
     ac: ["The Chief loads skills/t3-orchestrator from the sprint branch and runs one ready heavy ticket with it",
       "Evidence in .factory/reports/a2-dogfood.md: task ids, review rounds, PR link, anything the skill got wrong (fixed in a follow-up ticket)"],
     notes: [], touch: [".factory/reports/"] },
+  { id: "A2-07", phase: "A2", title: "skill-lab measures properly", lane: "backend", size: "M", after: ["A2-05"], repo: "gb",
+    goal: "skill-lab should prove a skill helps, not guess from one run.",
+    ac: ["skills/skill-lab: at least 3 runs per condition (with skill, without skill and without the constitution), machine checks on outputs before any model grading, pass^k (passes in all k runs) reported per model",
+      "A change only counts as better if the gain is outside the noise band (about the square root of p(1-p)/n) and holds on a held-out task",
+      "Records go to .factory/skill-lab/results.csv with fixed columns; validator and tests pass"],
+    notes: ["Sources: docs/research/harness-engineering.md (evals and course sections)."], touch: ["skills/skill-lab/", "tests/"] },
+  { id: "A2-08", phase: "A2", title: "Reviewer calibration set", lane: "heavy", size: "M", after: ["A0-05"], repo: "gb",
+    goal: "Know how good each reviewer model is at catching real bugs before we trust its approvals.",
+    ac: ["skills/doubt-review/references/calibration/: 10 small diffs, each with one known planted defect (logic, security, missing test, scope creep, accessibility) and the expected finding",
+      "sprint/scripts/gb-calibrate.mjs prints each reviewer's catch rate and false alarms from saved review outputs",
+      "The Chief runs it once for Sonnet, Sol, GLM 5.3 Flash and Astra and records the results in sprint/TEAM.md"],
+    notes: [], touch: ["skills/doubt-review/references/calibration/", "sprint/scripts/gb-calibrate.mjs", "tests/"] },
 
   // ---------------- C1: station contracts ----------------
   { id: "C1-01", phase: "C1", title: "Station contracts", lane: "chief", size: "M", after: [], repo: "gb",
@@ -171,6 +195,19 @@ export const TICKETS = [
     ac: ["scripts/check-outputs.mjs <kind> <file>: spec (template sections and status values), status-report (STATUS shape), review (verdict, severities), ticket (required fields)",
       "Good and bad fixtures for each kind under tests/fixtures/outputs/; tests in tests/run-tests.sh"],
     notes: [], touch: ["scripts/check-outputs.mjs", "tests/"] },
+  { id: "C1-05", phase: "C1", title: "Acceptance criteria IDs and coverage check", lane: "backend", size: "S", after: ["C1-04"], repo: "gb",
+    goal: "Every acceptance criterion is traceable to a ticket and a test, so nothing is quietly skipped.",
+    ac: ["Spec and ticket templates use IDs like AC-<slug>-01; write-spec and slice-tickets say so",
+      "check-outputs.mjs gains `coverage <spec>`: fails if any criterion has no ticket or no test naming its ID",
+      "Tests with good and bad fixtures"],
+    notes: [], touch: ["skills/project-bootstrap/assets/project/docs/specs/_TEMPLATE.md", "skills/project-bootstrap/assets/project/.factory/TICKET_TEMPLATE.md", "skills/write-spec/", "skills/slice-tickets/", "scripts/check-outputs.mjs", "tests/"] },
+  { id: "C1-06", phase: "C1", title: "Sharper briefs, reports and handoffs", lane: "heavy", size: "S", after: ["C1-01"], repo: "gb",
+    goal: "Templates carry the fields that stop the common multi-agent mistakes.",
+    ac: ["Brief template: base commit, allowed and forbidden paths, decisions not to reopen, earlier attempts, confidence label on each fact",
+      "STATUS block in the kit's AGENTS.md: adds NOT_PROVEN, BASE, CHANGED_BUT_UNVERIFIED (as in this repo's AGENTS.md)",
+      "Handoff template capped at one page with four parts: goal, done, remaining, files and failing tests",
+      "write-spec: [NEEDS CLARIFICATION] markers, and a spec can't be approved while any remain; a short 'lite spec' path for small changes"],
+    notes: ["Sources: docs/research/harness-engineering.md (specs and context sections)."], touch: ["skills/project-bootstrap/assets/project/", "skills/write-spec/", "skills/dispatch-brief/"] },
 
   // ---------------- C2: line file (next) ----------------
   { id: "C2-01", phase: "C2", title: "Spec: the line file", lane: "chief", size: "S", after: ["C1-01"], repo: "gb",
@@ -311,6 +348,12 @@ export const TICKETS = [
     goal: "The same safety rules apply whichever tool runs the work, and every action is on record.",
     ac: ["Command guard (the rules in Garageband's hooks/guard.sh) applied to every provider's command approvals; blocked actions become needs-you items",
       "Append-only audit log of agent actions; tests"],
+    notes: [], touch: ["apps/server/"] },
+  { id: "B6-04", phase: "B6", title: "Retry classes and a breaker per provider", lane: "backend", size: "M", after: ["B6-01"], repo: "studio",
+    goal: "When one provider or plan is failing, the factory stops hammering it instead of retrying every ticket against it.",
+    ac: ["Errors classified as quota, auth, transient or permanent; transient ones back off exponentially, the others don't retry",
+      "A per-provider breaker opens after repeated failures and pauses new work for that provider, raising a needs-you item if it stays open",
+      "Per-plan concurrency limits from the team file; tests"],
     notes: [], touch: ["apps/server/"] },
 ];
 

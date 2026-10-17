@@ -26,12 +26,13 @@ Keep a loop under about 15 tool calls. If there is more to do, do the most valua
 3. **Collect results.** For every entry in `chief-state.json.tasks` that isn't finished: use `task_status` for tasks this thread created, `t3_thread_read` (messages view, from the last position you stored) for tasks created by another Chief shift, Relief, or launched with `t3_thread_launch`. Don't read long threads yourself: when a result is longer than a STATUS block, have Haiku summarise it (`delegate_task`, mode wait: "Read thread <id> with t3_thread_read and return its STATUS block, PR URL and any blockers in under 15 lines"). For each finished one, act on its kind:
    - **brief** → the lead's brief is in `.factory/briefs/<id>.md`: dispatch the build to DeepSeek (section 3, step 3).
    - **build** → parse the STATUS block. `DONE` / `DONE_WITH_CONCERNS` with a PR link: set the ticket `in-review`, record the PR, dispatch the gatekeeper (section 4).
-   - **gate** → Luna's result is `PASS` or a list of failures. `PASS`: dispatch the lane review (section 4). Failures: attempt +1 and send them straight back to the builder (section 5), without spending a lead's time. `NEEDS_CONTEXT`: answer from the files if you can and re-dispatch with the answer added; if only the founder can answer, add a needs-you item, mark the ticket `blocked`, move on. `BLOCKED` or failed: count an attempt and follow section 5.
+   - **gate** → Luna's result is `PASS` or a list of failures. `PASS`: dispatch the lane review (section 4). Failures: attempt +1 and send them straight back to the builder (section 5), without spending a lead's time.
+   - **Every finished task:** append one line to `.factory/runs.jsonl`: `{"ticket","kind","provider","model","attempt","startedAt","finishedAt","status","failureClass"}`. This is the sprint's run log; the retro and model routing use it. `NEEDS_CONTEXT`: answer from the files if you can and re-dispatch with the answer added; if only the founder can answer, add a needs-you item, mark the ticket `blocked`, move on. `BLOCKED` or failed: count an attempt and follow section 5.
    - **review** → the reviewer posted its verdict as a PR comment. `VERDICT: APPROVE`: run `bash sprint/scripts/gb-merge.sh <pr>` (add `--repo milllenialfalcon/garageband-studio` for Track B). If it merges, set the ticket `done` with `finished=now`; if it refuses because CI is red, treat that as a failed round. `VERDICT: REQUEST CHANGES`: attempt +1, set `changes-requested`, dispatch a fix to the builder with the findings (section 5).
    - **chief** (probes, specs, setup) → check the output exists and answers every acceptance criterion; if it has a PR, send it for review by Codex Sol; otherwise set `done`.
 4. **Fill free slots.** Count running tasks per plan against SPRINT.md's limits (Go 4 builders; Claude 2 and Codex 2 for briefs, gates and reviews; free 2 research), skipping paused plans. Then `node sprint/scripts/gb-sprint.mjs next --limit 10` and dispatch (section 3). Builders: Hermes is the chief builder, on OpenCode Go: DeepSeek V4.1 Flash by default; MiMo V2.6 Flash for docs and test tickets or when two DeepSeek builds are already running; Kimi K3 for attempt 4. Gemini 4 Argon on the Antigravity provider builds the big-context tickets (A2-01, B0-02, B2-02) and attempt 5; every Gemini task ends with "Never ask questions; decide and note your assumptions." Research tasks go to the free models on the OpenCode provider. Never move a build to Claude or Codex because the Go workers are busy; escalation (section 5) is the only reason they build.
 5. **Watch for stuck work.** A task running more than 3 hours for S or 6 hours for M: read its thread; if it is looping or idle, `task_cancel` it (or `t3_thread_interrupt` for launched threads), count an attempt and re-dispatch with what you learned.
-6. **Save.** Every ledger change goes through `node sprint/scripts/gb-sprint.mjs set <id> field=value … --save`. Save `chief-state.json` and any reports with `git -C .factory add -A && git -C .factory commit -m "chief: <what>" && git -C .factory push`.
+6. **Save.** The ledger is the only record of ticket status; `chief-state.json` holds only task handles, the lease, pauses and model ids, never a second copy of status. Every ledger change goes through `node sprint/scripts/gb-sprint.mjs set <id> field=value … --save`. Save `chief-state.json` and any reports with `git -C .factory add -A && git -C .factory commit -m "chief: <what>" && git -C .factory push`.
 7. **Shift check.** After 8 loops in this thread, or sooner if this conversation feels long, go to section 6 (new shift).
 
 ## 3. Dispatching a build
@@ -60,16 +61,20 @@ Keep a loop under about 15 tool calls. If there is more to do, do the most valua
 
 ## 4. Gate, then review
 
-**Gate first.** Every PR goes to GPT-6 Luna before a lead sees it (`delegate_task`, role `test`, isolation `worktree`, `clientRequestId: "gate-<id>-r<round>"`, kind `gate`): "Check PR <url> for ticket <id> against this list and reply PASS or a numbered list of failures, nothing else: CI checks green (gh pr checks); only these paths changed: <touch list>; tests added or changed; the PR body has the plain-English summary and fresh check output; the builder's STATUS is present; the ticket's acceptance criteria each have evidence. Do not review code quality." Luna catches the cheap failures so Sonnet, Sol and Astra spend their limits on real reviews. For **frontend** PRs that pass, Gemini 4 Argon (Antigravity) then checks the screenshots in the PR against the brief and DESIGN rules (`delegate_task`, kind `gate`, "reply PASS or a numbered list of visual problems") before Sol reviews.
+**Script gate first.** Run `node sprint/scripts/gb-gate.mjs <pr> --ticket <id>` (add `--repo milllenialfalcon/garageband-studio` for Track B). It checks, with no model: CI green, only the ticket's paths changed, no protected sprint or guard files touched, a test changed when code changed, and a summary, STATUS and EVIDENCE in the PR body. `FAIL`: attempt +1 and send the list straight back to the builder.
+
+**Then the evidence gate.** A PR that passes the script goes to GPT-6 Luna before a lead sees it (`delegate_task`, role `test`, isolation `worktree`, `clientRequestId: "gate-<id>-r<round>"`, kind `gate`): "For PR <url> (ticket <id>), check only that each acceptance criterion below has concrete evidence in the PR (a test that exercises it, or pasted output from the final commit). Reply PASS or a numbered list of criteria without evidence, nothing else. Do not review code quality. Criteria: <list>" Luna catches the cheap failures so Sonnet, Sol and Astra spend their limits on real reviews. For **frontend** PRs that pass, Gemini 4 Argon (Antigravity) then checks the screenshots in the PR against the brief and DESIGN rules (`delegate_task`, kind `gate`, "reply PASS or a numbered list of visual problems") before Sol reviews.
 
 **Then review.** Every review round is a **fresh** task to the lane's reviewer (`sprint/TEAM.md`: Sonnet for backend and risky, Sol for frontend, GLM 5.3 Flash on Go for heavy), never the builder's model, never a follow-up in an old thread. `clientRequestId: "review-<id>-r<round>"`. Track A: `delegate_task`, `role: "review"`, `isolation: "worktree"`. Track B: `t3_thread_launch` with `workspaceStrategy: {type: "worktree", baseRef: "<PR branch>", branch: "review/<id>-r<round>", startFromOrigin: true}`. Task text:
 ```
 You are the reviewer for ticket <id>, PR <url>. You did not write this code.
+Do not read the builder's thread or reasoning: judge from the diff, the brief and your own runs.
 Check out the PR (gh pr checkout <n>) and read AGENTS.md, then the brief below.
+Note the commit you reviewed: git rev-parse HEAD.
 Use the doubt-review skill if you have it. Run every check command yourself; don't trust pasted output.
 Judge only against the acceptance criteria and AGENTS.md. Findings: Critical, Required, Optional, Nit.
-Post exactly one PR comment with gh pr comment <n> --body "...", ending with a line
-"VERDICT: APPROVE" or "VERDICT: REQUEST CHANGES" (any Critical or Required finding means REQUEST CHANGES).
+Post exactly one PR comment with gh pr comment <n> --body "...", ending with two lines:
+"REVIEWED-SHA: <the commit you reviewed>" and then "VERDICT: APPROVE" or "VERDICT: REQUEST CHANGES" (any Critical or Required finding means REQUEST CHANGES).
 Do not push commits. End your final message with the same verdict line.
 Brief: <full brief>
 Earlier rounds (if any): <findings and the builder's responses>
@@ -77,6 +82,12 @@ Earlier rounds (if any): <findings and the builder's responses>
 Risky-lane tickets get a second, independent review by GPT-6 Astra after Sonnet approves; both must approve. Reviews by a lead are also a chance to coach: ask the lead to put any finding DeepSeek keeps repeating into the brief template notes.
 
 ## 5. Failures and escalation (AGENTS.md section 5)
+
+- **Classify every failure** in the ticket's Attempt log and in runs.jsonl: `product` (the code is wrong), `test` (the test is wrong), `brief` (the brief was wrong or vague), `environment` (box, tool or CI broke), `external` (a service or quota). Only `product`, `test` and `brief` count as attempts. Fix `environment` yourself or add a needs-you item; wait out `external`. Don't burn rescue models on a flaky box.
+- **Same failure twice** (the same error or the same finding): don't retry the same way. Fix the brief, or go straight to the next escalation step.
+- **`NOT_PROVEN`** from a builder means a criterion can't be shown as written. Don't retry: decide whether the criterion or the ticket is wrong, and rewrite it.
+- **Lost or stuck work:** before re-dispatching, check what already exists (branch, commits, an open PR). If a PR exists, gate it instead of rebuilding.
+- **A task waiting on an approval or a question** in an unattended run: answer from the brief if you can; otherwise cancel it, decide, and re-dispatch with the decision written in, and log it.
 
 - Attempts 1–3: DeepSeek fixes. A fresh task with the original brief, the reviewer's findings, and "Push fixes to the same branch; reply on the PR to each finding." If the findings show the brief was wrong or vague, have the lead fix the brief first.
 - Attempt 4: Kimi K3 builds it; attempt 5: Gemini 4 Argon. Each gets a fresh brief that says what failed before.

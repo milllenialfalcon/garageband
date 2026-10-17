@@ -3,14 +3,14 @@
 #   bash sprint/scripts/gb-merge.sh <pr-number> [--repo owner/name]
 #
 # Refuses unless: the PR's base branch is sprint/*, its checks are green, it has a
-# review verdict comment "VERDICT: APPROVE" posted by a reviewer task, and the head
+# review verdict comment "VERDICT: APPROVE" naming the reviewed head commit (REVIEWED-SHA), and the head
 # branch is a ticket branch (t/...). Squash-merges and deletes the ticket branch.
 set -euo pipefail
 pr="${1:?usage: gb-merge.sh <pr-number> [--repo owner/name]}"; shift || true
 repo_args=()
 if [ "${1:-}" = "--repo" ]; then repo_args=(--repo "${2:?}"); fi
 
-info="$(gh pr view "$pr" "${repo_args[@]}" --json baseRefName,headRefName,state,isDraft,mergeable,title,comments,url)"
+info="$(gh pr view "$pr" "${repo_args[@]}" --json baseRefName,headRefName,headRefOid,state,isDraft,mergeable,title,comments,url)"
 base="$(jq -r .baseRefName <<<"$info")"; head="$(jq -r .headRefName <<<"$info")"
 state="$(jq -r .state <<<"$info")"; url="$(jq -r .url <<<"$info")"
 
@@ -19,9 +19,14 @@ fail() { echo "gb-merge: refused for $url: $1" >&2; exit 1; }
 [[ "$base" == sprint/* ]] || fail "base is '$base'. Agents only merge into sprint/* branches; main is the founder's."
 [[ "$head" == t/* ]] || fail "head '$head' is not a ticket branch (t/...)"
 [ "$(jq -r .isDraft <<<"$info")" = "false" ] || gh pr ready "$pr" "${repo_args[@]}" >/dev/null
-# The most recent verdict comment must be APPROVE (a later REQUEST CHANGES wins over an earlier approval).
+# The most recent verdict comment must be APPROVE (a later REQUEST CHANGES wins over an earlier approval),
+# and it must name the exact commit it reviewed: any push after the review needs a new review.
 last="$(jq -r '[.comments[].body | capture("(?m)^VERDICT: (?<v>APPROVE|REQUEST CHANGES)") | .v] | last // "none"' <<<"$info")"
 [ "$last" = "APPROVE" ] || fail "latest review verdict is '$last', not APPROVE"
+head_sha="$(jq -r .headRefOid <<<"$info")"
+reviewed="$(jq -r '[.comments[].body | select(test("(?m)^VERDICT: APPROVE")) | capture("(?m)^REVIEWED-SHA: (?<s>[0-9a-f]{7,40})") | .s] | last // ""' <<<"$info")"
+[ -n "$reviewed" ] || fail "the approval has no 'REVIEWED-SHA: <commit>' line"
+[[ "$head_sha" == "$reviewed"* ]] || fail "approval was for ${reviewed:0:12} but the PR head is now ${head_sha:0:12}; review the new commits first"
 
 # Checks: every required/visible check must have passed (no pending, no failures).
 if ! checks="$(gh pr checks "$pr" "${repo_args[@]}" --json name,bucket 2>/dev/null)"; then
@@ -31,5 +36,5 @@ fi
 bad="$(jq -r '[.[] | select(.bucket != "pass" and .bucket != "skipping")] | map(.name + "=" + .bucket) | join(", ")' <<<"$checks")"
 [ -z "$bad" ] || fail "checks not green: $bad"
 
-gh pr merge "$pr" "${repo_args[@]}" --squash --delete-branch
+gh pr merge "$pr" "${repo_args[@]}" --squash --delete-branch --match-head-commit "$head_sha"
 echo "gb-merge: merged $url into $base"

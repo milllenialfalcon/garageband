@@ -165,6 +165,38 @@ expect "add rejects unknown dependency" 1 node "$repo/sprint/scripts/gb-sprint.m
 expect "sprint TEAM.md passes the team check" 0 node "$repo/skills/project-bootstrap/assets/project/scripts/gb-team.mjs" --check --strict --file "$repo/sprint/TEAM.md"
 expect "trello mirror skips cleanly without a key" 0 env -u TRELLO_KEY GB_FACTORY="$fac" node "$repo/sprint/scripts/gb-trello.mjs" sync
 
+echo "8b. PR gate and merge gate"
+gt="$work/gate"; mkdir -p "$gt/bin"
+printf '%s\n' '# A1-01: x' '- Phase: A1 · Lane: backend · Size: M' '- Touch only: `t3/`' > "$gt/ticket.md"
+good='{"files":[{"path":"t3/src/doctor.js"},{"path":"t3/test/doctor.test.js"}],"body":"This adds the doctor command that checks which tools are installed and says what to do next for each missing one.\nSTATUS: DONE\nEVIDENCE: npm test passed","headRefOid":"abc1234def","statusCheckRollup":[{"name":"test","conclusion":"SUCCESS"}]}'
+echo "$good" > "$gt/good.json"
+expect "gate passes a clean PR" 0 node "$repo/sprint/scripts/gb-gate.mjs" --pr-json "$gt/good.json" --ticket-file "$gt/ticket.md"
+echo "$good" | sed 's#t3/test/doctor.test.js#sprint/scripts/gb-merge.sh#' > "$gt/scope.json"
+{ node "$repo/sprint/scripts/gb-gate.mjs" --pr-json "$gt/scope.json" --ticket-file "$gt/ticket.md" || true; } | grep -q "protected file" && ok "gate blocks protected and out-of-scope files" || bad "gate missed a protected file"
+echo "$good" | sed 's#,{"path":"t3/test/doctor.test.js"}##' > "$gt/notest.json"
+{ node "$repo/sprint/scripts/gb-gate.mjs" --pr-json "$gt/notest.json" --ticket-file "$gt/ticket.md" || true; } | grep -q "no test file" && ok "gate requires a test change" || bad "gate allowed code without tests"
+echo "$good" | sed 's#"SUCCESS"#"FAILURE"#' > "$gt/red.json"
+expect "gate fails red CI" 1 node "$repo/sprint/scripts/gb-gate.mjs" --pr-json "$gt/red.json" --ticket-file "$gt/ticket.md"
+mkgh() { # $1 = comments json array, $2 = head sha
+  {
+    echo '#!/usr/bin/env bash'
+    echo 'case "$1 $2" in'
+    echo "  \"pr view\") echo '{\"baseRefName\":\"sprint/track-a\",\"headRefName\":\"t/a1-01-x\",\"headRefOid\":\"$2\",\"state\":\"OPEN\",\"isDraft\":false,\"title\":\"x\",\"url\":\"u\",\"comments\":$1}' ;;"
+    echo "  \"pr checks\") echo '[{\"name\":\"test\",\"bucket\":\"pass\"}]' ;;"
+    echo '  "pr merge") echo merged ;;'
+    echo 'esac'
+  } > "$gt/bin/gh"
+  chmod +x "$gt/bin/gh"
+}
+mkgh '[{"body":"ok\nREVIEWED-SHA: abc1234\nVERDICT: APPROVE"}]' abc1234def
+expect "merge allowed when approval names the head commit" 0 env PATH="$gt/bin:$PATH" bash "$repo/sprint/scripts/gb-merge.sh" 7
+mkgh '[{"body":"ok\nREVIEWED-SHA: abc1234\nVERDICT: APPROVE"}]' fff9999aaa
+expect "merge refused after a push the reviewer didn't see" 1 env PATH="$gt/bin:$PATH" bash "$repo/sprint/scripts/gb-merge.sh" 7
+mkgh '[{"body":"VERDICT: APPROVE"}]' abc1234def
+expect "merge refused when approval has no reviewed commit" 1 env PATH="$gt/bin:$PATH" bash "$repo/sprint/scripts/gb-merge.sh" 7
+mkgh '[{"body":"REVIEWED-SHA: abc1234\nVERDICT: APPROVE"},{"body":"REVIEWED-SHA: abc1234\nVERDICT: REQUEST CHANGES"}]' abc1234def
+expect "merge refused when the latest verdict requests changes" 1 env PATH="$gt/bin:$PATH" bash "$repo/sprint/scripts/gb-merge.sh" 7
+
 echo "9. Factory box push guard"
 gw="$work/gw"; mkdir -p "$gw/bin" "$gw/hooks"
 sed "s#/opt/factory/githooks#$gw/hooks#g" "$repo/box/scripts/git" > "$gw/bin/git"
