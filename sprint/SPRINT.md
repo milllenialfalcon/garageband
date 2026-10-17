@@ -2,7 +2,7 @@
 
 **Dates:** Friday 16 October to Friday 23 October 2026 (IST). **Goal:** build the Now and Next phases of the Garageband build plan, Track A and Track B in parallel, unattended, using the Claude, Codex and OpenCode Go plans as fully as is safe.
 
-## Scope (54 tickets, seeded in `.factory/ledger.md`)
+## Scope (61 tickets, seeded in `.factory/ledger.md`)
 
 | Priority | Phases | Repo |
 |---|---|---|
