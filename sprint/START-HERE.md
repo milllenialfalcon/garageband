@@ -1,6 +1,8 @@
-# Start the Garageband build sprint
+# Start the Enigma build sprint
 
 About 30 minutes of your time, once. After step 8 the sprint runs by itself until 23 October, and you only talk to the Concierge when you want news.
+
+**What it builds:** **Enigma**, your own harness app: T3 Code forked and turned into the Garageband factory (skills installed once for every tool, Hermes as a built-in provider, a live factory board, spend and safety controls). It lives in its own private repo, created by the agents in the first hour.
 
 **What you'll have:** a Linux "factory box" in Docker Desktop running the T3 server and every agent tool. Your T3 desktop app connects to it like a second computer. Three threads run there: the **Chief** (Claude Opus) runs the work, **Relief** (Codex) takes over when Claude's allowance is resting, and the **Concierge** (GLM) answers your questions. **DeepSeek (through Hermes) builds every ticket.** Claude leads the backend work and Codex leads the frontend work: they write DeepSeek's instructions and check its work, so their allowances go on thinking, not typing. Trello board: https://trello.com/b/qjhCSnQQ/garageband-build
 
@@ -59,17 +61,17 @@ In T3, Factory box environment, **Garageband** project → new thread:
 - Model: **Claude · Opus 5.5**
 - Access: **Full access** (otherwise every agent stops to ask permission and the sprint stalls)
 - Message:
-  > You are the Chief for the Garageband build sprint, shift 1. Read /workspace/garageband/sprint/ORCHESTRATOR.md and start with section 1.
+  > You are the Chief for the Enigma build sprint, shift 1. Read /workspace/garageband/sprint/ORCHESTRATOR.md and start with section 1.
 
 ## 8. Check it started (10 minutes later)
 Two more threads appear: **Relief** and **Concierge**. Say hello to the Concierge. That's it.
 
 ## While it runs
-- **Want news?** Ask the Concierge anything: "how far along are we?", "when will A1 be done?", "what's Hermes doing?", "how much Claude is left this week?". It only reads; asking never slows the work.
+- **Want news?** Ask the Concierge anything: "how far along are we?", "when will the Enigma installer build?", "what's Hermes doing?", "how much Claude is left this week?". It only reads; asking never slows the work.
 - **Want to change something?** Tell the Concierge ("do B2 before B1", "the app name is …"). It passes your request to the Chief, who acts on it within the hour. Urgent: write in the Chief's thread directly.
 - **Needs you:** the Concierge and the Trello "Needs you" list show the few decisions that are yours, each with what happens if you don't answer. Nothing waits for you.
 - **Pause everything:** tell the Chief "pause the sprint", or stop the box: `docker compose -f box/compose.yaml stop`. Start again with `up -d`; the Chief carries on from the ledger.
 - **Health check:** `docker compose -f box/compose.yaml exec box box-status`.
 
 ## What never happens without you
-Nothing is merged into `main`, nothing is published, no repo is made public or deleted, nothing is bought. Agents merge only into the two sprint branches (`sprint/track-a`, `sprint/track-b`), and only after a different model has reviewed the work and the tests are green. At the end you get one pull request into `main` to look at, plus the final report.
+Nothing is merged into `main`, nothing is published, no repo is made public or deleted, nothing is bought. Agents merge only into the two sprint branches (`sprint/track-a`, `sprint/enigma`), and only after a different model has reviewed the work and the tests are green. At the end you get one pull request into `main` to look at, plus the final report.

@@ -28,7 +28,7 @@ The single source of truth for the sprint. **Only the Chief (orchestrator) and t
 - Status: \`ready\` (waiting for its "After" tickets or a free slot) · \`claimed\` · \`in-review\` · \`changes-requested\` · \`blocked\` · \`done\` (merged into the sprint branch, or chief-lane work finished) · \`dropped\`
 - DeepSeek builds every lane; the lane lead (Claude for backend and risky, Codex for frontend) writes the brief and reviews. Lane \`chief\`: the Chief does it itself (probes, specs, repo setup).
 - Times are IST (UTC+05:30). Size: S under 2 hours of agent time, M about half a day.
-- Repos: ${Object.entries(REPOS).map(([k, r]) => `\`${k}\` = ${r.name} (${r.base})`).join(", ")}. Track B tickets (B*) live in \`studio\`.
+- Repos: ${Object.entries(REPOS).map(([k, r]) => `\`${k}\` = ${r.name} (${r.base})`).join(", ")}. Enigma tickets (B*) live in \`enigma\`.
 - Priority order: ${Object.entries(PRIORITY).sort((a, b) => a[1] - b[1]).map(([p, n]) => `${p}=${n}`).join(", ")} (lower first).
 
 <!-- ledger:start -->

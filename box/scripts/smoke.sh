@@ -10,7 +10,7 @@ t() { timeout "${2:-120}" bash -c "$1" >/tmp/smoke.out 2>&1; }
 
 echo "Tools"
 for c in t3 node git gh claude codex opencode hermes; do have "$c"; row "$c installed" $? ; done
-have vp; row "vp (Track B builds)" $? "installed on first Track B ticket if missing"
+have vp; row "vp (Enigma builds)" $? "installed on the first Enigma ticket if missing"
 
 echo "Logins and a one-line answer from each (uses a tiny amount of each plan)"
 t 'gh auth status'; row "GitHub" $?

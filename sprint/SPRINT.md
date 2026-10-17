@@ -1,17 +1,17 @@
-# Garageband build sprint
+# Enigma build sprint
 
-**Dates:** Friday 16 October to Friday 23 October 2026 (IST). **Goal:** build the Now and Next phases of the Garageband build plan, Track A and Track B in parallel, unattended, using the Claude, Codex and OpenCode Go plans as fully as is safe.
+**Dates:** Saturday 17 October to Friday 23 October 2026 (IST). **Goal:** build **Enigma**, the Garageband harness app forked from T3 Code, unattended, using the Claude, Codex, OpenCode Go and Gemini plans as fully as is safe. The stock-T3 track (setup tool and orchestrator skill for plain T3) was dropped on 17 October: all build effort goes into Enigma. The factory itself still runs in stock T3 inside the Docker box until Enigma can take over.
 
-## Scope (61 tickets, seeded in `.factory/ledger.md`)
+## Scope (44 tickets, seeded in `.factory/ledger.md`)
 
 | Priority | Phases | Repo |
 |---|---|---|
-| 1 | A0 Prove the core · C1 Station contracts · B0 Fork foundation | Garageband · Garageband · Studio |
-| 2 | A1 One-command setup · A2 Orchestrator skill | Garageband |
-| 3 | C2 Line file · B1 Skills once · B2 Hermes provider | Garageband · Studio · Studio |
-| 4–5 | B4 Live factory board · B6 Safety and cost | Studio |
+| 1 | A0 Factory readiness (the box and its safety) · B0 Enigma foundation | Garageband · Enigma |
+| 2 | C1 Station contracts and quality tools · B1 Skills installed once · B2 Hermes as a native provider | Garageband · Enigma · Enigma |
+| 3 | B4 Live factory board · B6 Safety and cost controls | Enigma |
+| 4 | C2 Line file and bring-your-own skills | Garageband |
 
-Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs`. Later phases (A3, B3, B5, B7–B10) are out of scope; if everything above finishes early, the Chief plans A3 (pilot) as a spec only.
+C1 and C2 improve the Garageband skill stack that Enigma ships with; Enigma's board uses the station contracts (C1) and its later Line screen uses the line file (C2). Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs`. Later Enigma phases (B3 Line and Team screens, B5 shared memory, B7 automation, B8 remote control, B9 code map, B10 learning) are out of scope; if everything above finishes early, the Chief writes their specs only.
 
 ## Who runs what
 
@@ -26,22 +26,20 @@ Ticket files: `.factory/tickets/<id>.md`. Starting list: `sprint/tickets.src.mjs
 
 ## Repos and branches
 - **Garageband** (`/workspace/garageband`, github.com/milllenialfalcon/Garageband): tickets branch from `sprint/track-a` and merge back into it.
-- **Garageband Studio** (`/workspace/garageband-studio`, created by B0-01 as a private repo, not a GitHub fork): tickets branch from `sprint/track-b`. Upstream T3 Code at its latest stable tag lives on `upstream/stable`. There is no `main` until the founder makes one.
+- **Enigma** (`/workspace/enigma`, created by B0-01 as a private repo, not a GitHub fork): tickets branch from `sprint/enigma`. Upstream T3 Code at its latest stable tag lives on `upstream/stable`. There is no `main` until the founder makes one.
 - **Factory state** (`/workspace/garageband/.factory`, branch `factory-state`): ledger, tickets, briefs, reports, handoffs, needs-you list, inbox and the Chief's task records for both repos.
-- Ticket branches: `t/<id>-<slug>` (lowercase), for example `t/a1-01-doctor`.
+- Ticket branches: `t/<id>-<slug>` (lowercase), for example `t/b0-04-pr-ci`.
 
 ## Founder pre-approvals for this sprint (given 16 Oct)
-1. The Chief or the relief orchestrator may merge a ticket PR into `sprint/track-a` or `sprint/track-b` once a reviewer of a different model has posted `VERDICT: APPROVE` and CI is green, using `sprint/scripts/gb-merge.sh` only.
-2. B0-01 may create the private repo `milllenialfalcon/garageband-studio` and register it in T3.
+1. The Chief or the relief orchestrator may merge a ticket PR into `sprint/track-a` or `sprint/enigma` once a reviewer of a different model has posted `VERDICT: APPROVE` and CI is green, using `sprint/scripts/gb-merge.sh` only.
+2. B0-01 may create the private repo `milllenialfalcon/enigma` and register it in T3.
 3. The Chief may launch the relief and concierge threads, schedule its own heartbeats, and launch ticket threads in either project.
 4. Everything else in AGENTS.md "Founder Calls" still waits for the founder, as a needs-you item.
 
 ## Needs-you list (`.factory/needs-you.md`)
 Never wait on the founder. When something needs him, add `- [ ] <date> <what> · default if no answer: <what we do meanwhile>` and keep working on everything else. The concierge shows the list and mirrors it to Trello. Items already known:
-- App name for the fork (working name: Garageband Studio).
-- Make Garageband Studio public, which gives unlimited free CI minutes (default: stays private, Windows builds manual only).
-- Publish garageband-t3 to npm (at sprint end).
-- Merge `sprint/track-a` into `main`, and create Studio's `main` from `sprint/track-b` (at sprint end).
+- Make Enigma public, which gives unlimited free CI minutes (default: stays private, Windows builds manual only).
+- Merge `sprint/track-a` into Garageband's `main`, and create Enigma's `main` from `sprint/enigma` (at sprint end).
 
 ## Quota pacing (all plans)
 Read live numbers with `node sprint/scripts/gb-quota.mjs` once A0-06 lands; until then, use rate-limit errors and the founder's numbers below.
@@ -59,4 +57,4 @@ Read live numbers with `node sprint/scripts/gb-quota.mjs` once A0-06 lands; unti
 Concurrency at most: Go 4 builders (DeepSeek, MiMo, Kimi) plus the GLM reviewer and the Muse Spark checker; Gemini 2 tasks; Claude 2 tasks (briefs, reviews, clerk work; the Chief's own turns also use Claude); Codex 2 (Sol briefs and reviews, Luna gates, Astra reviews); free models 2 research tasks plus the Concierge. A rate-limit error pauses that plan until the reset time in the error, then the line resumes by itself.
 
 ## Definition of done
-A ticket is done when its PR is merged into its sprint branch (chief-lane tickets without a PR: when their output is written). The sprint is done when every priority 1–3 ticket is done or dropped with a reason, or at 23 October 22:00 IST, whichever comes first. Then the Chief writes `.factory/reports/sprint-final.md`, opens the PR from `sprint/track-a` to `main` for the founder, adds the needs-you item to create Studio's `main`, and stops its heartbeat.
+A ticket is done when its PR is merged into its sprint branch (chief-lane tickets without a PR: when their output is written). The sprint is done when every priority 1–3 ticket is done or dropped with a reason, or at 23 October 22:00 IST, whichever comes first. Then the Chief writes `.factory/reports/sprint-final.md`, opens the PR from `sprint/track-a` to `main` for the founder, adds the needs-you item to create Enigma's `main`, and stops its heartbeat.

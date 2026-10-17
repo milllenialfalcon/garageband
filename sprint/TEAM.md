@@ -1,5 +1,5 @@
 ---
-# Garageband build sprint team. Same format as the project kit's TEAM.md (six roles, four lanes);
+# Enigma build sprint team. Same format as the project kit's TEAM.md (six roles, four lanes);
 # the full roster below adds the extra models. Check:
 #   node skills/project-bootstrap/assets/project/scripts/gb-team.mjs --check --file sprint/TEAM.md
 version: 1
@@ -82,7 +82,7 @@ Backups: if Antigravity can't serve Gemini 4 Argon, use it through Hermes; if He
 | **Main worker**: builds every ticket | DeepSeek V4.1 Flash (Hermes) | Go | Cheap, good at code from a precise brief |
 | **Second worker**: tests, docs, test backfills, and builds when DeepSeek is busy | MiMo V2.6 Flash (Hermes) | Go | Cheapest output tokens |
 | **Heavy-lane reviewer**, and reader tests on M-size briefs | GLM 5.3 Flash (Hermes) | Go | Cheap and a different model from DeepSeek |
-| **Big-context worker**: tickets that must read a whole codebase (T3 source: A2-01, B0-02, B2-02) | Gemini 4 Argon (Antigravity) | Gemini | 1M-token context, strong reasoning, its own plan |
+| **Big-context worker**: tickets that must read a whole codebase (T3 source: B0-08, B0-02, B2-02) | Gemini 4 Argon (Antigravity) | Gemini | 1M-token context, strong reasoning, its own plan |
 | **Screenshot checker**: looks at the screenshots in every frontend PR against DESIGN rules and the brief before Sol reviews | Gemini 4 Argon (Antigravity) | Gemini | Reads images well; saves Sol's limits for the code review |
 | **Rescue builder 1**: attempt 4 when DeepSeek fails three times | Kimi K3 (Hermes) | Go | Strong at long agentic coding; a different family from DeepSeek |
 | **Rescue builder 2**: attempt 5 | Gemini 4 Argon (Antigravity) | Gemini | The strongest model off the Claude and Codex plans |

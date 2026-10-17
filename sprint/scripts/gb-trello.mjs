@@ -24,8 +24,8 @@ if (!key || !token || !board) {
 }
 
 const PHASE_NAMES = {
-  A0: "Prove the core", A1: "One-command setup", A2: "Orchestrator skill", C1: "Station contracts",
-  C2: "Line file and bring-your-own skills", B0: "Fork foundation", B1: "Install skills once",
+  A0: "Factory readiness", C1: "Station contracts and quality tools",
+  C2: "Line file and bring-your-own skills", B0: "Enigma foundation", B1: "Install skills once",
   B2: "Hermes as a native provider", B4: "Live factory board", B6: "Safety and cost controls",
 };
 const LISTS = ["Sprint", "Needs you", "Ready", "In progress", "Review", "Blocked", "Done"];

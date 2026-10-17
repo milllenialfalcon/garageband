@@ -56,7 +56,7 @@ USER factory
 RUN npm install -g @anthropic-ai/claude-code @openai/codex opencode-ai \
  && npm cache clean --force
 
-# Rust (only Track B needs it, for T3's resource monitor build and tests)
+# Rust (only the Enigma build needs it, for T3's resource monitor build and tests)
 RUN if [ "$WITH_RUST" = "1" ]; then \
       curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable; \
     fi

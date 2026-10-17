@@ -1,4 +1,4 @@
-# Relief for the Garageband build sprint
+# Relief for the Enigma build sprint
 
 The Chief (Claude Opus) runs the sprint. Claude has a 5-hour and a weekly allowance; when it is resting, Relief keeps the line moving so the sprint never stops. Relief has two parts:
 
@@ -19,7 +19,7 @@ Keep it to a few tool calls.
    - `lease.holder` is `relief` (the Chief handed over), or
    - the lease has expired (the Chief missed more than 90 minutes) **and** `t3_thread_read` on the Chief's thread (`lease.thread`) shows its latest run failed, or it is idle while tickets are in flight or ready.
 
-   To launch: `t3_thread_launch` in this project, project root, full access, Codex · GPT-6.1 Sol, title "Relief (active)", message: "You are the relief orchestrator for the Garageband build sprint. Read /workspace/garageband/sprint/RELIEF.md and follow 'Relief orchestrator'." Record its id in `chief-state.json.threads.reliefActive` and save factory state.
+   To launch: `t3_thread_launch` in this project, project root, full access, Codex · GPT-6.1 Sol, title "Relief (active)", message: "You are the relief orchestrator for the Enigma build sprint. Read /workspace/garageband/sprint/RELIEF.md and follow 'Relief orchestrator'." Record its id in `chief-state.json.threads.reliefActive` and save factory state.
 4. Otherwise reply "Chief healthy" and stop.
 5. If the Chief messages you, follow its message (it may hand over, or tell you the sprint is over: then delete your schedule and stop).
 
@@ -38,5 +38,5 @@ Keep it to a few tool calls.
 4. **Hand back.** At the start of each loop, check whether Claude is usable again: `node sprint/scripts/gb-quota.mjs` shows the Claude session window under 80%, or the time in `chief-state.json.paused.claude` has passed. If it is, or if the Chief messages you to release the lease:
    - finish this loop and write a handoff saying what you did and what's in flight, with ids;
    - set `lease.holder = "chief"`, `lease.until = now`, and `threads.reliefActive = null`, then save;
-   - wake the Chief: re-enable its heartbeat with `update_scheduled_task` (enabled true) and then `run_scheduled_task_now`. If its thread is gone, `t3_thread_launch` a new Chief (Claude · Opus 5.5, project root, full access, title "Chief (after relief)", message: "You are the Chief for the Garageband build sprint. Read /workspace/garageband/sprint/ORCHESTRATOR.md and start with section 1.");
+   - wake the Chief: re-enable its heartbeat with `update_scheduled_task` (enabled true) and then `run_scheduled_task_now`. If its thread is gone, `t3_thread_launch` a new Chief (Claude · Opus 5.5, project root, full access, title "Chief (after relief)", message: "You are the Chief for the Enigma build sprint. Read /workspace/garageband/sprint/ORCHESTRATOR.md and start with section 1.");
    - delete your "Relief loop" schedule and stop.
