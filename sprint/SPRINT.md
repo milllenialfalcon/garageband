@@ -1,6 +1,6 @@
 # Enigma build sprint
 
-**Dates:** Saturday 17 October to Friday 23 October 2026 (IST). **Goal:** build **Enigma**, the Garageband harness app forked from T3 Code, unattended, using the Claude, Codex, OpenCode Go and Gemini plans as fully as is safe. The stock-T3 track (setup tool and orchestrator skill for plain T3) was dropped on 17 October: all build effort goes into Enigma. The factory itself still runs in stock T3 inside the Docker box until Enigma can take over.
+**Dates:** Monday 19 October (from about 16:00) to Sunday 25 October 2026 (IST). Planned for 17–23 October; moved because the start slipped two days. **Goal:** build **Enigma**, the Garageband harness app forked from T3 Code, unattended, using the Claude, Codex, OpenCode Go and Gemini plans as fully as is safe. The stock-T3 track (setup tool and orchestrator skill for plain T3) was dropped on 17 October: all build effort goes into Enigma. The factory itself still runs in stock T3 inside the Docker box until Enigma can take over.
 
 ## Scope (50 tickets, seeded in `.factory/ledger.md`)
 
@@ -50,7 +50,7 @@ Read live numbers with `node sprint/scripts/gb-quota.mjs` once A0-06 lands; unti
 |---|---|---|---|
 | Claude ($20) | Briefs, reviews and coordination only; no building unless escalated | Weekly use 85% → only the Chief's light coordination; at 92% hand everything to Relief until the weekly reset | Relief runs the line; risky tickets wait |
 | Codex ($20) | Sol: frontend briefs and reviews, relief orchestrator. Luna: gates and the watchdog, cheap. Astra: 2 risky reviews and the final review only. No building unless escalated | Weekly use 85% → frontend briefs and reviews move to Claude Sonnet, and gates to Haiku | Claude Sonnet writes frontend briefs and reviews |
-| OpenCode Go ($10) | All building, through Hermes. DeepSeek, MiMo and GLM are very cheap; Kimi K3 costs more, so it's used only for rescue builds. About 10% of the monthly allowance per day (77% left on 16 Oct over 8 days); behind pace → run more DeepSeek and MiMo workers at once; ahead of pace → fewer | Monthly use 97% | Building moves to Gemini 4 Argon while AI Pro has room; otherwise it pauses and leads write the next briefs |
+| OpenCode Go ($10) | All building, through Hermes. DeepSeek, MiMo and GLM are very cheap; Kimi K3 costs more, so it's used only for rescue builds. Spread what's left evenly over the days to 25 October (the Chief reads the remaining share at shift start); behind pace → run more DeepSeek and MiMo workers at once; ahead of pace → fewer | Monthly use 97% | Building moves to Gemini 4 Argon while AI Pro has room; otherwise it pauses and leads write the next briefs |
 | Gemini AI Pro | Big-context builds, frontend screenshot checks, rescue builds; use it daily, since its limits reset daily | Its daily limit | Big-context tickets go to DeepSeek on Go; screenshot checks are skipped |
 | OpenCode free (DeepSeek, GLM; 200k context) | Research, reader tests, the Concierge. No secrets in prompts | Rate limits | Research waits; the Concierge falls back to GLM on Go |
 
@@ -59,4 +59,4 @@ Read live numbers with `node sprint/scripts/gb-quota.mjs` once A0-06 lands; unti
 Concurrency at most: Go 4 builders (DeepSeek, MiMo, Kimi) plus the GLM reviewer and the Muse Spark checker; Gemini 2 tasks; Claude 2 tasks (briefs, reviews, clerk work; the Chief's own turns also use Claude); Codex 2 (Sol briefs and reviews, Luna gates, Astra reviews); free models 2 research tasks plus the Concierge. A rate-limit error pauses that plan until the reset time in the error, then the line resumes by itself.
 
 ## Definition of done
-A ticket is done when its PR is merged into its sprint branch (chief-lane tickets without a PR: when their output is written). The sprint is done when every priority 1–3 ticket is done or dropped with a reason, or at 23 October 22:00 IST, whichever comes first. Then the Chief writes `.factory/reports/sprint-final.md`, opens the PR from `sprint/track-a` to `main` for the founder, adds the needs-you item to create Enigma's `main`, and stops its heartbeat.
+A ticket is done when its PR is merged into its sprint branch (chief-lane tickets without a PR: when their output is written). The sprint is done when every priority 1–3 ticket is done or dropped with a reason, or at 25 October 22:00 IST, whichever comes first. Then the Chief writes `.factory/reports/sprint-final.md`, opens the PR from `sprint/track-a` to `main` for the founder, adds the needs-you item to create Enigma's `main`, and stops its heartbeat.

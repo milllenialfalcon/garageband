@@ -1,6 +1,6 @@
 # Start the Enigma build sprint
 
-About 30 minutes of your time, once. After step 8 the sprint runs by itself until 23 October, and you only talk to the Concierge when you want news.
+About 30 minutes of your time, once. After step 8 the sprint runs by itself until Sunday 25 October, 22:00, and you only talk to the Concierge when you want news.
 
 **What it builds:** **Enigma**, your own harness app: T3 Code forked and turned into the Garageband factory (skills installed once for every tool, Hermes as a built-in provider, a live factory board, spend and safety controls). It lives in its own private repo, created by the agents in the first hour.
 
